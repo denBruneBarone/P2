@@ -1,0 +1,1 @@
+Her er UML og flowcharts sjålå
