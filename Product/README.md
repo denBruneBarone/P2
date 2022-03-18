@@ -1,4 +1,4 @@
-Dette er præmiserne vi er blevet enige om alle at overholde til kodning: 😙
+Dette er præmiserne vi er blevet enige om alle at overholde til kodning: 😙  
 	- Der bruges altid camelCase  
 	- Objekter starter med stort forbogstav  
 	- Der bruges formatteren 'Prettier' fra Visual Studio Code  
