@@ -1,6 +1,6 @@
 Dette er præmiserne vi er blevet enige om alle at overholde til kodning:
-	- Der bruges altid camelCase
-	- Objekter starter med stort forbogstav
+	- Der bruges altid camelCase \\
+	- Objekter starter med stort forbogstav \\
 	- Der bruges formatteren 'Prettier' fra Visual Studio Code
 	- Vi forsøger så vidt at følge principperne for DRY (Don't repeat yourself)
 	- Der tilføjes en kommentar før hver funktion. Kommentarer bruges kun inde i funktioner, når de er nødvendige
