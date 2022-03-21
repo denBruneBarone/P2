@@ -17,7 +17,7 @@ body {
 }
 
 .discordButton {
-  background-color: #2b39b1;
+  background-color: #5865f2;
   border: none;
   color: white;
   padding: 25px 200px;
@@ -28,7 +28,7 @@ body {
 }
 
 .gitHubButton {
-  background-color: #000000;
+  background-color: #171515;
   border: none;
   color: white;
   padding: 25px 205px;
@@ -39,7 +39,7 @@ body {
 }
 
 .trelloButton {
-  background-color: #e00000;
+  background-color: #0079bf;
   border: none;
   color: white;
   padding: 25px 215px;
