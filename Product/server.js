@@ -1,7 +1,8 @@
 const fs = require("fs");
 const express = require("express");
 const app = express();
-app.get("/", (req, res) => { res.sendFile(__dirname + "/index.html"); });
+app.get("/", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
+app.use(express.static(__dirname + '/public'));
 // cookie-test
 /* app.get("/test-cookie", (req, res) => { res.sendFile(dirname + "/cookie_test.html") }); */
 
