@@ -13,7 +13,7 @@ function authorizeGithub(event) {
    githubButton.disabled = true;
 }
 
-function sendToken() {
+function sendFragment() {
     console.log(window.location.hash)
     fetch("/token", {
        method: "POST",
