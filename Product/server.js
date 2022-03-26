@@ -4,6 +4,10 @@ const app = express();
 app.get("/", (req, res) => { res.sendFile(__dirname + "/index.html"); });
 // cookie-test
 /* app.get("/test-cookie", (req, res) => { res.sendFile(dirname + "/cookie_test.html") }); */
+
+// this function receives the token from the request body for further processing
+app.post("/token", async (req,res) => {})
+
 app.post("/", async (req, res) => {
    const buffers = [];
    for await (const chunk of req) { buffers.push(chunk) }
