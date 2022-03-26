@@ -7,7 +7,12 @@ app.use(express.static(__dirname + '/public'));
 /* app.get("/test-cookie", (req, res) => { res.sendFile(dirname + "/cookie_test.html") }); */
 
 // this function receives the token from the request body for further processing
-app.post("/token", async (req,res) => {})
+app.post("/token", async (req,res) => {
+   console.log(req)
+})
+app.get("/token", (req,res) => {
+   res.sendFile(__dirname + "/public/index.html");
+})
 
 app.post("/", async (req, res) => {
    const buffers = [];

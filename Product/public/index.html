@@ -12,16 +12,7 @@
 
 <body onload="sendToken()">
    <script>
-      function sendToken() {
-         console.log(window.location.hash)
-         // fetch("/token", {
-         //    method: "POST",
-         //    content_type: "text",
-         //    token: window.location.hash
-         //    // api: // some clientside function to grab the endpoint, so we can specify the apis type (eg. Disc) in their return_urls
-         // })
       
-   }
    </script>
    <form class="box" method="post" action="login.html">
       <div class="loginWindow">
@@ -32,11 +23,12 @@
          <a href="https://www.GitHub.com">
             <p><button class="gitHubButton" type="button">GitHub</button></p>
          </a>
-         <a href="https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000&scope=read">
+         <a href="https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/token&scope=read">
             <p><button class="trelloButton" type="button">Trello</button></p>
          </a>
       </div>
    </form>
+   <script src="index.js"></script>
 </body>
 
 </html>
