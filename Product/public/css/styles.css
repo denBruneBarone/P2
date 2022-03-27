@@ -1,12 +1,5 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 body {
-  font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
-  color: #404040;
   background: #222A35;
 }
 
