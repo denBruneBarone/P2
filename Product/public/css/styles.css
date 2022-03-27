@@ -13,19 +13,6 @@ body {
   border-radius: 15px;
 }
 
-.loginWindow h1 {
-  margin: -20px -20px 20px;
-  line-height: 95px;
-  font-size: 35px;
-  font-weight: bold;
-  color: rgb(0, 0, 0);
-  text-align: center;
-  background: white;
-  border-radius: 15px 15px 0 0;
-  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  
-}
-
 .discordButton {
   background-color: #7289DA;
   border: none;
