@@ -1,50 +1,107 @@
-body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
-  color: #000000;
-  background: #12549296;
+  color: #404040;
+  background: #222A35;
 }
 
 .loginWindow {
   position: relative;
-  margin: 150px auto;
+  margin: 60px auto;
   padding: 20px 20px 20px;
-  width: 500px;
+  width: 400px;
   height: 400px;
   background: white;
-  border-radius: 3px;
+  border-radius: 15px;
+}
+
+.loginWindow h1 {
+  margin: -20px -20px 20px;
+  line-height: 85px;
+  font-size: 35px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  background: white;
+  border-radius: 15px 15px 0 0;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  
 }
 
 .discordButton {
-  background-color: #5865f2;
+  background-color: #7289DA;
   border: none;
-  color: white;
-  padding: 25px 200px;
-  text-align: center;
-  text-decoration: none;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
+  margin: 0;
+  top: 30%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding: 35px 160px;
   display: inline-block;
-  font-size: 30px;
+  background-image: url(/Product/images/discord_logo.png);
+  background-repeat: no-repeat;
+  background-size: 200px;
+  background-position: center;
+
 }
 
 .gitHubButton {
   background-color: #171515;
   border: none;
-  color: white;
-  padding: 25px 205px;
-  text-align: center;
-  text-decoration: none;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding: 35px 160px;
   display: inline-block;
-  font-size: 30px;
+  background-image: url(/Product/images/github_logo.png);
+  background-repeat: no-repeat;
+  background-size: 200px;
+  background-position: center;
+  
 }
 
 .trelloButton {
   background-color: #0079bf;
+  border-radius: 10px 10px 10px 10px;
   border: none;
-  color: white;
-  padding: 25px 215px;
-  text-align: center;
-  text-decoration: none;
+  position: absolute;
+  margin: 0;
+  top: 70%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding: 35px 160px;
   display: inline-block;
-  font-size: 30px;
+  background-image: url(/Product/images/trello_logo.png);
+  background-repeat: no-repeat;
+  background-size: 200px;
+  background-position: center;
+}
+
+.continueButton {
+  background-color: #27af49;
+  border-radius: 10px 10px 10px 10px;
+  border: none;
+  position: absolute;
+  margin: 0;
+  top: 90%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding: 15px 40px;
+  display: inline-block;
+  color: white;
+  font-size: 20px;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
