@@ -10,7 +10,7 @@
    <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body onload="sendFragment()">
+<body onload="onPageLoad()">
    <script>
 
    </script>
@@ -20,16 +20,15 @@
          <a href="https://www.discord.com">
             <p><button class="discordButton" type="button"></button></p>
          </a>
+         <p id="discord_label"></p>
          <a href="https://www.GitHub.com">
             <p><button class="gitHubButton" type="button"></button></p>
          </a>
-         <a
-            href="https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/token&scope=read">
-            <p><button class="trelloButton" type="button"></button></p>
+         <p id="github_label"></p>
+         <a href="https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/trello&scope=read">
+            <p><button class="trelloButton" type="button">Trello</button></p>
          </a>
-         <a>
-            <p><button class="continueButton" type="button">Continue</button></p>
-         </a>
+         <p id="trello_label"></p>
       </div>
    </form>
    <script src="index.js"></script>
