@@ -1,1 +1,89 @@
-<mxfile host="app.diagrams.net" modified="2022-03-30T11:10:01.735Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55" etag="haonW2ywg00m7Cu5x12O" version="17.2.6" type="device"><diagram id="PqRT_oGZQJNv8RTNrmmE" name="Page-1">3Vpbc+MmFP41nrYPzuhu+zHx2m1msjNtk51mH5FAMg0SKkKxs7++gEB3J3Zjr7d52YVzAMH5+M4FZ+Iu092vDOSbzxQiMnEsuJu4nyaOM/cD8a8UvFQCe+ZpScIw1LJGcI+/IS20tLTEEBWdgZxSwnHeFUY0y1DEOzLAGN12h8WUdL+agwQNBPcRIEPpXxjyjT6XM2vkvyGcbMyX7WBRaVJgBuuTFBsA6bYlclcTd8ko5VUr3S0RkcYzdqnmrfdo640xlPFDJjysHuHc+7zEfPrHQ8Gz9Qp/mzputcwzIKU+sd4tfzEmQFBYRHcp4xua0AyQVSO9YbTMIJLfsUSvGXNHaS6EthD+jTh/0fCCklMh2vCUaG1MM76khDLRhygGJRFHuhEHYy+PeojqfJWfuPJN99NOf7LqvehedQK57b2m0qKClixCr9jHXDnAEsRfGefNa0QFFRBNkdiQmMgQARw/dzcC9J1M6nH11N8pFlt0LM0fL9CXR9NnYXVXqPalJzXYi0ZrF41I3Ygjboc9uBxY4Ly7Usj1r4m437lsQhqVqTL0zXaDObrPgTLxVjiILuphdW3uwvoaYELMNZg4bgzgDERCXnBGn1BLE3qBb3k11M+IcbR7HewhNsbGdtfGxuTbhu624fCmRfW5tR/NDhDHWr12GN+VgmiH+aOhk2i3qCZ6DdNkxxCtJmiLk187lBwn6DjdT0jbio4H8NZenIW3rvc6b6sDnI23Jsb+kF79hDD7h6L8Xu/8Lj77I2AEyhRFDrIOKsE/pUwHlOWmMUgxEdfgWjke8ow4joAyoKX0hbK71NpOvmsrqvWkJqMsBaSl22oPJpWeVUVLiwgYEZuK7UQ4S4YzhXPlU0BwklW6SCCFWEsnw0KmV7XMXpSGM5AVsVjLrJqhSrulDHa/WE+EuMgJ0CfHGcFmTkwo4L2FjMlEK5H/fynEzgSKpbiuTFioEB1xj6Qoz4mwIMc0MwAIPCsMqrl7Y1oKshKQ2ywvDwhr/SgWx040GsVgEAYiQXZvCAgRuQHRU6I4Z4boMyYMQIwaKtVHf3foc3vphe37g9g3Hwl9fXd2Oqr8yOnoKdPKQ+OTE1zSc5lttuBgCGImCq1CFWKKnx8vI5zZXVpcPCX0xmLIR+TF4kBe+BelxWIvLX6SvCirEKTo8SC2RKgS65BU6AhkFYIK5+DM69HkIoyyZ71Ac3FGOcMU+Z5ThhRuT0jiEzOaTuSmqlwhZHWK8eedUoNEITQ2BCuAUVEoqPdhDDiQH1VPUG9nFTtk3seORhn6aA69MZTnTugGwVmzDC8IOuC79gj47vdMM5xhXLstWsiLNFP6SQFaGUUCxLgkMhFfD5BkG5qGZfE2ekehFdoQxtYYWrY1cxcngsW2erBYI7DY/hAW2z4XLuYStHDpp/MDVAaQ1EHOPjpVjyAK5+GY4d3AXbjwRFl373HAmx/oDIOz2X02kl68UaJGlXFkLcaS8GdLucGlLOOa1i+y2dSe7YJWLATSXCldV3qmpsLta7qL9Krerm5Q+HbU/drXebv8NUP2VMAddb8I7ijH6mAzYLwUNtqxarg+Vq8gNvKw9jTTHk6OfBrT+Djeomn7Eq1+MX2bQVkxo5HsJQaYlDJeHldJ16c5qcc8oMY+AXGdmXvld32mM0Jdb4S6s7NRd5iLfsjKwD34RfeSlYE7TCzuxY5ljshVIXDdZdH/Lnb1fyyZepeOXd7Q5N3Y1XkWfCI4elLVWFWYSV9Zcn74i+AboIAir36FVun6fjcmYFnP14v19V7u9OBdr5erxfqsebrTK9JGarSxx8D/UKKJbvO7d/WjR/PXA+7qXw==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2022-03-30T11:22:18.258Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36" etag="kwDcBu3bkjZc8TEVY1ZU" version="17.1.3" type="github">
+  <diagram id="PqRT_oGZQJNv8RTNrmmE" name="Page-1">
+    <mxGraphModel dx="1221" dy="1773" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TEXd84MCit-QTstnFEiz-1" target="Hv6aoonAZMiI_dBJb9WD-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-1" value="index.html" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#fad7ac;strokeColor=#b46504;" parent="1" vertex="1">
+          <mxGeometry x="560" y="50" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-46" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=default;" parent="1" source="TEXd84MCit-QTstnFEiz-5" target="TEXd84MCit-QTstnFEiz-18" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-5" value="&lt;span style=&quot;font-family: helvetica; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: normal; text-align: center; text-indent: 0px; text-transform: none; word-spacing: 0px; display: inline; float: none;&quot;&gt;User authorizes our application&lt;/span&gt;" style="shape=manualInput;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;labelBackgroundColor=none;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="400" y="155" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-18" value="redirects to index.html" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#fad7ac;strokeColor=#b46504;" parent="1" vertex="1">
+          <mxGeometry x="560" y="160" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-19" value="redirect&#39;s user to Trello&#39;s authorisation site" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;labelBackgroundColor=none;fillColor=#fad7ac;strokeColor=#b46504;" parent="1" vertex="1">
+          <mxGeometry x="240" y="50" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TEXd84MCit-QTstnFEiz-26" target="TEXd84MCit-QTstnFEiz-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-26" value="Store token from &lt;br&gt;URL fragment &lt;br&gt;in session" style="shape=dataStorage;whiteSpace=wrap;html=1;fixedSize=1;labelBackgroundColor=none;fillColor=#d5e8d4;strokeColor=#82b366;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="400" y="280" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-7" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TEXd84MCit-QTstnFEiz-28" target="TEXd84MCit-QTstnFEiz-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-28" value="Is token loaded successfully?" style="rhombus;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#b1ddf0;strokeColor=#10739e;" parent="1" vertex="1">
+          <mxGeometry x="400" y="400" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-30" value="User authorized successfully" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry x="400" y="555" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TEXd84MCit-QTstnFEiz-37" target="TEXd84MCit-QTstnFEiz-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-37" value="&lt;span style=&quot;color: rgb(0 , 0 , 0) ; font-family: &amp;#34;helvetica&amp;#34; ; font-size: 12px ; font-style: normal ; font-weight: 400 ; letter-spacing: normal ; text-align: center ; text-indent: 0px ; text-transform: none ; word-spacing: 0px ; display: inline ; float: none ; background-color: rgb(248 , 249 , 250)&quot;&gt;Indicate &lt;br&gt;authorization &lt;br&gt;failure&lt;/span&gt;" style="shape=display;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="720" y="50" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=default;" parent="1" source="TEXd84MCit-QTstnFEiz-38" target="TEXd84MCit-QTstnFEiz-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TEXd84MCit-QTstnFEiz-38" value="Start trelloAuthorisation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry x="400" y="-40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Hv6aoonAZMiI_dBJb9WD-1" target="TEXd84MCit-QTstnFEiz-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-1" value="User clicks Trello button" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+          <mxGeometry x="400" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-4" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="TEXd84MCit-QTstnFEiz-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="120" as="sourcePoint" />
+            <mxPoint x="440" y="190" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="300" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-5" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0.875;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="TEXd84MCit-QTstnFEiz-18" target="TEXd84MCit-QTstnFEiz-26">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="620" y="280" as="sourcePoint" />
+            <mxPoint x="460" y="240" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="620" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Hv6aoonAZMiI_dBJb9WD-8" value="no" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="TEXd84MCit-QTstnFEiz-28" target="TEXd84MCit-QTstnFEiz-37">
+          <mxGeometry x="-0.8667" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="330" as="sourcePoint" />
+            <mxPoint x="440" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="780" y="460" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
