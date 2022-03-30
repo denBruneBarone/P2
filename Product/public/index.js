@@ -2,7 +2,7 @@
 const githubButton = document.querySelector('.githubButton');
 
 // Event listeners
-githubButton.addEventListener('click', authorizeGithub);
+//githubButton.addEventListener('click', authorizeGithub);
 
 // Functions
 function authorizeGithub(event) {
@@ -13,14 +13,20 @@ function authorizeGithub(event) {
    githubButton.disabled = true;
 }
 
-function sendFragment() {
-    console.log(window.location.hash)
-    fetch("/token", {
-       method: "POST",
-       headers: {content_type: "text"},
-       body: {
-          token: window.location.hash
-       }
-       // api: "" // some clientside function to grab the endpoint, so we can specify the apis type (eg. Disc) in their return_urls
-    })      
- }
+function checkAuthenticationStatus() {
+   var Tokens = {
+      trello: window.sessionStorage.getItem("trello-token"),
+      github: window.sessionStorage.getItem("github-token"),
+      discord: window.sessionStorage.getItem("discord-token"),    
+   }
+   
+   document.getElementById("trello_label").innerHTML = Tokens.trello ? "Authenticated" : "Not authenticated"
+   document.getElementById("github_label").innerHTML = Tokens.github ? "Authenticated" : "Not authenticated"
+   document.getElementById("discord_label").innerHTML = Tokens.discord ? "Authenticated" : "Not authenticated"
+
+   console.log(Tokens)   
+}      
+
+function onPageLoad() {
+   checkAuthenticationStatus()
+}

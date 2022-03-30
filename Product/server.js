@@ -2,23 +2,13 @@ const fs = require("fs");
 const express = require("express");
 const app = express();
 app.get("/", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
+
+// includes the files from public folder
 app.use(express.static(__dirname + '/public'));
-// cookie-test
-/* app.get("/test-cookie", (req, res) => { res.sendFile(dirname + "/cookie_test.html") }); */
 
-// this function receives the token from the request body for further processing
-app.post("/token", async (req,res) => {
-   console.log(req)
-})
-app.get("/token", (req,res) => {
-   res.sendFile(__dirname + "/public/index.html");
+app.get("/trello", (req,res) => {
+   res.sendFile(__dirname + "/public/trelloAuthentication.html");
 })
 
-app.post("/", async (req, res) => {
-   const buffers = [];
-   for await (const chunk of req) { buffers.push(chunk) }
-   const data = Buffer.concat(buffers).toString();
-   console.log("The user is interested in " + JSON.parse(data))
-   fs.appendFile('message.txt', JSON.parse(data) + "\n", () => { })
-})
+// the server run's
 app.listen(3000, () => console.log("Server is running on http://localhost:3000"));
