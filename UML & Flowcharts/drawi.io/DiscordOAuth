@@ -1,1 +1,92 @@
-<mxfile host="app.diagrams.net" modified="2022-03-30T10:10:59.182Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36" version="17.2.6" etag="Z3iZA0IGhY38KITWGsXv" type="github"><diagram id="RlaJymuNOQOKrs2p02CL">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2022-03-30T11:10:01.052Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36" etag="T2vHw54_DKdtLEnDypaQ" version="17.2.6" type="github">
+  <diagram id="RlaJymuNOQOKrs2p02CL" name="Page-1">
+    <mxGraphModel dx="1422" dy="1924" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-1" target="xM6XubApJ_Hr5fxQAfRK-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-1" value="index.html" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+          <mxGeometry x="483.5" width="116" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-6" target="xM6XubApJ_Hr5fxQAfRK-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-6" value="&lt;br&gt;User authorizes our application" style="shape=manualInput;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="358.5" y="80" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="130" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="180" y="40" />
+              <mxPoint x="180" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-10" value="Redirect user to Discords authorization URL" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+          <mxGeometry x="200" width="103" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-22" target="xM6XubApJ_Hr5fxQAfRK-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-22" value="&lt;span&gt;Redirect to index.html page&lt;/span&gt;" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+          <mxGeometry x="495.5" y="90" width="104" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-25" target="xM6XubApJ_Hr5fxQAfRK-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-25" value="Store code&lt;br&gt;from parameters&amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;br&gt;in session" style="shape=dataStorage;whiteSpace=wrap;html=1;fixedSize=1;gradientColor=none;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="355" y="250" width="116.5" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-28" target="xM6XubApJ_Hr5fxQAfRK-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-28" value="Fetch post-request from Discord API" style="whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+          <mxGeometry x="358" y="360" width="111" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-31" target="xM6XubApJ_Hr5fxQAfRK-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-31" value="Store token in&amp;nbsp; &amp;nbsp; &amp;nbsp; session" style="shape=dataStorage;whiteSpace=wrap;html=1;fixedSize=1;gradientColor=none;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="355.75" y="620" width="116.5" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-33" value="User authorize succesfully" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="360" y="720" width="109" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-45" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=50;entryDy=50;entryPerimeter=0;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-37" target="xM6XubApJ_Hr5fxQAfRK-40">
+          <mxGeometry x="-0.8234" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-56" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-37" target="xM6XubApJ_Hr5fxQAfRK-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-37" value="Is token &lt;br&gt;loaded &lt;br&gt;&amp;nbsp; succesfully?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#cce5ff;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="359" y="460" width="110" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-40" target="xM6XubApJ_Hr5fxQAfRK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-40" value="Indicate authorization failure" style="shape=display;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="650" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-42" target="xM6XubApJ_Hr5fxQAfRK-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="310" y="39.92307692307668" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-42" value="User clicks Discord button" style="whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+          <mxGeometry x="353.5" y="-6.25" width="90" height="62.5" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-44" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xM6XubApJ_Hr5fxQAfRK-43" target="xM6XubApJ_Hr5fxQAfRK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xM6XubApJ_Hr5fxQAfRK-43" value="Start discordAuthorization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="348.5" y="-100" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
