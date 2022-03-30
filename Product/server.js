@@ -1,10 +1,13 @@
 const fs = require("fs");
 const express = require("express");
+const cors = require("cors");
+const { log } = require("console");
 const app = express();
 app.get("/", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
 app.use(express.static(__dirname + '/public'));
-// cookie-test
-/* app.get("/test-cookie", (req, res) => { res.sendFile(dirname + "/cookie_test.html") }); */
+app.use(cors());
+const axios = require("axios");
+const { request } = require("http");
 
 // this function receives the token from the request body for further processing
 app.post("/token", async (req, res) => {
@@ -14,11 +17,32 @@ app.get("/token", (req, res) => {
    res.sendFile(__dirname + "/public/index.html");
 })
 
-app.post("/", async (req, res) => {
-   const buffers = [];
-   for await (const chunk of req) { buffers.push(chunk) }
-   const data = Buffer.concat(buffers).toString();
-   console.log("The user is interested in " + JSON.parse(data))
-   fs.appendFile('message.txt', JSON.parse(data) + "\n", () => { })
-})
 app.listen(3000, () => console.log("Server is running on http://localhost:3000"));
+
+getGithubCode();
+function getGithubCode() {
+   /* const url = new URL(window.location.href)
+   console.log("Github code: " + url.searchParams.get("code"))
+   const githubCode = url.searchParams.get("code"); */
+
+   axios.post("https://github.com/login/oauth/access_token", {
+      client_id: "de223b25bb78c82a9bd7",
+      client_secret: "38fd5fec5fc324960fede9825d4d4eacb87eb528",
+      code: "921077d2df259cea16c3",
+      redirect_uri: "http://localhost:3000/"
+      /* mode: 'no-cors', */
+      /* headers: {
+         /* 'Access-Control-Allow-Origin': '*', 
+      },
+      body: JSON.stringify({
+         client_id: "de223b25bb78c82a9bd7",
+         client_secret: "38fd5fec5fc324960fede9825d4d4eacb87eb528",
+         code: "fbfe2450168b63d4e7c2",
+         redirect_uri: "http://localhost:3000/" 
+      }) */
+   }).then((response) => {
+      console.log(response);
+   }), (error) => {
+      console.log(error);
+   }
+}
