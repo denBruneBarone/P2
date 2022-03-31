@@ -42,6 +42,7 @@ function getGithubCode() {
       console.log("vores .then returnerer: " + res);
       console.log(res)
    });
+}
 
 function checkAuthenticationStatus() {
    var Tokens = {
