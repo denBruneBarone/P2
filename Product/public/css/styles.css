@@ -1,6 +1,5 @@
 body {
   background: #222a35;
-  background-position: center;
 }
 
 .loginWindow {
@@ -17,74 +16,49 @@ body {
   font-family: Monaco, monospace;
 }
 
-.discordButton {
-  background-color: #7289da;
+button{
   border: none;
   border-radius: 10px 10px 10px 10px;
   position: absolute;
   margin: 0;
-  top: 30%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  padding: 35px 160px;
-  display: inline-block;
-  background-image: url(/images/discord_logo.png);
   background-repeat: no-repeat;
   background-size: 200px;
+  padding: 35px 160px;
+  display: inline-block;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.discordButton {
+  background-color: #7289da;
+  top: 30%;
+  background-image: url(../images/discord_logo.png);
 }
 
 .gitHubButton {
   background-color: #171515;
-  border: none;
-  border-radius: 10px 10px 10px 10px;
-  position: absolute;
-  margin: 0;
   top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  padding: 35px 160px;
-  display: inline-block;
-  background-image: url(/images/github_logo.png);
-  background-repeat: no-repeat;
-  background-size: 200px;
-  cursor: pointer;
+  background-image: url(../images/github_logo.png);
 }
 
 .trelloButton {
   background-color: #0079bf;
-  border: none;
-  border-radius: 10px 10px 10px 10px;
-  position: absolute;
-  margin: 0;
   top: 70%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  padding: 35px 160px;
-  display: inline-block;
-  background-image: url(/images/trello_logo.png);
-  background-repeat: no-repeat;
-  background-size: 200px;
-  cursor: pointer;
+  background-image: url(../images/trello_logo.png);
 }
 
 .continueButton {
   background-color: #27af49;
-  border: none;
-  border-radius: 10px 10px 10px 10px;
-  position: absolute;
-  margin: 0;
   top: 90%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   padding: 15px 40px;
-  display: inline-block;
   color: white;
   font-size: 20px;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  cursor: pointer;
+}
+
+button:hover{
+  opacity: 0.6;
 }
