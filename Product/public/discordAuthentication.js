@@ -14,7 +14,6 @@ fetch("http://localhost:3000/discord-code", {
 }).then(r => {
     r.json().then(data => {
         window.sessionStorage.setItem("discord-token", data.token)
+        window.location.replace("http://localhost:3000/")
     })
 })
-
-window.location.replace("http://localhost:3000/")

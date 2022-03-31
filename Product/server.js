@@ -26,7 +26,6 @@ app.get("/discord", (req, res) => {
 })
 
 app.post("/discord-code", async (req, res) => {
-   console.log(req.body.code)
 
    let token = "this is from line 28"
 
@@ -48,8 +47,6 @@ app.post("/discord-code", async (req, res) => {
    const _json = await r.json()
 
    res.json({token: _json.access_token})
-   
-
 })
 
 app.get("/githubAuthentication", (req, res) => {
@@ -60,7 +57,6 @@ app.get("/githubAuthentication", (req, res) => {
 then it sends token back to client as a JSON object*/
 app.post("/githubToken", async (req, res) => {
    let githubCode = req.body.gitCode;
-   console.log("github code is: " + githubCode);
 
    axios.post("https://github.com/login/oauth/access_token", {
       client_id: "de223b25bb78c82a9bd7",
@@ -69,7 +65,6 @@ app.post("/githubToken", async (req, res) => {
       redirect_uri: "http://localhost:3000/githubAuthentication"
    }).then((response) => {
       let githubToken = response.data.substring(response.data.indexOf("=") + 1, response.data.indexOf("&"))
-      console.log("github token is " + githubToken);
 
       /* res.setHeader("Content-Type", "application/json") */
       res.json({ token: githubToken });
