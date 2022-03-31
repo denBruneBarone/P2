@@ -113,5 +113,5 @@ button {
 }
 
 button:hover{
-  border: 3px #27af49;
+  border: 3px #27af49 solid;
 }
