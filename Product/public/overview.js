@@ -24,7 +24,7 @@ function toggleApi(btn_id){
     }
     else if (document.getElementById(btn_id).value == "disabled"){
         document.getElementById(btn_id).value = "enabled"
-        document.getElementById(btn_id).style = 'border-color: green'
+        document.getElementById(btn_id).style = 'border-color: #27af49'
         //Add function til at sende data i box
     }
 }
