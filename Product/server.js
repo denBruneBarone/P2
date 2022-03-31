@@ -14,8 +14,6 @@ app.use(express.json())
 
 app.get("/", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
 
-const axios = require("axios");
-const { request } = require("http");
 const req = require("express/lib/request");
 const { json } = require("express/lib/response");
 
