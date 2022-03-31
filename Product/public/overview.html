@@ -13,32 +13,35 @@
 
 
 <body onload="sendFragment()">
-    <script>
-
-    </script>
+    <script src="overview.js" type="text/javascript"></script>
+    <script src="fetchOverview.js" type="text/javascript"></script>
 
     <form class="box">
         <div class="timeIntervalWindow">
             <h1>SELECT A TIME INTERVAL</h1>
             <a>
-                <p><input class="timeInputStart" type="datetime-local"></input></p>
+                <p><input class="timeInputStart" type="datetime-local"></p>
             </a>
             <a>
-                <p><input class="timeInputEnd" type="datetime-local"></input></p>
+                <p><input class="timeInputEnd" type="datetime-local"></p>
+            </a>
+            <a>
+                <p><input class="submitTimeInterval" type="submit"></p>
             </a>
         </div>
+        
     </form>
 
     <form class="box">
         <div class="overviewWindow">
             <a>
-                <p><button class="discordToggle" type="button"></button></p>
+                <p><button class="discordToggle" value="enabled" id="discord" type="button" onclick="toggleApi(id);"></button></p>
             </a>
             <a>
-                <p><button class="githubToggle" type="button"></button></p>
+                <p><button class="githubToggle" value="enabled" id="github" type="button" onclick="toggleApi(id);"></button></p>
             </a>
             <a>
-                <p><button class="trelloToggle" type="button"></button></p>
+                <p><button class="trelloToggle" value="enabled" id="trello" type="button" onclick="toggleApi(id);"></button></p>
             </a>
         </div>
     </form>
