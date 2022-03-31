@@ -4,27 +4,21 @@ const cors = require("cors");
 const { log } = require("console");
 const app = express();
 app.get("/", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
+
+// includes the files from public folder
 app.use(express.static(__dirname + '/public'));
-app.use(cors());
+
 const axios = require("axios");
 const { request } = require("http");
 
-// this function receives the token from the request body for further processing
-app.post("/token", async (req, res) => {
-   console.log(req)
-})
-app.get("/token", (req, res) => {
-   res.sendFile(__dirname + "/public/index.html");
+
+app.get("/trello", (req,res) => {
+   res.sendFile(__dirname + "/public/trelloAuthentication.html");
 })
 
-app.listen(3000, () => console.log("Server is running on http://localhost:3000"));
 
 getGithubCode();
-function getGithubCode() {
-   /* const url = new URL(window.location.href)
-   console.log("Github code: " + url.searchParams.get("code"))
-   const githubCode = url.searchParams.get("code"); */
-
+function postGithubCode
    axios.post("https://github.com/login/oauth/access_token", {
       client_id: "de223b25bb78c82a9bd7",
       client_secret: "38fd5fec5fc324960fede9825d4d4eacb87eb528",
@@ -46,3 +40,7 @@ function getGithubCode() {
       console.log(error);
    }
 }
+
+// the server run's
+app.listen(3000, () => console.log("Server is running on http://localhost:3000"));
+

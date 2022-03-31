@@ -10,24 +10,26 @@
    <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body onload="/* getGithubCode() */">
-
+<body onload="onPageLoad()">
    <form class="box" method="post" action="login.html">
       <div class="loginWindow">
          <h1>AUTHENTICATION</h1>
          <a href="https://www.discord.com">
             <p><button class="discordButton" type="button"></button></p>
          </a>
-         <!-- <a href="https://github.com/login/oauth/authorize?client_id=de223b25bb78c82a9bd7">
+        <p id="discord_label"></p>
+         <a href="https://github.com/login/oauth/authorize?client_id=de223b25bb78c82a9bd7">
             <p><button class="gitHubButton" type="button"></button></p>
-         </a> -->
+         </a>
+        <p id="github_label"></p>
          <a
             href="https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/token&scope=read">
             <p><button class="trelloButton" type="button"></button></p>
          </a>
+        <p id="trello_label"></p>
          <a>
             <p><button class="continueButton" type="button">Continue</button></p>
-         </a>
+        </a>
       </div>
    </form>
    <script src="index.js" type="text/javascript"></script>
