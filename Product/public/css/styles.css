@@ -1,5 +1,7 @@
 body {
   background: #222a35;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
 }
 
 .loginWindow {
@@ -15,8 +17,6 @@ body {
 .discordButton {
   background-color: #7289da;
   border: none;
-  border-radius: 10px 10px 10px 10px;
-  position: absolute;
   margin: 0;
   top: 30%;
   left: 50%;
@@ -34,8 +34,6 @@ body {
 .gitHubButton {
   background-color: #171515;
   border: none;
-  border-radius: 10px 10px 10px 10px;
-  position: absolute;
   margin: 0;
   top: 50%;
   left: 50%;
@@ -52,9 +50,7 @@ body {
 
 .trelloButton {
   background-color: #0079bf;
-  border-radius: 10px 10px 10px 10px;
   border: none;
-  position: absolute;
   margin: 0;
   top: 70%;
   left: 50%;
@@ -71,9 +67,7 @@ body {
 
 .continueButton {
   background-color: #27af49;
-  border-radius: 10px 10px 10px 10px;
   border: none;
-  position: absolute;
   margin: 0;
   top: 90%;
   left: 50%;
