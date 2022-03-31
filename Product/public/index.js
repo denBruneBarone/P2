@@ -42,6 +42,7 @@ function getGithubCode() {
       console.log("vores .then returnerer: " + res);
       console.log(res)
    });
+}
 
 function checkAuthenticationStatus() {
    var Tokens = {
@@ -57,6 +58,17 @@ function checkAuthenticationStatus() {
    console.log(Tokens)   
 }      
 
+function checkForContinue(){
+
+   document.getElementById("continueButton").disabled = true;
+
+   if(Tokens.trello || Tokens.github || Tokens.discord){
+      document.getElementById("continueButton").disabled = false;
+   }
+
+}
+
 function onPageLoad() {
    checkAuthenticationStatus()
+   checkForContinue()
 }
