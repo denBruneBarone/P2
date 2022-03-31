@@ -1,22 +1,27 @@
 body {
   background: #222a35;
-  border-radius: 10px 10px 10px 10px;
-  position: absolute;
+  background-position: center;
 }
 
 .loginWindow {
   position: relative;
-  margin: 60px auto;
+  margin: 50px auto;
   padding: 20px 20px 20px;
   width: 400px;
   height: 400px;
   background: white;
   border-radius: 15px;
+  line-height: 1px;
+  text-align: center;
+  font-size: 20px;
+  font-family: Monaco, monospace;
 }
 
 .discordButton {
   background-color: #7289da;
   border: none;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
   margin: 0;
   top: 30%;
   left: 50%;
@@ -27,13 +32,14 @@ body {
   background-image: url(/images/discord_logo.png);
   background-repeat: no-repeat;
   background-size: 200px;
-  background-position: center;
   cursor: pointer;
 }
 
 .gitHubButton {
   background-color: #171515;
   border: none;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
   margin: 0;
   top: 50%;
   left: 50%;
@@ -44,13 +50,14 @@ body {
   background-image: url(/images/github_logo.png);
   background-repeat: no-repeat;
   background-size: 200px;
-  background-position: center;
   cursor: pointer;
 }
 
 .trelloButton {
   background-color: #0079bf;
   border: none;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
   margin: 0;
   top: 70%;
   left: 50%;
@@ -61,13 +68,14 @@ body {
   background-image: url(/images/trello_logo.png);
   background-repeat: no-repeat;
   background-size: 200px;
-  background-position: center;
   cursor: pointer;
 }
 
 .continueButton {
   background-color: #27af49;
   border: none;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
   margin: 0;
   top: 90%;
   left: 50%;
