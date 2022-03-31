@@ -17,7 +17,7 @@ body {
 }
 
 button{
-  border: none;
+  border: 4px white solid;
   border-radius: 10px 10px 10px 10px;
   position: absolute;
   margin: 0;
@@ -26,6 +26,7 @@ button{
   transform: translate(-50%, -50%);
   background-repeat: no-repeat;
   background-size: 200px;
+  background-position: center;
   padding: 35px 160px;
   display: inline-block;
   cursor: pointer;
@@ -59,6 +60,6 @@ button{
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-button:hover{
-  opacity: 0.6;
+.github_label{
+
 }

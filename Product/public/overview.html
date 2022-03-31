@@ -12,21 +12,22 @@
 </head>
 
 
-<body>
+<body onload="onLoadOverview()">
     <script src="overview.js" type="text/javascript"></script>
     <script src="fetchOverview.js" type="text/javascript"></script>
 
+    
     <form class="box">
         <div class="timeIntervalWindow">
             <h1>SELECT A TIME INTERVAL</h1>
             <a>
-                <p><input class="timeInputStart" type="datetime-local" id="startTime"></p>
+                <p><input class="timeInputStart" type="datetime-local" id="startTime" value=""></p>
             </a>
             <a>
-                <p><input class="timeInputEnd" type="datetime-local" id="endTime"></p>
+                <p><input class="timeInputEnd" type="datetime-local" id="endTime" value=""></p>
             </a>
             <a>
-                <p><input class="submitTimeInterval" type="submit"></p>
+                <p><input class="submitTimeInterval" type="submit" onsubmit="timeInterval()"></p>
             </a>
         </div>
         
