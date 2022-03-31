@@ -17,6 +17,10 @@ app.get("/", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
 const req = require("express/lib/request");
 const { json } = require("express/lib/response");
 
+app.get("/overview", (req, res) => {
+   res.sendFile(__dirname + "/public/overview.html")
+})
+
 app.get("/trello", (req, res) => {
    res.sendFile(__dirname + "/public/trelloAuthentication.html");
 })
