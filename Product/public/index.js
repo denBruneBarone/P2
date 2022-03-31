@@ -16,16 +16,22 @@ function checkAuthenticationStatus() {
     : "Not authenticated";
 
   console.log(Tokens);
+
+  return Tokens;
 }
 
-function checkForContinue() {
-  document.getElementById("continueButton").disabled = true;
-  if (Tokens.trello || Tokens.github || Tokens.discord) {
+function checkForContinue(Tokens) {
+  if (Tokens.discord !== null || Tokens.github !== null || Tokens.trello !== null) {
     document.getElementById("continueButton").disabled = false;
   }
 }
 
+function goToOverview() {
+  fetch("/overview", () => {
+    console.log("det virker");
+  });
+}
+
 function onPageLoad() {
-  checkAuthenticationStatus();
-  // checkForContinue();
+  checkForContinue(checkAuthenticationStatus());
 }

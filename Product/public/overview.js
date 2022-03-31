@@ -1,7 +1,8 @@
 function timeInterval(){
-    var dateStringStart = document.getElementById("timeInputStart").value
-    var dateStringEnd = document.getElementById("timeInputEnd").value
+    var dateStringStart = document.getElementByCl(startTime).valueAsNumber
+    var dateStringStart = document.getElementById(startTime).valueAsNumber
 
+    console.log("dateStringStart")
     if(dateStringEnd < dateStringStart){
         alert("End date cannot be less than the start date!")
         return false
