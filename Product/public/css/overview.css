@@ -78,6 +78,8 @@ button {
   margin: 0;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  padding: 30px 40px;
+  left: 113%;
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
@@ -88,8 +90,6 @@ button {
 .discordToggle {
   background-color: #7289da;
   top: 22%;
-  left: 113%;
-  padding: 30px 40px;
   background-image: url(../images/discord_mini.png);
   background-size: 63px;
 }
@@ -97,8 +97,6 @@ button {
 .githubToggle {
   background-color: #171515;
   top: 50%;
-  left: 113%;
-  padding: 30px 40px;
   background-image: url(../images/github_mini.png);
   background-size: 48px;
 }
@@ -106,8 +104,6 @@ button {
 .trelloToggle {
   background-color: #0079bf;
   top: 78%;
-  left: 113%;
-  padding: 30px 40px;
   background-image: url(../images/trello_mini.png);
   background-size: 48px;
 }
