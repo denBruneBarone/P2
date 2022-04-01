@@ -60,6 +60,6 @@ button{
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-.github_label{
-
+.continueButton:hover{
+  background-color: green;
 }
