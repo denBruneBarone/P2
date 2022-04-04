@@ -31,5 +31,5 @@ function toggleApi(btn_id) {
 }
 
 function onLoadOverview() {
-    //timeInterval()
+    timeInterval()
 }
