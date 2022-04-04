@@ -1,21 +1,43 @@
 function timeInterval() {
-  var dateStringStart = document.getElementById(startTime).value;
-  var dateStringEnd = document.getElementById(endTime).value;
+  var dateStringStart = Date.parse(document.getElementById("startTime").value);
+  var dateStringEnd = Date.parse(document.getElementById("endTime").value);
 
-    console.log(dateStringStart)
-    console.log(dateStringEnd)
-
-  if (dateStringEnd.getTime() < dateStringStart.getTime()) {
+  if (dateStringEnd < dateStringStart) {
     alert("End date cannot be less than the start date!");
-    return false;
+    document.getElementById("startTime").value = "";
+    document.getElementById("endTime").value = "";
+
+    return;
   }
-  return true;
+  // skriv fetch here
   //Bruges til displayData function
 }
 
+function checkAuthenticationStatus() {
+  var Tokens = {
+    trello: window.sessionStorage.getItem("trello-token"),
+    github: window.sessionStorage.getItem("github-token"),
+    discord: window.sessionStorage.getItem("discord-token"),
+  };
+  return Tokens;
+}
+
 function authApi() {
-  //Mulighed for at authenticate APIs, hvis man ikke havde gjort det før
-  //Toggle buttons til ikke authenticated er disabled indtil da
+  console.log(checkAuthenticationStatus());
+  let Tokens = checkAuthenticationStatus();
+
+  if (Tokens.discord === null) {
+    document.getElementById("discord").disabled = true;
+    document.getElementById("discord").style = "opacity: 0.5; border: none";
+  }
+  if (Tokens.github === null) {
+    document.getElementById("github").disabled = true;
+    document.getElementById("github").style = "opacity: 0.5; border: none";
+  }
+  if (Tokens.trello === null) {
+    document.getElementById("trello").disabled = true;
+    document.getElementById("trello").style = "opacity: 0.5; border: none";
+  }
 }
 
 function toggleApi(btn_id) {
@@ -28,8 +50,4 @@ function toggleApi(btn_id) {
     document.getElementById(btn_id).style = "border-color: #27af49";
     //Add function til at sende data i box
   }
-}
-
-function onLoadOverview() {
-    timeInterval()
 }

@@ -35,6 +35,19 @@ input{
   cursor: pointer;
 }
 
+.submitTimeInterval {
+  border: none;
+  position: absolute;
+  left: 83%;
+  padding: 10px 10px 10px;
+  top: 60%;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 70%;
+  background-color: #27af49;
+  color: white;
+  transition: 0.3s;
+}
+
 .timeInputStart {
   left: 48%;
 }
@@ -43,20 +56,7 @@ input{
   left: 69%;
 }
 
-.submitTimeInterval {
-  border-radius: 10px 10px 10px 10px;
-  left: 83%;
-  padding: 10px 10px 10px;
-  height: 32px;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  background-color: #27af49;
-  color: white;
-  transition: 0.3s;
-}
-
 .submitTimeInterval:hover{
-  background-color: #27af49;
-  color: white;
   opacity: 0.6;
 }
 
@@ -69,6 +69,7 @@ input{
   height: 350px;
   background: #ffffff;
   border-radius: 15px;
+  overflow: auto;
 }
 
 button {
@@ -79,7 +80,7 @@ button {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   padding: 30px 40px;
-  left: 113%;
+  left: 90%;
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
@@ -89,21 +90,21 @@ button {
 
 .discordToggle {
   background-color: #7289da;
-  top: 22%;
+  top: 39%;
   background-image: url(../images/discord_mini.png);
   background-size: 63px;
 }
 
 .githubToggle {
   background-color: #171515;
-  top: 50%;
+  top: 56%;
   background-image: url(../images/github_mini.png);
   background-size: 48px;
 }
 
 .trelloToggle {
   background-color: #0079bf;
-  top: 78%;
+  top: 73%;
   background-image: url(../images/trello_mini.png);
   background-size: 48px;
 }
