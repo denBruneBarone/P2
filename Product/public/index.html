@@ -1,39 +1,68 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Past Workflows</title>
+    <!--Links-->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
 
-<head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Past Workflows</title>
-   <!--Links-->
-   <link rel="stylesheet" href="css/styles.css">
-</head>
-
-<body onload="onPageLoad()">
-   <form class="box" method="post" action="login.html">
+  <body onload="onPageLoad()">
+    <form class="box" method="post" action="login.html">
       <div class="loginWindow">
-         <h1>AUTHENTICATION</h1>
-         <a href="https://discord.com/api/oauth2/authorize?client_id=957208170365866044&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdiscord&response_type=code&scope=messages.read">
-            <p><button class="discordButton" id="discordButton" type="button"></button></p>
-         </a>
+        <h1>AUTHENTICATION</h1>
+        <a
+          href="https://discord.com/api/oauth2/authorize?client_id=957208170365866044&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdiscord&response_type=code&scope=messages.read"
+        >
+          <p>
+            <button
+              class="discordButton"
+              id="discordButton"
+              type="button"
+            ></button>
+          </p>
+        </a>
         <p id="discord_label" style="display: none"></p>
-         <a href="https://github.com/login/oauth/authorize?client_id=de223b25bb78c82a9bd7">
-            <p><button class="gitHubButton" id="gitHubButton" type="button"></button></p>
-         </a>
+        <a
+          href="https://github.com/login/oauth/authorize?client_id=de223b25bb78c82a9bd7"
+        >
+          <p>
+            <button
+              class="gitHubButton"
+              id="gitHubButton"
+              type="button"
+            ></button>
+          </p>
+        </a>
         <p id="github_label" style="display: none"></p>
-         <a
-            href="https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/trello&scope=read">
-            <p><button class="trelloButton" id="trelloButton" type="button"></button></p>
-         </a>
+        <a
+          href="https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/trello&scope=read"
+        >
+          <p>
+            <button
+              class="trelloButton"
+              id="trelloButton"
+              type="button"
+            ></button>
+          </p>
+        </a>
         <p id="trello_label" style="display: none"></p>
-         <a
-            href="overview.html">
-            <p><button class="continueButton" id="continueButton" type="button" disabled="true" onclick="goToOverview()">Continue</button></p>
+        <a href="retrieveFrom.html">
+          <p>
+            <button
+              class="continueButton"
+              id="continueButton"
+              type="button"
+              disabled="true"
+            >
+              Continue
+            </button>
+          </p>
         </a>
       </div>
-   </form>
-   <script src="index.js" type="text/javascript"></script>
-</body>
-
+    </form>
+    <script src="index.js" type="text/javascript"></script>
+  </body>
 </html>
