@@ -9,21 +9,22 @@ function checkAuthenticationStatus() {
 }
 
 function checkForContinue(Tokens) {
+  const setButtonStatus = pre_string => {
+    document.getElementById("continueButton").disabled = false
+    document.getElementById(pre_string+"Button").disabled = true
+    document.getElementById(pre_string+"Button").style = 'border-color: #27af49'
+  }
 
   if(Tokens.discord !== null){
-   document.getElementById("continueButton").disabled = false
-   document.getElementById("discordButton").disabled = true
-   document.getElementById("discordButton").style = 'border-color: #27af49'
+   setButtonStatus("discord")
   }
+
   if(Tokens.github !== null){
-   document.getElementById("continueButton").disabled = false;
-   document.getElementById("gitHubButton").disabled = true
-   document.getElementById("gitHubButton").style = 'border-color: #27af49'
+    setButtonStatus("gitHub")
   }
+  
   if(Tokens.trello !== null){
-   document.getElementById("continueButton").disabled = false;
-   document.getElementById("trelloButton").disabled = true
-   document.getElementById("trelloButton").style = 'border-color: #27af49'
+    setButtonStatus("trello")
   }
 }
 

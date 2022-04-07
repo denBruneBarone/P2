@@ -7,6 +7,9 @@ const fetch = require('node-fetch');
 const { url } = require('inspector');
 const { URLSearchParams } = require('url');
 
+const dotenv = require('dotenv')
+dotenv.config()
+
 const app = express();
 // includes the files from public folder
 app.use(express.static(__dirname + '/public'));
@@ -30,13 +33,10 @@ app.get("/discord", (req, res) => {
 })
 
 app.post("/discord-code", async (req, res) => {
-
-   let token = "this is from line 28"
-
    // Add the parameters
    const params = new URLSearchParams();
    params.append('client_id', "957208170365866044");
-   params.append('client_secret', "eexruTgz0P5FkSVJhm1i4XK7ijLkDNk7");
+   params.append('client_secret', dotenv.DISCORD_SECRET);
    params.append('grant_type', 'authorization_code');
    params.append('code', req.body.code);
    params.append('redirect_uri', "http://localhost:3000/discord");
@@ -49,6 +49,10 @@ app.post("/discord-code", async (req, res) => {
    })
    
    const _json = await r.json()
+
+   if (!r.ok){
+      // Make error handling
+   }
 
    res.json({token: _json.access_token})
 })
