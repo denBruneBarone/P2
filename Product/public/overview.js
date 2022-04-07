@@ -1,3 +1,37 @@
+function checkAuthenticationStatus() {
+  var Tokens = {
+    trello: window.sessionStorage.getItem("trello-token"),
+    github: window.sessionStorage.getItem("github-token"),
+    discord: window.sessionStorage.getItem("discord-token"),
+  };
+  return Tokens;
+}
+
+async function fetchGithubLogs(
+  username,
+  token,
+  Repositories,
+  fromDate,
+  toDate
+) {
+  console.log("we in here");
+  fetch("/getGitCommits", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      gitUsername: username,
+      gitToken: token,
+      gitRepositories: Repositories,
+      logsFrom: fromDate,
+      logsTo: toDate,
+    }),
+  }).then((response) => {
+    response.json().then((responseData) => {
+      console.log(responseData.logs);
+    });
+  });
+}
+
 function timeInterval() {
   var dateStringStart = Date.parse(document.getElementById("startTime").value);
   var dateStringEnd = Date.parse(document.getElementById("endTime").value);
@@ -6,20 +40,19 @@ function timeInterval() {
     alert("End date cannot be less than the start date!");
     document.getElementById("startTime").value = "";
     document.getElementById("endTime").value = "";
-
     return;
   }
-  // skriv fetch here
-  //Bruges til displayData function
-}
 
-function checkAuthenticationStatus() {
-  var Tokens = {
-    trello: window.sessionStorage.getItem("trello-token"),
-    github: window.sessionStorage.getItem("github-token"),
-    discord: window.sessionStorage.getItem("discord-token"),
-  };
-  return Tokens;
+  let Tokens = checkAuthenticationStatus();
+  let githubUsername = "denBruneBarone";
+
+  /* fetchGithubLogs(
+    githubUsername,
+    Tokens.github,
+    window.sessionStorage.getItem("github-repositories"),
+    dateStringStart,
+    dateStringEnd
+  ); */
 }
 
 function authApi() {
