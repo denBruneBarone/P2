@@ -19,7 +19,7 @@ async function fetchTrello() {
     let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}&since=${since}&before=${before}`)
     let _json = await r.json()
     for (j of _json) {
-      Actions.push({type: j.type, object: j})
+      Actions.push({userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j})
     }
   }
   console.log(Actions)
