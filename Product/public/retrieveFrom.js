@@ -59,7 +59,18 @@ function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github !== null) {
-    // let githubUsername = getGithubUsername(Tokens);
+    /* let githubUsername = getGithubUsername(); */
     getGitRepositories(Tokens);
   }
+}
+
+function submitSelectedRepos() {
+  let selectedRepositories = [];
+  for (const i of document.getElementsByClassName("githubRepositories")) {
+    if (i.checked) {
+      selectedRepositories.push(i.value);
+    }
+  }
+  console.log("selected repositories: " + selectedRepositories);
+  window.sessionStorage.setItem("github-repositories", selectedRepositories);
 }

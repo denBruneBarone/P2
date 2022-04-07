@@ -11,11 +11,12 @@
 </head>
 
 <body>
-   <h1>Redirecting...</h1>
+   <h1>Choose Your Board(s)</h1>
    <script>  
         window.sessionStorage.setItem("trello-token", window.location.hash.substring(window.location.hash.indexOf("=")+1)  )
-        window.location.replace("http://localhost:3000/")
+        window.location.replace("http://localhost:3000/trello-boards")
    </script>
+   
 </body>
 
 </html>
