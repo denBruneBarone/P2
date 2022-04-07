@@ -68,7 +68,7 @@ app.post("/githubToken", async (req, res) => {
 
    axios.post("https://github.com/login/oauth/access_token", {
       client_id: "de223b25bb78c82a9bd7",
-      client_secret: "38fd5fec5fc324960fede9825d4d4eacb87eb528",
+      client_secret: dotenv.GITHUB_SECRET,
       code: githubCode,
       redirect_uri: "http://localhost:3000/githubAuthentication"
    }).then((response) => {
