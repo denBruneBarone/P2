@@ -9,27 +9,25 @@ function checkAuthenticationStatus() {
 }
 
 function checkForContinue(Tokens) {
-
-  if(Tokens.discord !== null){
-   document.getElementById("continueButton").disabled = false
-   document.getElementById("discordButton").disabled = true
-   document.getElementById("discordButton").style = 'border-color: #27af49'
+  if (Tokens.discord !== null) {
+    document.getElementById("continueButton").disabled = false;
+    document.getElementById("discordButton").disabled = true;
+    document.getElementById("discordButton").style = "border-color: #27af49";
   }
-  if(Tokens.github !== null){
-   document.getElementById("continueButton").disabled = false;
-   document.getElementById("gitHubButton").disabled = true
-   document.getElementById("gitHubButton").style = 'border-color: #27af49'
+  if (Tokens.github !== null) {
+    document.getElementById("continueButton").disabled = false;
+    document.getElementById("gitHubButton").disabled = true;
+    document.getElementById("gitHubButton").style = "border-color: #27af49";
   }
-  if(Tokens.trello !== null){
-   document.getElementById("continueButton").disabled = false;
-   document.getElementById("trelloButton").disabled = true
-   document.getElementById("trelloButton").style = 'border-color: #27af49'
+  if (Tokens.trello !== null) {
+    document.getElementById("continueButton").disabled = false;
+    document.getElementById("trelloButton").disabled = true;
+    document.getElementById("trelloButton").style = "border-color: #27af49";
   }
 }
 
 function goToOverview() {
-  fetch("/overview", () => {
-  });
+  fetch("/overview", () => {});
 }
 
 function onPageLoad() {
