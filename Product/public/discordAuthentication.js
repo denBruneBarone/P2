@@ -12,7 +12,15 @@ async function exchangeCodeWithToken() {
 
     const _json = await r.json()
 
-    // store token in session and redirect user to index
-    window.sessionStorage.setItem("discord-token", _json.token)
-    window.location.replace("http://localhost:3000/")
+    if (_json.error) {
+        // fejl
+        alert(_json.errorMsg+", redirecting in 5...")
+        setTimeout(() => { window.location.replace("http://localhost:3000/") }, 5000)
+    } else {
+        // store token in session and redirect user to index
+        window.sessionStorage.setItem("discord-token", _json.token)
+        window.location.replace("http://localhost:3000/")
+    }
+
+
 }

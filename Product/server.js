@@ -36,7 +36,7 @@ app.post("/discord-code", async (req, res) => {
    // Add the parameters
    const params = new URLSearchParams();
    params.append('client_id', "957208170365866044");
-   params.append('client_secret', dotenv.DISCORD_SECRET);
+   params.append('client_secret', process.env.DISCORD_SECRET);
    params.append('grant_type', 'authorization_code');
    params.append('code', req.body.code);
    params.append('redirect_uri', "http://localhost:3000/discord");
@@ -52,9 +52,12 @@ app.post("/discord-code", async (req, res) => {
 
    if (!r.ok){
       // Make error handling
+      res.json({error: true, errorMsg: _json.error})
+      
+      return
    }
 
-   res.json({token: _json.access_token})
+   res.json({token: _json.access_token, error: false})
 })
 
 app.get("/githubAuthentication", (req, res) => {
@@ -68,7 +71,7 @@ app.post("/githubToken", async (req, res) => {
 
    axios.post("https://github.com/login/oauth/access_token", {
       client_id: "de223b25bb78c82a9bd7",
-      client_secret: dotenv.GITHUB_SECRET,
+      client_secret: process.env.GITHUB_SECRET,
       code: githubCode,
       redirect_uri: "http://localhost:3000/githubAuthentication"
    }).then((response) => {
