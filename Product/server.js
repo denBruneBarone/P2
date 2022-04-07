@@ -93,11 +93,7 @@ app.post("/githubToken", async (req, res) => {
         response.data.indexOf("=") + 1,
         response.data.indexOf("&")
       );
-
-      /* res.setHeader("Content-Type", "application/json") */
       res.json({ token: githubToken });
-
-      /* return res.send(JSON.stringify({ token: "hej" })) */
     });
 });
 
@@ -112,11 +108,38 @@ app.post("/getGithubRepositories", async (req, res) => {
     .then((response) => {
       let i = 0;
       for (const j of response.data) {
-        console.log(`repository ${i} hedder: ${j.name}`);
+        /* console.log(`repository ${i} hedder: ${j.name}`); */
         githubRepositories[i] = j.name;
         i++;
       }
       res.json({ Repositories: githubRepositories });
+    });
+});
+
+app.post("/getGitCommits", async (req, res) => {
+  let githubUsername = req.body.gitUsername,
+    githubToken = req.body.gitToken,
+    githubRepositories = req.body.gitRepositories,
+    logsFrom = gitStart,
+    logsTo = gitEnd;
+
+  axios
+    .get(
+      `https://api.github.com/repos/${githubUsername}/${githubRepositories[0]}/commits`,
+      {
+        Authorization: "token " + githubToken,
+        accept: "application/vnd.github.v3+json",
+        /* since: logsFrom,
+        until: logsTo, */
+      }
+    )
+    .then((response) => {
+      let i = 0;
+      for (const j of response.data) {
+        console.log(`commit ${i} hedder: ${j.commit.message}`);
+        i++;
+      }
+      res.json({ logs: "lol" });
     });
 });
 
