@@ -19,7 +19,7 @@ async function fetchTrello() {
     let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}&since=${since}&before=${before}`)
     let _json = await r.json()
     for (j of _json) {
-      Actions.push({userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j})
+      Actions.push({ userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j })
     }
   }
   console.log(Actions)
@@ -70,6 +70,7 @@ async function fetchGithubLogs(
       console.log(responseData.logs);
     });
   });
+}
 
   function fetchData() {
     timeInterval();
@@ -158,11 +159,7 @@ async function fetchGithubLogs(
     }
   }
 
-  function getTrelloBoard(trelloBoard = "none") {
-    console.log(document.getElementById("trello-boards").value);
-  }
-
-  async function getTrelloLogs() {
+  async function getTrelloBoards() {
     let key = "0b862279af0ae326479a419925f3ea7a";
     let token = window.sessionStorage.getItem("trello-token");
     // get user's boards
@@ -197,4 +194,3 @@ async function fetchGithubLogs(
       window.location.replace("http://localhost:3000/index.html");
     });
   }
-}

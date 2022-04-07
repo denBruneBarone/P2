@@ -13,6 +13,10 @@ function checkAuthenticationStatus() {
   return Tokens;
 }
 
+function goToOverview() {
+  window.location.replace('http://localhost:3000/overview.html')
+}
+
 async function getGitRepositories(Tokens) {
   let Repositories = {};
   let gitUsername = "denBruneBarone";
@@ -56,4 +60,7 @@ function submitSelectedRepos() {
   }
   console.log("selected repositories: " + selectedRepositories);
   window.sessionStorage.setItem("github-repositories", selectedRepositories);
+
+  goToOverview()
 }
+
