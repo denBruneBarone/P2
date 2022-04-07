@@ -28,6 +28,14 @@ app.get("/trello", (req, res) => {
    res.sendFile(__dirname + "/public/trelloAuthentication.html");
 })
 
+app.get("/trello-boards", (req,res) => {
+   res.sendFile(__dirname + "/public/trello-boards.html");
+})
+
+app.get("/trello-overview", (req,res) => {
+   res.sendFile(__dirname + "/public/trello-get-boards.html");
+})
+
 app.get("/discord", (req, res) => {
    res.sendFile(__dirname + "/public/discordAuthentication.html");
 })
