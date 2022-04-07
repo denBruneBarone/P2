@@ -17,6 +17,23 @@ function goToOverview() {
   window.location.replace('http://localhost:3000/overview.html')
 }
 
+async function getGithubUsername(Tokens) {
+  fetch(`/getGithubUsername`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      gitToken: Tokens.github,
+    }),
+  }).then((response) => {
+    response.json().then((responseData) => {
+      gitUsername = responseData.gitUsername;
+      console.log(responseData.username);
+    })
+  })
+}
+
 async function getGitRepositories(Tokens) {
   let Repositories = {};
   let gitUsername = "denBruneBarone";
