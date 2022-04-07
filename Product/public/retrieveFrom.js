@@ -13,27 +13,36 @@ function checkAuthenticationStatus() {
   return Tokens;
 }
 
-function getGitRepositories(Tokens) {
+async function getGitRepositories(Tokens) {
   let Repositories = {};
   let gitUsername = "denBruneBarone";
 
-  fetch(`https://api.github.com/users/${gitUsername}/repos`, {
-    method: "GET",
+  fetch(`/getGithubRepositories`, {
+    method: "POST",
     headers: {
-      Authorization: "token " + Tokens.github,
-      accept: "application/vnd.github.v3+json",
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      gitToken: Tokens.github,
+    }),
   }).then((response) => {
-    console.log("response is " + response);
+    response.json().then((responseData) => {
+      Repositories = responseData.Repositories;
+      let i = 0;
+      for (const j of Repositories) {
+        githubForm.innerHTML += `<input type="checkbox" id="repo${i}" name="${j}" value="${j}" class="githubRepositories">
+        <label for="repo${i}"> ${j} </label> <br>`;
+        i++;
+      }
+    });
   });
-
-  return Repositories;
 }
 
 function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github !== null) {
-    let githubList = getGitRepositories(Tokens);
+    let githubUsername = getGithubUsername();
+    getGitRepositories(Tokens);
   }
 }

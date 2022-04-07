@@ -92,6 +92,26 @@ app.post("/githubToken", async (req, res) => {
       /* return res.send(JSON.stringify({ token: "hej" })) */
     });
 });
+
+app.post("/getGithubRepositories", async (req, res) => {
+  let githubToken = req.body.gitToken;
+  let githubRepositories = [];
+  axios
+    .get("https://api.github.com/users/denBruneBarone/repos", {
+      Authorization: "token " + githubToken,
+      accept: "application/vnd.github.v3+json",
+    })
+    .then((response) => {
+      let i = 0;
+      for (const j of response.data) {
+        console.log(`repository ${i} hedder: ${j.name}`);
+        githubRepositories[i] = j.name;
+        i++;
+      }
+      res.json({ Repositories: githubRepositories });
+    });
+});
+
 // the server run's
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000")
