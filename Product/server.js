@@ -93,6 +93,19 @@ app.post("/githubToken", async (req, res) => {
     });
 });
 
+app.post(`/getGithubUsername`, async (req, res) => {
+  let githubToken = req.body.gitToken;
+  axios
+  .get("https://api.github.com/user", {
+    Authorization: "token " + githubToken,
+  })
+  .then((response) => {
+    let githubUsername = response.data
+    console.log(githubUsername);
+    res.json({ gitUsername: githubUsername });
+  })
+})
+
 app.post("/getGithubRepositories", async (req, res) => {
   let githubToken = req.body.gitToken;
   let githubRepositories = [];

@@ -13,6 +13,23 @@ function checkAuthenticationStatus() {
   return Tokens;
 }
 
+async function getGithubUsername(Tokens) {
+  fetch(`/getGithubUsername`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      gitToken: Tokens.github,
+    }),
+  }).then((response) => {
+    response.json().then((responseData) => {
+      gitUsername = responseData.gitUsername;
+      console.log(responseData.username);
+    })
+  })
+}
+
 async function getGitRepositories(Tokens) {
   let Repositories = {};
   let gitUsername = "denBruneBarone";
@@ -42,7 +59,7 @@ function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github !== null) {
-    let githubUsername = getGithubUsername();
+    // let githubUsername = getGithubUsername(Tokens);
     getGitRepositories(Tokens);
   }
 }
