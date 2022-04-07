@@ -1,3 +1,30 @@
+function fetchData() {
+  timeInterval()
+  if (document.getElementById("startTime").value == "") {
+    return
+  }
+  fetchTrello()
+}
+
+async function fetchTrello() {
+  // iterate through boards, send request for each board and handle actions
+
+  let since = document.getElementById("startTime").value
+  let before = document.getElementById("endTime").value
+  let key = "0b862279af0ae326479a419925f3ea7a"
+  let token = window.sessionStorage.getItem("trello-token")
+  Boards = JSON.parse(window.sessionStorage.getItem("Boards"))
+  let Actions = []
+  for (i of Boards) {
+    let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}&since=${since}&before=${before}`)
+    let _json = await r.json()
+    for (j of _json) {
+      Actions.push({type: j.type, object: j})
+    }
+  }
+  console.log(Actions)
+}
+
 function timeInterval() {
   var dateStringStart = Date.parse(document.getElementById("startTime").value);
   var dateStringEnd = Date.parse(document.getElementById("endTime").value);
@@ -7,10 +34,8 @@ function timeInterval() {
     document.getElementById("startTime").value = "";
     document.getElementById("endTime").value = "";
 
-    return;
+    return
   }
-  // skriv fetch here
-  //Bruges til displayData function
 }
 
 function checkAuthenticationStatus() {
@@ -27,7 +52,6 @@ function onLoad() {
 }
 
 function authApi() {
-  console.log(checkAuthenticationStatus());
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.discord === null) {
@@ -61,7 +85,7 @@ function getTrelloBoard(trelloBoard = "none") {
 }
 
 async function getTrelloLogs() {
-  let key = "0b862279af0ae326479a419925f3ea7a"
+  let key = "0b862279af0ae326479a419925f3ea7a";
   let token = window.sessionStorage.getItem("trello-token")
   // get user's boards
   let r = await fetch(`https://api.trello.com/1/members/me/boards?key=${key}&token=${token}`,
@@ -71,13 +95,11 @@ async function getTrelloLogs() {
   )
 
   let _json = await r.json()
-  console.log(_json)
 
   // lav html element, hvor brugeren kan vælge et af sine boards
   let trelloBoardForm = document.getElementById("trello-boards")
   for (i of _json) {
     trelloBoardForm.innerHTML = `<input class="trello-boards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` + trelloBoardForm.innerHTML
-    console.log(i.id)
   }
 
   let Boards = []
@@ -86,13 +108,11 @@ async function getTrelloLogs() {
     // iterates through the class, each id that is clicked is added to our list
     for (i of document.getElementsByClassName("trello-boards")) {
       if (i.checked) {
-        Boards.push({id: i.id, name: i.value})
+        Boards.push({ id: i.id, name: i.value })
       }
     }
-    // send board id's to overview.html 
-    console.log(Boards)
+    // store Boards in session storage and redirect user
+    window.sessionStorage.setItem("Boards", JSON.stringify(Boards))
+    window.location.replace("http://localhost:3000/index.html")
   })
-
-  // get all logs into an array
-  // fetch(`https://api.trello.com/1/boards/${boardId}/actions/?key=${key}&token=${token}&limit=10`)
 }
