@@ -3,7 +3,8 @@ function fetchData() {
   if (document.getElementById("startTime").value == "") {
     return
   }
-  fetchTrello()
+  if (document.getElementById("trello").value == "enabled") {fetchTrello()}
+  
 }
 
 async function fetchTrello() {
