@@ -18,13 +18,16 @@
   <div class="timeIntervalWindow">
     <h1>SELECT A TIME INTERVAL</h1>
     <input class="timeInputStart" type="datetime-local" id="startTime" required value="" />
+    <script>// set default time value
+      document.getElementById("startTime").defaultValue = "2022-01-01T00:00:00";
+    </script>
     <input class="timeInputEnd" type="datetime-local" id="endTime" required value="" />
     <button class="submitTimeInterval" type="submit" onclick="fetchData()">
       Send
     </button>
   </div>
 
-  <div class="overviewWindow"></div>
+  <div id="overviewWindow"><h1>Please fix my CSS</h1></div>
   <button class="discordToggle" value="enabled" id="discord" type="button" onclick="toggleApi(id);"></button>
   <button class="githubToggle" value="enabled" id="github" type="button" onclick="toggleApi(id);"></button>
   <button class="trelloToggle" value="enabled" id="trello" type="button" onclick="toggleApi(id);"></button>

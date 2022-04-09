@@ -1,5 +1,6 @@
 let Actions = [] // trello
 
+
 function fetchData() {
   timeInterval()
   if (document.getElementById("startTime").value == "") {
@@ -16,7 +17,7 @@ async function fetchTrello() {
   let key = "0b862279af0ae326479a419925f3ea7a"
   let token = window.sessionStorage.getItem("trello-token")
   Boards = JSON.parse(window.sessionStorage.getItem("Boards"))
-  
+
   for (i of Boards) {
     let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}&since=${since}&before=${before}`)
     let _json = await r.json()
@@ -24,13 +25,51 @@ async function fetchTrello() {
       Actions.push({ userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j })
     }
   }
-  // some things to work with
-  Actions.forEach(i=>{
-    console.log("Date: "+i.object.date+", type: "+i.object.type +", member: "+i.object.memberCreator.fullName+", card: "+i.object.data.card.name,i.object);
-    if (i.object.data.list) {console.log(i.object.data.list.name)}
-    if (i.object.data.listAfter) {console.log("moved to "+ i.object.data.listAfter.name+" from "+i.object.data.listBefore.name)}   
-    if (i.object.data.card.closed) {console.log("This card has been archived")}
-})}
+  overviewWindow = document.getElementById("overviewWindow")
+  Actions.forEach(i => {
+    switch (i.object.type) {
+      case "createCard":
+        i.userMessage = i.object.memberCreator.fullName+' created card "'+i.object.data.card.name+" at "+i.date
+        break;
+      case "updateCard":
+        if (i.object.data.card.cover != undefined) { // the cover was changed
+          i.userMessage = "the cover was changed to "+i.object.data.card.cover.color+' on "'+i.object.data.card.name+'" by '+i.object.memberCreator.fullName
+          break;
+        }
+        else if (i.object.data.card.closed) {
+          i.userMessage = ('"' + i.object.data.card.name + '" has been archived at ' + i.date + " by " + i.object.memberCreator.fullName)
+        }
+        else if (i.object.data.listAfter) { i.userMessage = ('"' + i.object.data.card.name + '" has been moved from ' + i.object.data.listBefore.name + " to " + i.object.data.listAfter.name + " at " + i.object.date + " by " + i.object.memberCreator.fullName) }
+        else if (i.object.data.old.name) {
+          i.userMessage = (i.object.date + ": " + i.object.memberCreator.fullName + ' renamed "' + i.object.data.old.name + '" to "' + i.object.data.card.name)
+        }
+        else if (i.object.data.old.pos) {
+          i.userMessage = '"'+i.object.data.card.name+'" got moved in position by '+i.object.memberCreator.fullName
+          break;
+        } 
+        else {
+          i.userMessage = ("Something unexpected happened with: ", i.object)
+        }
+
+        break;
+      case "addMemberToCard":
+        i.userMessage = (i.object.memberCreator.fullName + " added " + i.object.member.fullName + " to " + i.object.data.card.name + " at " + i.object.date)
+
+        break;
+      case "removeMemberFromCard":
+        i.userMessage = (i.object.memberCreator.fullName + " removed " + i.object.member.fullName + " from " + i.object.data.card.name + " at " + i.object.date)
+        break;
+      case "addChecklistToCard":
+        i.userMessage = (i.object.memberCreator.fullName + " added a checklist to " + i.object.data.card.name + " at " + i.object.date)
+        break;
+      default:
+        i.userMessage = ("Something unexpected happened with: ", i.object)
+    }
+    i.userMessage = "Trello: "+i.userMessage
+    overviewWindow.innerHTML += `<p>${i.userMessage}</p>`
+    if (i.userMessage == undefined) {console.log (i)}
+  })
+}
 
 function checkAuthenticationStatus() {
   var Tokens = {

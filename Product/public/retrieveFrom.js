@@ -108,6 +108,7 @@ async function getTrelloBoards() {
   const button = document.getElementById("trello-submit");
   button.addEventListener("click", () => {
     button.disabled = true
+    button.innerHTML = "Trello saved."
     // iterates through the class, each id that is clicked is added to our list
     for (i of document.getElementsByClassName("trello-boards")) {
       if (i.checked) {
@@ -116,6 +117,5 @@ async function getTrelloBoards() {
     }
     // store Boards in session storage and redirect user
     window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
-    window.alert("Trello Boards Saved")
   });
 }
