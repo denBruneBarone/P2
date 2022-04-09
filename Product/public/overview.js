@@ -29,11 +29,11 @@ async function fetchTrello() {
   Actions.forEach(i => {
     switch (i.object.type) {
       case "createCard":
-        i.userMessage = i.object.memberCreator.fullName+' created card "'+i.object.data.card.name+" at "+i.date
+        i.userMessage = i.object.memberCreator.fullName + ' created card "' + i.object.data.card.name + " at " + i.date
         break;
       case "updateCard":
         if (i.object.data.card.cover != undefined) { // the cover was changed
-          i.userMessage = "the cover was changed to "+i.object.data.card.cover.color+' on "'+i.object.data.card.name+'" by '+i.object.memberCreator.fullName
+          i.userMessage = "the cover was changed to " + i.object.data.card.cover.color + ' on "' + i.object.data.card.name + '" by ' + i.object.memberCreator.fullName
           break;
         }
         else if (i.object.data.card.closed) {
@@ -44,13 +44,9 @@ async function fetchTrello() {
           i.userMessage = (i.object.date + ": " + i.object.memberCreator.fullName + ' renamed "' + i.object.data.old.name + '" to "' + i.object.data.card.name)
         }
         else if (i.object.data.old.pos) {
-          i.userMessage = '"'+i.object.data.card.name+'" got moved in position by '+i.object.memberCreator.fullName
+          i.userMessage = '"' + i.object.data.card.name + '" got moved in position by ' + i.object.memberCreator.fullName
           break;
-        } 
-        else {
-          i.userMessage = ("Something unexpected happened with: ", i.object)
         }
-
         break;
       case "addMemberToCard":
         i.userMessage = (i.object.memberCreator.fullName + " added " + i.object.member.fullName + " to " + i.object.data.card.name + " at " + i.object.date)
@@ -62,12 +58,14 @@ async function fetchTrello() {
       case "addChecklistToCard":
         i.userMessage = (i.object.memberCreator.fullName + " added a checklist to " + i.object.data.card.name + " at " + i.object.date)
         break;
-      default:
-        i.userMessage = ("Something unexpected happened with: ", i.object)
     }
-    i.userMessage = "Trello: "+i.userMessage
-    overviewWindow.innerHTML += `<p>${i.userMessage}</p>`
-    if (i.userMessage == undefined) {console.log (i)}
+    if (i.userMessage == undefined) {
+      console.log("we do not know what to do with",i)
+    }
+    else {
+      i.userMessage = "Trello: " + i.userMessage
+      overviewWindow.innerHTML += `<p>${i.userMessage}</p>`
+    }
   })
 }
 

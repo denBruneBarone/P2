@@ -73,6 +73,9 @@ function createLists() {
 
 function submitSelectedRepos() {
   let selectedRepositories = [];
+  button = document.getElementById("githubButton")
+  button.innerHTML = "Github saved"
+  button.disabled = true
   for (const i of document.getElementsByClassName("githubRepositories")) {
     if (i.checked) {
       selectedRepositories.push(i.value);
@@ -80,7 +83,6 @@ function submitSelectedRepos() {
   }
   console.log("selected repositories: " + selectedRepositories);
   window.sessionStorage.setItem("github-repositories", selectedRepositories);
-  window.alert("Github Repos saved")
 }
 
 async function getTrelloBoards() {
