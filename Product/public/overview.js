@@ -1,3 +1,5 @@
+let Actions = [] // trello
+
 function fetchData() {
   timeInterval()
   if (document.getElementById("startTime").value == "") {
@@ -14,7 +16,7 @@ async function fetchTrello() {
   let key = "0b862279af0ae326479a419925f3ea7a"
   let token = window.sessionStorage.getItem("trello-token")
   Boards = JSON.parse(window.sessionStorage.getItem("Boards"))
-  let Actions = []
+  
   for (i of Boards) {
     let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}&since=${since}&before=${before}`)
     let _json = await r.json()
@@ -22,8 +24,13 @@ async function fetchTrello() {
       Actions.push({ userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j })
     }
   }
-  console.log(Actions)
-}
+  // some things to work with
+  Actions.forEach(i=>{
+    console.log("Date: "+i.object.date+", type: "+i.object.type +", member: "+i.object.memberCreator.fullName+", card: "+i.object.data.card.name,i.object);
+    if (i.object.data.list) {console.log(i.object.data.list.name)}
+    if (i.object.data.listAfter) {console.log("moved to "+ i.object.data.listAfter.name+" from "+i.object.data.listBefore.name)}   
+    if (i.object.data.card.closed) {console.log("This card has been archived")}
+})}
 
 function checkAuthenticationStatus() {
   var Tokens = {
