@@ -1,11 +1,11 @@
 let Actions = [] // trello
 
-
 function fetchData() {
   timeInterval()
   if (document.getElementById("startTime").value == "") {
     return
   }
+  overviewWindow.innerHTML = ""
   if (document.getElementById("trello").value == "enabled") { trelloActionsUsersBoards() }
 }
 
@@ -41,51 +41,73 @@ async function trelloActionsUsersBoards() {
     actionCount = await trelloFetch(since, before, i.id)
 
     while (actionCount == 1000) {
-      actionCount = await trelloFetch(since, Actions[Actions.length-1].date, i.id)
+      actionCount = await trelloFetch(since, Actions[Actions.length - 1].date, i.id)
     }
   }
   Actions.sort(compareDate)
   overviewWindow = document.getElementById("overviewWindow")
   Actions.forEach(i => {
     switch (i.object.type) {
+      case "updateList":
+        if (i.object.data.old.name) {
+          i.userMessage = 'Changed name of list from "' + i.object.data.old.name + '" to "' + i.object.data.list.name
+        } else if (i.object.data.old.pos) {
+          i.userMessage = 'The list "' + i.object.data.list.name + '" got moved in position'
+        } else if (i.object.data.list.closed) {
+          i.userMessage = 'Deleted the list "' + i.object.data.list.name + '"'
+        }
+
+        break;
       case "createCard":
-        i.userMessage = i.object.memberCreator.fullName + ' created card "' + i.object.data.card.name + " at " + i.date
+        i.userMessage = 'created card "' + i.object.data.card.name + '"'
         break;
       case "updateCard":
         if (i.object.data.card.cover != undefined) { // the cover was changed
-          i.userMessage = "the cover was changed to " + i.object.data.card.cover.color + ' on "' + i.object.data.card.name + '" by ' + i.object.memberCreator.fullName
+          i.userMessage = "the cover was changed to " + i.object.data.card.cover.color + ' on "' + i.object.data.card.name + '"'
           break;
         }
-        else if (i.object.data.card.closed) {
-          i.userMessage = ('"' + i.object.data.card.name + '" has been archived at ' + i.date + " by " + i.object.memberCreator.fullName)
+        else if (i.object.data.card.desc) {
+          i.userMessage = 'Updated the describtion from the card "'+i.object.data.card.name+'" to "'+i.object.data.card.desc+'"'
         }
-        else if (i.object.data.listAfter) { i.userMessage = ('"' + i.object.data.card.name + '" has been moved from ' + i.object.data.listBefore.name + " to " + i.object.data.listAfter.name + " at " + i.object.date + " by " + i.object.memberCreator.fullName) }
+        else if (i.object.data.card.due) {
+          i.userMessage = "Changed due date to "+i.object.data.card.due
+        }
+        else if (i.object.data.card.dueReminder) {
+          i.userMessage = "Updated due-reminder to "+i.object.data.card.dueReminder+" minutes"
+        }
+        else if (i.object.data.card.closed) {
+          i.userMessage = ('"' + i.object.data.card.name + '" has been archived')
+        }
+        else if (i.object.data.listAfter) { i.userMessage = ('"' + i.object.data.card.name + '" has been moved from ' + i.object.data.listBefore.name + " to " + i.object.data.listAfter.name + " by " + i.object.memberCreator.fullName) }
         else if (i.object.data.old.name) {
-          i.userMessage = (i.object.date + ": " + i.object.memberCreator.fullName + ' renamed "' + i.object.data.old.name + '" to "' + i.object.data.card.name)
+          i.userMessage = ('renamed "' + i.object.data.old.name + '" to "' + i.object.data.card.name)
         }
         else if (i.object.data.old.pos) {
-          i.userMessage = '"' + i.object.data.card.name + '" got moved in position by ' + i.object.memberCreator.fullName
+          i.userMessage = 'The card "' + i.object.data.card.name + '" got moved in position'
           break;
         }
         break;
       case "addMemberToCard":
-        i.userMessage = (i.object.memberCreator.fullName + " added " + i.object.member.fullName + " to " + i.object.data.card.name + " at " + i.object.date)
+        i.userMessage = ("added " + i.object.member.fullName + " to " + i.object.data.card.name)
 
         break;
       case "removeMemberFromCard":
-        i.userMessage = (i.object.memberCreator.fullName + " removed " + i.object.member.fullName + " from " + i.object.data.card.name + " at " + i.object.date)
+        i.userMessage = ("removed " + i.object.member.fullName + " from " + i.object.data.card.name)
         break;
       case "addChecklistToCard":
-        i.userMessage = (i.object.memberCreator.fullName + " added a checklist to " + i.object.data.card.name + " at " + i.object.date)
+        i.userMessage = ("added a checklist to " + i.object.data.card.name)
+        break;
+      case "copyBoard":
+        i.userMessage = ('created a new board from template "' + i.object.data.board.name + '"')
         break;
     }
     if (i.userMessage == undefined) {
-      console.log("Object not displayed in HTML because of uncertainty", i)
+      i.userMessage = ("json: "+ JSON.stringify(i.object.data)+ JSON.stringify(i.object.type))
     }
     else {
-      i.userMessage = "Trello: " + i.userMessage
-      overviewWindow.innerHTML += `<p>${i.userMessage}</p>`
+      i.userMessage = i.date + " (Trello) " + i.object.memberCreator.fullName + ": " + i.userMessage
     }
+    overviewWindow.innerHTML += `<p>${i.userMessage}</p>`
   })
 }
 
