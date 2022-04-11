@@ -150,7 +150,6 @@ app.post("/getGitCommits", async (req, res) => {
     if (!r.ok) console.log("not okay");
 
     let GitCommitArray = [];
-
     for (const i of data) {
       let Commit = new Object();
       Commit.author = i.commit.author.name;
@@ -158,10 +157,11 @@ app.post("/getGitCommits", async (req, res) => {
       Commit.date = i.commit.author.date;
       GitCommitArray.push(Commit);
     }
-    console.log(GitCommitArray);
-
     res.json(GitCommitArray);
-  } else console.log("et array");
+  } else
+    console.log(
+      "Du har valgt mere end et repository. Den funktion har vi ikke lavet endnu :(("
+    );
 });
 
 // the server run's
