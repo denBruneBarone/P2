@@ -1,0 +1,41 @@
+body {
+  background: #222a35;
+}
+
+button {
+  border: 4px white solid;
+  border-radius: 10px 10px 10px 10px;
+  position: absolute;
+  margin: 0;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding: 10px 10px;
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#continueOverview {
+  background-color: #27af49;
+  border: none;
+  top: 90%;
+  padding: 15px 15px;
+  color: white;
+  font-size: 20px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+#continueOverview:hover{
+    opacity: 0.6;
+}
+
+h1 {
+  text-align: center;
+  font-family: Monaco, monospace;
+  display: block;
+  color: white;
+  font-size: 2em;
+  font-weight: bold;
+  line-height: 95px;
+}
