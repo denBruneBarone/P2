@@ -6,28 +6,42 @@ function fetchData() {
   if (document.getElementById("startTime").value == "") {
     return
   }
-  if (document.getElementById("trello").value == "enabled") { fetchTrello() }
+  if (document.getElementById("trello").value == "enabled") { trelloActionsUsersBoards() }
 }
 
 // compare objects which have the property "date"
 function compareDate(a, b) {
-  return new Date(a.date).getTime() - new Date(b.date).getTime()
+  return new Date(b.date).getTime() - new Date(a.date).getTime()
 }
 
-async function fetchTrello() {
-  // iterate through boards, send request for each board and handle actions
-
-  let since = document.getElementById("startTime").value == "" ? "" : "&since=" + document.getElementById("startTime").value
-  let before = document.getElementById("endTime").value == "" ? "" : "&before=" + document.getElementById("endTime").value
+async function trelloFetch(since, before, boardID) {
   let key = "0b862279af0ae326479a419925f3ea7a"
   let token = window.sessionStorage.getItem("trello-token")
+  since = since == "" ? "" : "&since=" + since
+  before = before == "" ? "" : "&before=" + before
+  let r = await fetch(`https://api.trello.com/1/boards/${boardID}/actions/?key=${key}&token=${token}${since}${before}&limit=1000`)
+  let _json = await r.json()
+  for (j of _json) {
+    Actions.push({ userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j })
+  }
+  return _json.length
+}
+
+async function trelloActionsUsersBoards() {
+  // iterate through boards, send request for each board and handle actions
+
+  let since = document.getElementById("startTime").value
+  let before = document.getElementById("endTime").value
+
   Boards = JSON.parse(window.sessionStorage.getItem("Boards"))
 
   for (i of Boards) {
-    let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}${since}${before}&limit=1000`)
-    let _json = await r.json()
-        for (j of _json) {
-      Actions.push({ userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j })
+
+    let actionCount = 0
+    actionCount = await trelloFetch(since, before, i.id)
+
+    while (actionCount == 1000) {
+      actionCount = await trelloFetch(since, Actions[Actions.length-1].date, i.id)
     }
   }
   Actions.sort(compareDate)
