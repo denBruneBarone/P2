@@ -73,6 +73,9 @@ function createLists() {
     }
     getTrelloBoards()
   }
+  if (Tokens.discord) {
+
+  }
 }
 
 function submitSelectedRepos() {
@@ -124,4 +127,26 @@ async function getTrelloBoards() {
     // store Boards in session storage and redirect user
     window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
   });
+}
+
+async function getDiscordGuilds(){
+  const Discord = require("discord.js");
+  const client = new Discord.Client();
+
+  const guildRes = await fetch(
+    `https://discordapp.com/api/users/@me/guilds`,
+    {
+      headers:{
+        Authorization: 'Bearer' + DISCORD_SECRET
+      }
+    })
+    const guilds = await guildRes.json()
+    res.send(guilds)
+    console.log(guilds)
+
+  client.on("ready", () => {
+    const Guilds = client.guilds.cache.map(guild => guild.id);
+    console.log(Guilds);
+  });
+  client.login(process.env.DISCORD_SECRET)
 }
