@@ -67,6 +67,9 @@ function createLists() {
     getGitRepositories(Tokens);
   }
   if (Tokens.trello) {
+    if (sessionStorage.Boards) {
+      sessionStorage.removeItem("Boards")
+    }
     getTrelloBoards()
   }
 }

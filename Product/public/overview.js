@@ -9,22 +9,28 @@ function fetchData() {
   if (document.getElementById("trello").value == "enabled") { fetchTrello() }
 }
 
+// compare objects which have the property "date"
+function compareDate(a, b) {
+  return new Date(a.date).getTime() - new Date(b.date).getTime()
+}
+
 async function fetchTrello() {
   // iterate through boards, send request for each board and handle actions
 
-  let since = document.getElementById("startTime").value
-  let before = document.getElementById("endTime").value
+  let since = document.getElementById("startTime").value == "" ? "" : "&since=" + document.getElementById("startTime").value
+  let before = document.getElementById("endTime").value == "" ? "" : "&before=" + document.getElementById("endTime").value
   let key = "0b862279af0ae326479a419925f3ea7a"
   let token = window.sessionStorage.getItem("trello-token")
   Boards = JSON.parse(window.sessionStorage.getItem("Boards"))
 
   for (i of Boards) {
-    let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}&since=${since}&before=${before}`)
+    let r = await fetch(`https://api.trello.com/1/boards/${i.id}/actions/?key=${key}&token=${token}${since}${before}&limit=1000`)
     let _json = await r.json()
-    for (j of _json) {
+        for (j of _json) {
       Actions.push({ userInputDateSince: since, userInputDateBefore: before, date: j.date, type: j.type, object: j })
     }
   }
+  Actions.sort(compareDate)
   overviewWindow = document.getElementById("overviewWindow")
   Actions.forEach(i => {
     switch (i.object.type) {
@@ -60,7 +66,7 @@ async function fetchTrello() {
         break;
     }
     if (i.userMessage == undefined) {
-      console.log("we do not know what to do with",i)
+      console.log("Object not displayed in HTML because of uncertainty", i)
     }
     else {
       i.userMessage = "Trello: " + i.userMessage
