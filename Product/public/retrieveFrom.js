@@ -63,7 +63,8 @@ function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github) {
-    /* let githubUsername = getGithubUsername(); */
+     let githubUsername = getGithubUsername(Tokens); 
+     // console.log(githubUsername);
     getGitRepositories(Tokens);
   }
   if (Tokens.trello) {

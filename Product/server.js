@@ -80,6 +80,7 @@ app.get("/githubAuthentication", (req, res) => {
 then it sends token back to client as a JSON object*/
 app.post("/githubToken", async (req, res) => {
   let githubCode = req.body.gitCode;
+  
 
   axios
     .post("https://github.com/login/oauth/access_token", {
@@ -98,16 +99,20 @@ app.post("/githubToken", async (req, res) => {
 });
 
 app.post(`/getGithubUsername`, async (req, res) => {
-  let githubToken = req.body.gitToken;
-  axios
-  .get("https://api.github.com/user", {
-    Authorization: "token " + githubToken,
-  })
-  .then((response) => {
-    let githubUsername = response.data
-    console.log(githubUsername);
-    res.json({ gitUsername: githubUsername });
-  })
+
+  var r = await fetch("https://api.github.com/user", {
+    method: "GET",
+    headers: {
+      "Authorization": `token ${req.body.gitToken}`
+    },
+  });
+
+  var data = await r.json()
+  if (!r.ok) {
+    console.log(data)
+  }
+  console.log(data);
+  res.json({ gitUsername: data });
 })
 
 app.post("/getGithubRepositories", async (req, res) => {
