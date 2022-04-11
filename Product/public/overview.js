@@ -1,12 +1,22 @@
 let Actions = []; // trello
 
-function fetchData() {
+async function fetchData() {
   timeInterval();
+
   if (document.getElementById("startTime").value == "") {
     return;
   }
   if (document.getElementById("trello").value == "enabled") {
     /* fetchTrello(); */
+  }
+  if (document.getElementById("github").value == "enabled") {
+    let githubCommits = await fetchGithubLogs(
+      window.sessionStorage.getItem("github-username"),
+      checkAuthenticationStatus().github,
+      window.sessionStorage.getItem("github-repositories")
+    );
+    console.log(githubCommits);
+    displayGitCommits(githubCommits);
   }
 }
 
@@ -155,10 +165,7 @@ function checkAuthenticationStatus() {
 }
 
 async function fetchGithubLogs(username, token, Repositories) {
-  console.log("we in here");
-  console.log("Repository iare");
-  console.log(Repositories);
-  fetch("/getGitCommits", {
+  let response = await fetch("/getGitCommits", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -168,14 +175,21 @@ async function fetchGithubLogs(username, token, Repositories) {
       /* logsFrom: fromDate,
       logsTo: toDate, */
     }),
-  }).then((response) => {
-    response.json().then((responseData) => {
-      console.log(responseData.logs);
-    });
   });
+  let responseData = await response.json();
+  if (!response.ok) console.log("fejl i response på github");
+  return responseData;
 }
 
-function timeInterval() {
+function displayGitCommits(CommitsArray) {
+  overviewWindow = document.getElementById("overviewWindow");
+  for (const Commit of CommitsArray) {
+    overviewWindow.innerHTML += `<p>Author: ${Commit.author} || Date: ${Commit.date}<br>
+    Message: ${Commit.message}</p><br><br>`;
+  }
+}
+
+async function timeInterval() {
   var dateStringStart = Date.parse(document.getElementById("startTime").value);
   var dateStringEnd = Date.parse(document.getElementById("endTime").value);
 
@@ -185,14 +199,6 @@ function timeInterval() {
     document.getElementById("endTime").value = "";
     return;
   }
-  let Tokens = checkAuthenticationStatus();
-  let githubUsername = "denBruneBarone";
-
-  fetchGithubLogs(
-    githubUsername,
-    Tokens.github,
-    window.sessionStorage.getItem("github-repositories")
-  );
 }
 
 function onLoad() {

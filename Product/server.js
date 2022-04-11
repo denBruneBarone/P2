@@ -147,10 +147,20 @@ app.post("/getGitCommits", async (req, res) => {
       }
     );
     var data = await r.json();
-    if (!r.ok) {
-      console.log("not okay");
+    if (!r.ok) console.log("not okay");
+
+    let GitCommitArray = [];
+
+    for (const i of data) {
+      let Commit = new Object();
+      Commit.author = i.commit.author.name;
+      Commit.message = i.commit.message;
+      Commit.date = i.commit.author.date;
+      GitCommitArray.push(Commit);
     }
-    console.log(data[0].commit.author.name);
+    console.log(GitCommitArray);
+
+    res.json(GitCommitArray);
   } else console.log("et array");
 });
 

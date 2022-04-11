@@ -23,7 +23,6 @@ async function getGithubUsername(Tokens) {
     }),
   });
   let responseData = await response.json();
-  console.log(responseData);
   if (!response.ok) console.log("fejl");
   let gitUsername = responseData.gitUsername;
   return gitUsername;
@@ -68,6 +67,9 @@ async function createLists() {
 
   if (Tokens.github) {
     let githubUsername = await getGithubUsername(Tokens);
+
+    window.sessionStorage.setItem("github-username", githubUsername);
+
     getGitRepositories(Tokens, githubUsername);
   }
   if (Tokens.trello) {
