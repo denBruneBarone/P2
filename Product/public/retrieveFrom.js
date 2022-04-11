@@ -1,8 +1,3 @@
-// selectors
-const discordForm = document.querySelector("#discordForm");
-const githubForm = document.querySelector("#githubForm");
-const trelloForm = document.querySelector("#trelloForm");
-
 // functions
 function checkAuthenticationStatus() {
   var Tokens = {
@@ -14,11 +9,11 @@ function checkAuthenticationStatus() {
 }
 
 function goToOverview() {
-  window.location.replace('http://localhost:3000/overview.html')
+  window.location.replace("http://localhost:3000/overview.html");
 }
 
 async function getGithubUsername(Tokens) {
-  fetch(`/getGithubUsername`, {
+  let response = await fetch(`/getGithubUsername`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26,18 +21,16 @@ async function getGithubUsername(Tokens) {
     body: JSON.stringify({
       gitToken: Tokens.github,
     }),
-  }).then((response) => {
-    response.json().then((responseData) => {
-      gitUsername = responseData.gitUsername;
-      console.log(responseData.username);
-    })
-  })
+  });
+  let responseData = await response.json();
+  if (!response.ok) console.log("fejl");
+  let gitUsername = responseData.gitUsername;
+  return gitUsername;
 }
 
-async function getGitRepositories(Tokens) {
+async function getGitRepositories(Tokens, githubUsername) {
   let Repositories = {};
-  let gitUsername = "denBruneBarone";
-
+  console.log("vi er i getgitrepos");
   fetch(`/getGithubRepositories`, {
     method: "POST",
     headers: {
@@ -45,10 +38,16 @@ async function getGitRepositories(Tokens) {
     },
     body: JSON.stringify({
       gitToken: Tokens.github,
+      username: githubUsername,
     }),
   }).then((response) => {
     response.json().then((responseData) => {
       Repositories = responseData.Repositories;
+      console.log("repositiories:");
+      console.log(Repositories);
+
+      const githubForm = document.getElementById("githubForm");
+
       let i = 0;
       for (const j of Repositories) {
         githubForm.innerHTML += `<input type="checkbox" id="repo${i}" name="${j}" value="${j}" class="githubRepositories">
@@ -59,19 +58,25 @@ async function getGitRepositories(Tokens) {
   });
 }
 
-function createLists() {
+function onLoad() {
+  createLists();
+}
+
+async function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github) {
-     let githubUsername = getGithubUsername(Tokens); 
-     // console.log(githubUsername);
-    getGitRepositories(Tokens);
+    let githubUsername = await getGithubUsername(Tokens);
+
+    window.sessionStorage.setItem("github-username", githubUsername);
+
+    getGitRepositories(Tokens, githubUsername);
   }
   if (Tokens.trello) {
     if (sessionStorage.Boards) {
-      sessionStorage.removeItem("Boards")
+      sessionStorage.removeItem("Boards");
     }
-    getTrelloBoards()
+    getTrelloBoards();
   }
   if (Tokens.discord) {
 
@@ -80,9 +85,9 @@ function createLists() {
 
 function submitSelectedRepos() {
   let selectedRepositories = [];
-  button = document.getElementById("githubButton")
-  button.innerHTML = "Github saved"
-  button.disabled = true
+  button = document.getElementById("githubButton");
+  button.innerHTML = "Github saved";
+  button.disabled = true;
   for (const i of document.getElementsByClassName("githubRepositories")) {
     if (i.checked) {
       selectedRepositories.push(i.value);
@@ -116,8 +121,8 @@ async function getTrelloBoards() {
   let Boards = [];
   const button = document.getElementById("trello-submit");
   button.addEventListener("click", () => {
-    button.disabled = true
-    button.innerHTML = "Trello saved."
+    button.disabled = true;
+    button.innerHTML = "Trello saved.";
     // iterates through the class, each id that is clicked is added to our list
     for (i of document.getElementsByClassName("trello-boards")) {
       if (i.checked) {

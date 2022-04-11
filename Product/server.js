@@ -30,13 +30,13 @@ app.get("/trello", (req, res) => {
   res.sendFile(__dirname + "/public/trelloAuthentication.html");
 });
 
-app.get("/trello-boards", (req,res) => {
-   res.sendFile(__dirname + "/public/trello-boards.html");
-})
+app.get("/trello-boards", (req, res) => {
+  res.sendFile(__dirname + "/public/trello-boards.html");
+});
 
-app.get("/trello-overview", (req,res) => {
-   res.sendFile(__dirname + "/public/trello-get-boards.html");
-})
+app.get("/trello-overview", (req, res) => {
+  res.sendFile(__dirname + "/public/trello-get-boards.html");
+});
 
 app.get("/discord", (req, res) => {
   res.sendFile(__dirname + "/public/discordAuthentication.html");
@@ -80,7 +80,6 @@ app.get("/githubAuthentication", (req, res) => {
 then it sends token back to client as a JSON object*/
 app.post("/githubToken", async (req, res) => {
   let githubCode = req.body.gitCode;
-  
 
   axios
     .post("https://github.com/login/oauth/access_token", {
@@ -99,27 +98,27 @@ app.post("/githubToken", async (req, res) => {
 });
 
 app.post(`/getGithubUsername`, async (req, res) => {
-
   var r = await fetch("https://api.github.com/user", {
     method: "GET",
     headers: {
-      "Authorization": `token ${req.body.gitToken}`
+      Authorization: `token ${req.body.gitToken}`,
     },
   });
 
-  var data = await r.json()
+  var data = await r.json();
   if (!r.ok) {
-    console.log(data)
+    console.log("not okay");
+    console.log(data);
   }
-  console.log(data);
-  res.json({ gitUsername: data });
-})
+  console.log(data.login);
+  res.json({ gitUsername: data.login });
+});
 
 app.post("/getGithubRepositories", async (req, res) => {
   let githubToken = req.body.gitToken;
   let githubRepositories = [];
   axios
-    .get("https://api.github.com/users/denBruneBarone/repos", {
+    .get(`https://api.github.com/users/${req.body.username}/repos`, {
       Authorization: "token " + githubToken,
       accept: "application/vnd.github.v3+json",
     })
@@ -135,30 +134,34 @@ app.post("/getGithubRepositories", async (req, res) => {
 });
 
 app.post("/getGitCommits", async (req, res) => {
-  let githubUsername = req.body.gitUsername,
-    githubToken = req.body.gitToken,
-    githubRepositories = req.body.gitRepositories,
-    logsFrom = gitStart,
-    logsTo = gitEnd;
-
-  axios
-    .get(
-      `https://api.github.com/repos/${githubUsername}/${githubRepositories[0]}/commits`,
+  // hvis der ikke findes et array:
+  if (req.body.gitRepositories.includes(",") === false) {
+    var r = await fetch(
+      `https://api.github.com/repos/${req.body.gitUsername}/${req.body.gitRepositories}/commits`,
       {
-        Authorization: "token " + githubToken,
-        accept: "application/vnd.github.v3+json",
-        /* since: logsFrom,
-        until: logsTo, */
+        method: "GET",
+        headers: {
+          Authorization: `token ${req.body.gitToken}`,
+          accept: "application/vnd.github.v3+json",
+        },
       }
-    )
-    .then((response) => {
-      let i = 0;
-      for (const j of response.data) {
-        console.log(`commit ${i} hedder: ${j.commit.message}`);
-        i++;
-      }
-      res.json({ logs: "lol" });
-    });
+    );
+    var data = await r.json();
+    if (!r.ok) console.log("not okay");
+
+    let GitCommitArray = [];
+
+    for (const i of data) {
+      let Commit = new Object();
+      Commit.author = i.commit.author.name;
+      Commit.message = i.commit.message;
+      Commit.date = i.commit.author.date;
+      GitCommitArray.push(Commit);
+    }
+    console.log(GitCommitArray);
+
+    res.json(GitCommitArray);
+  } else console.log("et array");
 });
 
 // the server run's
