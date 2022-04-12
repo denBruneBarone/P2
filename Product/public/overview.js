@@ -1,13 +1,17 @@
-let Actions = [] // trello
+let Events = []
 
 async function fetchData() {
   timeInterval()
+  document.getElementById("overviewWindow").innerHTML = "<h1>Loading... this can take a few seconds</h1>"
 
-  if (document.getElementById("startTime").value == "") {
+  if (document.getElementById("startTime").value == "" ||
+    (document.getElementById("trello").value == "disabled" &&
+      document.getElementById("github").value == "disabled" &&
+      document.getElementById("discord").value == "disabled")) {
     return
   }
   if (document.getElementById("trello").value == "enabled") {
-    trelloActionsUsersBoards()
+    await trelloActionsUsersBoards()
   }
   if (document.getElementById("github").value == "enabled") {
     let githubCommits = await fetchGithubLogs(
@@ -15,10 +19,15 @@ async function fetchData() {
       checkAuthenticationStatus().github,
       window.sessionStorage.getItem("github-repositories")
     )
-    console.log(githubCommits)
-    displayGitCommits(githubCommits)
+    // console.log(githubCommits)
+    // displayGitCommits(githubCommits)
   }
-}
+  Events.sort(compareDate)
+  document.getElementById("overviewWindow").innerHTML = ""
+  Events.forEach(Event => {
+  document.getElementById("overviewWindow").innerHTML += 
+  `<p>${Event.date} (${Event.service}) ${Event.author}: ${Event.message}</p>`
+})}
 
 // compare objects which have the property "date"
 function compareDate(a, b) {
@@ -35,9 +44,8 @@ async function trelloFetch(since, before, boardID) {
   )
   let _json = await r.json()
   for (j of _json) {
-    Actions.push({
-      userInputDateSince: since,
-      userInputDateBefore: before,
+    Events.push({
+      service: "trello",
       date: j.date,
       type: j.type,
       object: j,
@@ -61,37 +69,36 @@ async function trelloActionsUsersBoards() {
     while (actionCount == 1000) {
       actionCount = await trelloFetch(
         since,
-        Actions[Actions.length - 1].date,
+        Events[Events.length - 1].date,
         i.id
       )
     }
   }
-  Actions.sort(compareDate)
   overviewWindow = document.getElementById("overviewWindow")
-  Actions.forEach((i) => {
+  Events.forEach((i) => {
     switch (i.object.type) {
       case "updateList":
         if (i.object.data.old.name) {
-          i.userMessage =
+          i.message =
             'Changed name of list from "' +
             i.object.data.old.name +
             '" to "' +
             i.object.data.list.name
         } else if (i.object.data.old.pos) {
-          i.userMessage =
+          i.message =
             'The list "' + i.object.data.list.name + '" got moved in position'
         } else if (i.object.data.list.closed) {
-          i.userMessage = 'Deleted the list "' + i.object.data.list.name + '"'
+          i.message = 'Deleted the list "' + i.object.data.list.name + '"'
         }
 
         break
       case "createCard":
-        i.userMessage = 'created card "' + i.object.data.card.name + '"'
+        i.message = 'created card "' + i.object.data.card.name + '"'
         break
       case "updateCard":
         if (i.object.data.card.cover != undefined) {
           // the cover was changed
-          i.userMessage =
+          i.message =
             "the cover was changed to " +
             i.object.data.card.cover.color +
             ' on "' +
@@ -99,23 +106,23 @@ async function trelloActionsUsersBoards() {
             '"'
           break
         } else if (i.object.data.card.desc) {
-          i.userMessage =
+          i.message =
             'Updated the describtion from the card "' +
             i.object.data.card.name +
             '" to "' +
             i.object.data.card.desc +
             '"'
         } else if (i.object.data.card.due) {
-          i.userMessage = "Changed due date to " + i.object.data.card.due
+          i.message = "Changed due date to " + i.object.data.card.due
         } else if (i.object.data.card.dueReminder) {
-          i.userMessage =
+          i.message =
             "Updated due-reminder to " +
             i.object.data.card.dueReminder +
             " minutes"
         } else if (i.object.data.card.closed) {
-          i.userMessage = '"' + i.object.data.card.name + '" has been archived'
+          i.message = '"' + i.object.data.card.name + '" has been archived'
         } else if (i.object.data.listAfter) {
-          i.userMessage =
+          i.message =
             '"' +
             i.object.data.card.name +
             '" has been moved from ' +
@@ -125,57 +132,51 @@ async function trelloActionsUsersBoards() {
             " by " +
             i.object.memberCreator.fullName
         } else if (i.object.data.old.name) {
-          i.userMessage =
+          i.message =
             'renamed "' +
             i.object.data.old.name +
             '" to "' +
             i.object.data.card.name
         } else if (i.object.data.old.pos) {
-          i.userMessage =
+          i.message =
             'The card "' + i.object.data.card.name + '" got moved in position'
           break
         } else if (i.object.data.card.start) {
-          i.userMessage = "Start date set to " + i.object.data.card.start
+          i.message = "Start date set to " + i.object.data.card.start
           break
         } else if (i.object.data.board.updateCheckItemStateOnCard) {
-          i.userMessage =
+          i.message =
             "This was updated " + i.object.data.board.updateCheckItemStateOnCard //Dette skal rettes. Dávur.
           break
         }
         break
 
       case "addMemberToCard":
-        i.userMessage =
+        i.message =
           "added " + i.object.member.fullName + " to " + i.object.data.card.name
 
         break
       case "removeMemberFromCard":
-        i.userMessage =
+        i.message =
           "removed " +
           i.object.member.fullName +
           " from " +
           i.object.data.card.name
         break
       case "addChecklistToCard":
-        i.userMessage = "added a checklist to " + i.object.data.card.name
+        i.message = "added a checklist to " + i.object.data.card.name
         break
       case "copyBoard":
-        i.userMessage =
+        i.message =
           'created a new board from template "' + i.object.data.board.name + '"'
         break
     }
-    if (i.userMessage == undefined) {
-      i.userMessage =
+    if (i.message == undefined) {
+      i.message =
         "json: " + JSON.stringify(i.object.data) + JSON.stringify(i.object.type)
     } else {
-      i.userMessage =
-        i.date +
-        " (Trello) " +
-        i.object.memberCreator.fullName +
-        ": " +
-        i.userMessage
+      i.author = i.object.memberCreator.fullName
     }
-    overviewWindow.innerHTML += `<p>${i.userMessage}</p>`
   })
 }
 
@@ -202,7 +203,8 @@ async function fetchGithubLogs(username, token, Repositories) {
   })
   let responseData = await response.json()
   if (!response.ok) console.log("fejl i response på github")
-  return responseData
+  responseData.forEach(GitCommit => {GitCommit.service = "github"; Events.push(GitCommit) })
+  // return responseData
 }
 
 function displayGitCommits(CommitsArray) {
@@ -233,14 +235,17 @@ function authApi() {
   let Tokens = checkAuthenticationStatus()
   if (Tokens.discord === null) {
     document.getElementById("discord").disabled = true
+    document.getElementById("discord").value = "disabled"
     document.getElementById("discord").style = "opacity: 0.5; border: none"
   }
   if (Tokens.github === null) {
     document.getElementById("github").disabled = true
+    document.getElementById("github").value = "disabled"
     document.getElementById("github").style = "opacity: 0.5; border: none"
   }
   if (Tokens.trello === null) {
     document.getElementById("trello").disabled = true
+    document.getElementById("trello").value = "disabled"
     document.getElementById("trello").style = "opacity: 0.5; border: none"
   }
 }
