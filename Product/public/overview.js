@@ -11,7 +11,7 @@ async function fetchData() {
     return
   }
   Events = []
-  if (document.getElementById("trello").value == "enabled") {
+  if (document.getElementById("trello").value == "enabled" && window.sessionStorage.getItem("Boards")) {
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Trello Actions...</h1>"
     await trelloActionsUsersBoards()
   }
@@ -66,7 +66,7 @@ async function trelloActionsUsersBoards() {
   let since = document.getElementById("startTime").value
   let before = document.getElementById("endTime").value
 
-  Boards = JSON.parse(window.sessionStorage.getItem("Boards"))
+  Boards = await JSON.parse(window.sessionStorage.getItem("Boards"))
 
   for (i of Boards) {
     let actionCount = 0
@@ -80,10 +80,16 @@ async function trelloActionsUsersBoards() {
       )
     }
   }
-  document.getElementById("overviewWindow").innerHTML = "<h1>Processing Trello Actions</h1>"
+  document.getElementById("overviewWindow").innerHTML = await "<h1>Processing Trello Actions</h1>"
   overviewWindow = document.getElementById("overviewWindow")
   Events.forEach((i) => {
     switch (i.object.type) {
+      case "enablePlugin":
+        i.message = 'Enabled plugin "' + i.object.data.plugin.name + '" on board "' + i.object.data.board.name + '"'
+        break
+      case "removeChecklistFromCard":
+        i.message = 'Removed the checklist "' + i.object.data.checklist.name + '" from card "' + i.object.data.card.name + '", board "' + i.object.data.board.name + '"'
+        break
       case "updateList":
         if (i.object.data.old.name) {
           i.message =
@@ -99,8 +105,36 @@ async function trelloActionsUsersBoards() {
         }
 
         break
+      case "updateChecklist":
+        if (i.object.data.old.name) {
+          i.message = 'Changed name of checklist to "' + i.object.data.checklist.name + '" from: "' + i.object.data.old.name + '". Card: "' + i.object.data.card.name + '", board: "' + i.object.data.board.name + '"'
+        }
+        break
+      case "createBoard":
+        i.message = 'Created board "' + i.object.data.board.name + '"'
+        break
+      case "addToOrganizationBoard":
+        i.message = 'Added the organisation "' + i.object.data.organization.name + '" to the board "' + i.object.data.board.name + '"'
+        break
+      case "commentCard":
+        // i.message = 'Added comment to card: "'+i.object.data.card.name+'" on list: "'+i.object.data.list.name+'", board: "'+i.object.data.board.name+'". Comment: "'+i.object.data.text+'"'
+        break
+      case "createList":
+        i.message = 'Created list "' + i.object.data.list.name + '" on board "' + i.object.data.board.name + '"'
+        break
+      case "updateBoard":
+        if (i.object.data.old.name) {
+          i.message = 'Board name changed to: "' + i.object.data.board.name + '" (old name: "' + i.object.data.old.name + '")'
+        }
+        // else if(i.object.data.old.prefs.background){
+        //   i.message = 'Changed background on board "'+i.object.data.board.name+'"'
+        // }
+        break
       case "createCard":
-        i.message = 'created card "' + i.object.data.card.name + '"'
+        i.message = 'created card "' + i.object.data.card.name + '" on board "' + i.object.data.board.name
+        break
+      case "deleteCard":
+        i.message = 'Deleted a card on Board: "' + i.object.data.board.name + '", List: "' + i.object.data.list.name + '"'
         break
       case "updateCard":
         if (i.object.data.card.cover != undefined) {
@@ -157,8 +191,8 @@ async function trelloActionsUsersBoards() {
         }
         break
       case "addMemberToBoard":
-        i.message = `The member was added to the board "`+i.object.data.board.name+'"'  
-      break
+        i.message = `The member was added to the board "` + i.object.data.board.name + '"'
+        break
       case "addMemberToCard":
         i.message =
           "added " + i.object.member.fullName + " to " + i.object.data.card.name
@@ -271,6 +305,12 @@ function toggleApi(btn_id) {
     document.getElementById(btn_id).style = "border-color: red"
     //Add function til at stoppe afsending af data i box
   } else if (document.getElementById(btn_id).value == "disabled") {
+    if (btn_id == "trello") {
+      if (!window.sessionStorage.getItem("Boards")) {
+        window.alert("If you want to load your Trello Actions, please select your availible Trello Boards!")
+        return
+      }
+    }
     document.getElementById(btn_id).value = "enabled"
     document.getElementById(btn_id).style = "border-color: #27af49"
     //Add function til at sende data i box
