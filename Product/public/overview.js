@@ -2,7 +2,7 @@ let Events = []
 
 async function fetchData() {
   timeInterval()
-  document.getElementById("overviewWindow").innerHTML = "<h1>Loading... this can take a few seconds</h1>"
+  
 
   if (document.getElementById("startTime").value == "" ||
     (document.getElementById("trello").value == "disabled" &&
@@ -10,10 +10,14 @@ async function fetchData() {
       document.getElementById("discord").value == "disabled")) {
     return
   }
+  Events = []
   if (document.getElementById("trello").value == "enabled") {
+    document.getElementById("overviewWindow").innerHTML = "<h1>Loading Trello Actions...</h1>"
     await trelloActionsUsersBoards()
   }
   if (document.getElementById("github").value == "enabled") {
+    
+  document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
     let githubCommits = await fetchGithubLogs(
       window.sessionStorage.getItem("github-username"),
       checkAuthenticationStatus().github,
@@ -22,6 +26,7 @@ async function fetchData() {
     // console.log(githubCommits)
     // displayGitCommits(githubCommits)
   }
+  document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
   Events.sort(compareDate)
   document.getElementById("overviewWindow").innerHTML = ""
   Events.forEach(Event => {
@@ -74,6 +79,7 @@ async function trelloActionsUsersBoards() {
       )
     }
   }
+  document.getElementById("overviewWindow").innerHTML = "<h1>Processing Trello Actions</h1>"
   overviewWindow = document.getElementById("overviewWindow")
   Events.forEach((i) => {
     switch (i.object.type) {
