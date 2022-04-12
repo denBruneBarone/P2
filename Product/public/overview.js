@@ -2,7 +2,7 @@ let Events = []
 
 async function fetchData() {
   timeInterval()
-  
+
 
   if (document.getElementById("startTime").value == "" ||
     (document.getElementById("trello").value == "disabled" &&
@@ -16,8 +16,8 @@ async function fetchData() {
     await trelloActionsUsersBoards()
   }
   if (document.getElementById("github").value == "enabled") {
-    
-  document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
+
+    document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
     let githubCommits = await fetchGithubLogs(
       window.sessionStorage.getItem("github-username"),
       checkAuthenticationStatus().github,
@@ -30,9 +30,10 @@ async function fetchData() {
   Events.sort(compareDate)
   document.getElementById("overviewWindow").innerHTML = ""
   Events.forEach(Event => {
-  document.getElementById("overviewWindow").innerHTML += 
-  `<p>${Event.date} (${Event.service}) ${Event.author}: ${Event.message}</p>`
-})}
+    document.getElementById("overviewWindow").innerHTML +=
+      `<p>${Event.date} (${Event.service}) ${Event.author}: ${Event.message}</p>`
+  })
+}
 
 // compare objects which have the property "date"
 function compareDate(a, b) {
@@ -118,7 +119,12 @@ async function trelloActionsUsersBoards() {
             '" to "' +
             i.object.data.card.desc +
             '"'
-        } else if (i.object.data.card.due) {
+        } else if (i.object.data.card.dueComplete) {
+          i.message = 'Deadline marked as accomplished on card: "' + i.object.data.card.name + '"'
+        } else if (!i.object.data.card.dueComplete) {
+          i.message = 'Deadline unmarked as accomplished on card: "' + i.object.data.card.name + '"'
+        }
+        else if (i.object.data.card.due) {
           i.message = "Changed due date to " + i.object.data.card.due
         } else if (i.object.data.card.dueReminder) {
           i.message =
@@ -146,17 +152,13 @@ async function trelloActionsUsersBoards() {
         } else if (i.object.data.old.pos) {
           i.message =
             'The card "' + i.object.data.card.name + '" got moved in position'
-          break
         } else if (i.object.data.card.start) {
           i.message = "Start date set to " + i.object.data.card.start
-          break
-        } else if (i.object.data.board.updateCheckItemStateOnCard) {
-          i.message =
-            "This was updated " + i.object.data.board.updateCheckItemStateOnCard //Dette skal rettes. Dávur.
-          break
         }
         break
-
+      case "addMemberToBoard":
+        i.message = `The member was added to the board "`+i.object.data.board.name+'"'  
+      break
       case "addMemberToCard":
         i.message =
           "added " + i.object.member.fullName + " to " + i.object.data.card.name
@@ -176,10 +178,17 @@ async function trelloActionsUsersBoards() {
         i.message =
           'created a new board from template "' + i.object.data.board.name + '"'
         break
+      case "updateCheckItemStateOnCard":
+        if (i.object.data.checkItem.state == "complete") {
+          i.message = 'Marked as complete: The Checkbox Item "' + i.object.data.checkItem.name + '" (Card: "' + i.object.data.card.name + '")'
+        } else if (i.object.data.checkItem.state == "incomplete") {
+          i.message = 'Marked as incomplete: The Checkbox Item "' + i.object.data.checkItem.name + '" (Card: "' + i.object.data.card.name + '")'
+        }
+        break
     }
     if (i.message == undefined) {
-      i.message =
-        "json: " + JSON.stringify(i.object.data) + JSON.stringify(i.object.type)
+      // i.message = "json: " + JSON.stringify(i.object.data) + JSON.stringify(i.object.type)
+      console.log("uncertain trello action: ", i.object)
     } else {
       i.author = i.object.memberCreator.fullName
     }
@@ -209,7 +218,7 @@ async function fetchGithubLogs(username, token, Repositories) {
   })
   let responseData = await response.json()
   if (!response.ok) console.log("fejl i response på github")
-  responseData.forEach(GitCommit => {GitCommit.service = "github"; Events.push(GitCommit) })
+  responseData.forEach(GitCommit => { GitCommit.service = "github"; Events.push(GitCommit) })
   // return responseData
 }
 
