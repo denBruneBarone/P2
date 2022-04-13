@@ -82,7 +82,7 @@ async function trelloActionsUsersBoards() {
   }
   document.getElementById("overviewWindow").innerHTML = await "<h1>Processing Trello Actions</h1>"
   overviewWindow = document.getElementById("overviewWindow")
-  Events.forEach((i) => {
+  Events.forEach(async (i) => {
     switch (i.object.type) {
       case "enablePlugin":
         i.message = 'Enabled plugin "' + i.object.data.plugin.name + '" on board "' + i.object.data.board.name + '"'
@@ -117,10 +117,20 @@ async function trelloActionsUsersBoards() {
         i.message = 'Added the organisation "' + i.object.data.organization.name + '" to the board "' + i.object.data.board.name + '"'
         break
       case "commentCard":
-        // i.message = 'Added comment to card: "'+i.object.data.card.name+'" on list: "'+i.object.data.list.name+'", board: "'+i.object.data.board.name+'". Comment: "'+i.object.data.text+'"'
+        i.message = 'Added comment to card: "' + i.object.data.card.name + '" on list: "' + i.object.data.list.name + '", board: "' + i.object.data.board.name + '". Comment: "' + i.object.data.text + '"'
         break
       case "createList":
         i.message = 'Created list "' + i.object.data.list.name + '" on board "' + i.object.data.board.name + '"'
+        break
+      case "moveCardToBoard":
+        let boardSource = i.object.data.boardSource.id;
+        let r = await fetch(
+          `https://api.trello.com/1/boards/${boardSource}/?key=0b862279af0ae326479a419925f3ea7a&token=${window.sessionStorage.getItem("trello-token")}`
+        );
+        let _json = await r.json();
+        boardSource = await _json.name;
+        i.message = 'Moved card "' + i.object.data.card.name + '" to board "' + i.object.data.board.name + '" (origin board: "' + boardSource+'")'
+        console.log(i.message, i)
         break
       case "updateBoard":
         if (i.object.data.old.name) {
