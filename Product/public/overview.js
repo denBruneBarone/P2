@@ -29,10 +29,16 @@ async function fetchData() {
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
   Events.sort(compareDate)
   document.getElementById("overviewWindow").innerHTML = ""
-  Events.forEach(Event => {
-    document.getElementById("overviewWindow").innerHTML +=
-      `<p>${Event.date} (${Event.service}) ${Event.author}: ${Event.message}</p>`
-  })
+  if (Events.length == 0) {
+    document.getElementById("overviewWindow").innerHTML =
+      `<h1>Wow, such empty...</h1>`
+  }
+  else {
+    Events.forEach(Event => {
+      document.getElementById("overviewWindow").innerHTML +=
+        `<p>${Event.date} (${Event.service}) ${Event.author}: ${Event.message}</p>`
+    })
+  }
 }
 
 // compare objects which have the property "date"
@@ -40,7 +46,7 @@ function compareDate(a, b) {
   return new Date(b.date).getTime() - new Date(a.date).getTime()
 }
 
-async function trelloFetch(since, before, boardID) {
+async function trelloFetchBoard(since, before, boardID) {
   let key = "0b862279af0ae326479a419925f3ea7a"
   let token = window.sessionStorage.getItem("trello-token")
   since = since == "" ? "" : "&since=" + since
@@ -68,21 +74,21 @@ async function trelloActionsUsersBoards() {
 
   Boards = await JSON.parse(window.sessionStorage.getItem("Boards"))
 
-  for (i of Boards) {
+  for (Board of Boards) {
     let actionCount = 0
-    actionCount = await trelloFetch(since, before, i.id)
+    actionCount = await trelloFetchBoard(since, before, Board.id)
 
     while (actionCount == 1000) {
-      actionCount = await trelloFetch(
+      actionCount = await trelloFetchBoard(
         since,
         Events[Events.length - 1].date,
-        i.id
+        Board.id
       )
     }
   }
   document.getElementById("overviewWindow").innerHTML = await "<h1>Processing Trello Actions</h1>"
-  for (i of Events) {
-    await sortTrello(i)
+  for (Event of Events) {
+    await sortTrello(Event)
   }
 }
 
@@ -101,10 +107,12 @@ async function sortTrello(i) {
           i.object.data.old.name +
           '" to "' +
           i.object.data.list.name
-      } else if (i.object.data.old.pos) {
+      }
+      else if (i.object.data.old.pos) {
         i.message =
           'The list "' + i.object.data.list.name + '" got moved in position'
-      } else if (i.object.data.list.closed) {
+      }
+      else if (i.object.data.list.closed) {
         i.message = 'Deleted the list "' + i.object.data.list.name + '"'
       }
 
@@ -144,7 +152,7 @@ async function sortTrello(i) {
       let _jsonSource = await responseSource.json();
       boardSource = await _jsonSource.name;
       i.message = 'Moved card "' + i.object.data.card.name + '" to board "' + i.object.data.board.name + '" (origin board: "' + boardSource + '")'
-      console.log("This is doubled, check the code and the HTML for date=",i.date)
+      console.log("This is doubled, check the code and the HTML for date=", i.date)
       break
     case "commentCard":
       i.message = 'Added comment to card: "' + i.object.data.card.name + '" on board: "' + i.object.data.board.name + '". Comment: "' + i.object.data.text + '"'
@@ -152,27 +160,27 @@ async function sortTrello(i) {
     case "createList":
       i.message = 'Created list "' + i.object.data.list.name + '" on board "' + i.object.data.board.name + '"'
       break
-      case "makeNormalMemberOfBoard":
-        i.message = 'Added a normal member named "'+i.object.member.fullName+'" to Board "'+i.object.data.board.name+'"'
-      break 
+    case "makeNormalMemberOfBoard":
+      i.message = 'Added a normal member named "' + i.object.member.fullName + '" to Board "' + i.object.data.board.name + '"'
+      break
     case "updateBoard":
       if (i.object.data.old.name) {
         i.message = 'Board name changed to: "' + i.object.data.board.name + '" (old name: "' + i.object.data.old.name + '")'
       }
       else if (i.object.data.board.closed) {
-        i.message = 'Closed board "'+i.object.data.board.name+'"'
+        i.message = 'Closed board "' + i.object.data.board.name + '"'
       }
       else if (i.object.data.old.prefs) {
         if (i.object.data.old.prefs.background) {
           i.message = 'Changed background on board "' + i.object.data.board.name + '"'
         }
         else if (i.object.data.old.prefs.permissionLevel) {
-          i.message = 'Changed permission level to '+i.object.data.board.prefs.permissionLevel+' on board "' + i.object.data.board.name + '"'
+          i.message = 'Changed permission level to ' + i.object.data.board.prefs.permissionLevel + ' on board "' + i.object.data.board.name + '"'
         }
       }
       break
     case "createCard":
-      i.message = 'created card "' + i.object.data.card.name + '" on board "' + i.object.data.board.name
+      i.message = 'created card "' + i.object.data.card.name + '" on board "' + i.object.data.board.name + '"'
       break
     case "deleteCard":
       i.message = 'Deleted a card on Board: "' + i.object.data.board.name + '", List: "' + i.object.data.list.name + '"'
@@ -187,47 +195,60 @@ async function sortTrello(i) {
           i.object.data.card.name +
           '"'
         break
-      } else if (i.object.data.card.desc) {
-        i.message =
-          'Updated the describtion from the card "' +
-          i.object.data.card.name +
-          '" to "' +
-          i.object.data.card.desc +
-          '"'
-      } else if (i.object.data.card.dueComplete) {
+      }
+      else if (i.object.data.card.closed) {
+        i.message = 'Archived card "' + i.object.data.card.name + '", board "' + i.object.data.board.name + '"'
+      }
+      else if (i.object.data.card.desc || i.object.data.old.desc) {
+        if (i.object.data.card.desc == "") {
+          i.message = 'Deleted the description on card "' + i.object.data.card.name + '", board "' + i.object.data.board.name + '"'
+        }
+        else {
+          i.message =
+            'Updated the description from the card "' +
+            i.object.data.card.name +
+            '" to "' +
+            i.object.data.card.desc +
+            '", board "' + i.object.data.board.name + '"'
+        }
+      }
+      else if (i.object.data.card.dueComplete) {
         i.message = 'Deadline marked as accomplished on card: "' + i.object.data.card.name + '"'
-      } else if (!i.object.data.card.dueComplete) {
+      }
+      else if (i.object.data.old.dueComplete) {
         i.message = 'Deadline unmarked as accomplished on card: "' + i.object.data.card.name + '"'
       }
       else if (i.object.data.card.due) {
         i.message = "Changed due date to " + i.object.data.card.due
-      } else if (i.object.data.card.dueReminder) {
+      }
+      else if (i.object.data.card.dueReminder) {
         i.message =
           "Updated due-reminder to " +
           i.object.data.card.dueReminder +
           " minutes"
-      } else if (i.object.data.card.closed) {
-        i.message = '"' + i.object.data.card.name + '" has been archived'
-      } else if (i.object.data.listAfter) {
+      }
+      else if (i.object.data.listAfter) {
         i.message =
           '"' +
           i.object.data.card.name +
-          '" has been moved from ' +
+          '" has been moved from the list "' +
           i.object.data.listBefore.name +
-          " to " +
+          '" to "' +
           i.object.data.listAfter.name +
-          " by " +
-          i.object.memberCreator.fullName
-      } else if (i.object.data.old.name) {
+          '", board "' + i.object.data.board.name
+      }
+      else if (i.object.data.old.name) {
         i.message =
           'renamed "' +
           i.object.data.old.name +
           '" to "' +
           i.object.data.card.name
-      } else if (i.object.data.old.pos) {
+      }
+      else if (i.object.data.old.pos) {
         i.message =
           'The card "' + i.object.data.card.name + '" got moved in position'
-      } else if (i.object.data.card.start) {
+      }
+      else if (i.object.data.card.start) {
         i.message = "Start date set to " + i.object.data.card.start
       }
       break
@@ -256,7 +277,8 @@ async function sortTrello(i) {
     case "updateCheckItemStateOnCard":
       if (i.object.data.checkItem.state == "complete") {
         i.message = 'Marked as complete: The Checkbox Item "' + i.object.data.checkItem.name + '" (Card: "' + i.object.data.card.name + '")'
-      } else if (i.object.data.checkItem.state == "incomplete") {
+      }
+      else if (i.object.data.checkItem.state == "incomplete") {
         i.message = 'Marked as incomplete: The Checkbox Item "' + i.object.data.checkItem.name + '" (Card: "' + i.object.data.card.name + '")'
       }
       break
@@ -344,7 +366,8 @@ function toggleApi(btn_id) {
     document.getElementById(btn_id).value = "disabled"
     document.getElementById(btn_id).style = "border-color: red"
     //Add function til at stoppe afsending af data i box
-  } else if (document.getElementById(btn_id).value == "disabled") {
+  }
+  else if (document.getElementById(btn_id).value == "disabled") {
     if (btn_id == "trello") {
       if (!window.sessionStorage.getItem("Boards")) {
         window.alert("If you want to load your Trello Actions, please select your availible Trello Boards!")
