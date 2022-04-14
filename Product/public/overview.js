@@ -81,7 +81,9 @@ async function trelloActionsUsersBoards() {
     }
   }
   document.getElementById("overviewWindow").innerHTML = await "<h1>Processing Trello Actions</h1>"
-  Events.forEach(i => sortTrello(i))
+  for (i of Events) {
+    await sortTrello(i)
+  }
 }
 
 async function sortTrello(i) {
@@ -133,13 +135,6 @@ async function sortTrello(i) {
       let _jsonTarget = await responseTarget.json();
       boardTarget = await _jsonTarget.name;
       i.message = 'Moved card "' + i.object.data.card.name + '" to board "' + boardTarget + '" (origin board: "' + i.object.data.board.name + '")'
-      console.log("moveCardFromBoard", i)
-      break
-    case "commentCard":
-      i.message = 'Added comment to card: "' + i.object.data.card.name + '" on board: "' + i.object.data.board.name + '". Comment: "' + i.object.data.text + '"'
-      break
-    case "createList":
-      i.message = 'Created list "' + i.object.data.list.name + '" on board "' + i.object.data.board.name + '"'
       break
     case "moveCardToBoard":
       let boardSource = await i.object.data.boardSource.id;
@@ -149,15 +144,32 @@ async function sortTrello(i) {
       let _jsonSource = await responseSource.json();
       boardSource = await _jsonSource.name;
       i.message = 'Moved card "' + i.object.data.card.name + '" to board "' + i.object.data.board.name + '" (origin board: "' + boardSource + '")'
-      console.log("moveCardToBoard:", i)
+      console.log("This is doubled, check the code and the HTML for date=",i.date)
       break
+    case "commentCard":
+      i.message = 'Added comment to card: "' + i.object.data.card.name + '" on board: "' + i.object.data.board.name + '". Comment: "' + i.object.data.text + '"'
+      break
+    case "createList":
+      i.message = 'Created list "' + i.object.data.list.name + '" on board "' + i.object.data.board.name + '"'
+      break
+      case "makeNormalMemberOfBoard":
+        i.message = 'Added a normal member named "'+i.object.member.fullName+'" to Board "'+i.object.data.board.name+'"'
+      break 
     case "updateBoard":
       if (i.object.data.old.name) {
         i.message = 'Board name changed to: "' + i.object.data.board.name + '" (old name: "' + i.object.data.old.name + '")'
       }
-      // else if(i.object.data.old.prefs.background){
-      //   i.message = 'Changed background on board "'+i.object.data.board.name+'"'
-      // }
+      else if (i.object.data.board.closed) {
+        i.message = 'Closed board "'+i.object.data.board.name+'"'
+      }
+      else if (i.object.data.old.prefs) {
+        if (i.object.data.old.prefs.background) {
+          i.message = 'Changed background on board "' + i.object.data.board.name + '"'
+        }
+        else if (i.object.data.old.prefs.permissionLevel) {
+          i.message = 'Changed permission level to '+i.object.data.board.prefs.permissionLevel+' on board "' + i.object.data.board.name + '"'
+        }
+      }
       break
     case "createCard":
       i.message = 'created card "' + i.object.data.card.name + '" on board "' + i.object.data.board.name
