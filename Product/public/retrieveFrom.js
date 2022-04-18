@@ -147,17 +147,26 @@ async function getDiscordGuilds(){
   let discordGuildList = await discordGuilds.json();
 
   /* Overvej måske at tilføje discord server ikonet udenfor navnet! Vi kan anskaffe det bare ved "icon" for at gøre der lidt pænt */
-  /*let discordGuildForm = document.getElementById("discord-submit")*/
+  discordGuildForm = document.getElementById("discordForm");
   for (i of discordGuildList) {
-    /*discordGuildForm.innerHTML =
-      `<input class="discordGuilds" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` +
-      discordGuildForm.innerHTML;*/
+    discordGuildForm.innerHTML +=
+      `<input class="discordGuilds" type="button" onclick = "getDiscordChannels(${i.id})" id="${i.id}" value="${i.name}"><label for="${i.id}"></label><br>`;
+      console.log(i.id + " + " + i.name);
   }
+  
 }
 
-async function getDiscordChannels(){
+async function getDiscordChannels(discordGuildID){
+  
+  let discordChannels = await fetch(`https://discord.com/api/guilds/${discordGuildID}/channels`, {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
+    }
+  }
+  );
 
-
+  let discordChannelList = await discordChannels.json();
 
 }
 

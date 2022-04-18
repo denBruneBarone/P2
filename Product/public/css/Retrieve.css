@@ -39,3 +39,8 @@ h1 {
   font-weight: bold;
   line-height: 95px;
 }
+
+.discordGuilds{
+  font-family: Monaco, monospace;
+
+}
