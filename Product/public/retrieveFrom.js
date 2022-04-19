@@ -134,7 +134,7 @@ async function getTrelloBoards() {
   });
 }
 
-/* Retrieves an authorized discord users server/guild list */
+/* Retrieves an authorized discord users server/guild list 
 async function getDiscordGuilds(){
   let discordGuilds = await fetch(`https://discord.com/api/users/@me/guilds`, {
     method: "GET",
@@ -146,19 +146,18 @@ async function getDiscordGuilds(){
 
   let discordGuildList = await discordGuilds.json();
 
-  /* Overvej måske at tilføje discord server ikonet udenfor navnet! Vi kan anskaffe det bare ved "icon" for at gøre der lidt pænt */
+  console.log(discordGuildList);
   discordGuildForm = document.getElementById("discordForm");
   for (i of discordGuildList) {
     discordGuildForm.innerHTML +=
       `<input class="discordGuilds" type="button" onclick = "getDiscordChannels(${i.id})" id="${i.id}" value="${i.name}"><label for="${i.id}"></label><br>`;
       console.log(i.id + " + " + i.name);
   }
-  
 }
 
 async function getDiscordChannels(discordGuildID){
   
-  let discordChannels = await fetch(`https://discord.com/api/guilds/${discordGuildID}/channels`, {
+  let discordChannels = await fetch(`https://discord.com/api/guilds/${discordGuildID}/preview`, {
     method: "GET",
     headers: {
       "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
@@ -168,5 +167,10 @@ async function getDiscordChannels(discordGuildID){
 
   let discordChannelList = await discordChannels.json();
 
-}
+  for (i of discordChannelList){
+
+    console.log(i.channels)
+
+  }
+}*/
 
