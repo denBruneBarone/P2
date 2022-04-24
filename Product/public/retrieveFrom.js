@@ -80,7 +80,7 @@ async function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github) {
-    if (sessionStorage.githubRepositories) {
+    if (sessionStorage.githubRepositories) { // Rune Lucas: har ændret navn på sessionStorage item, ellers virkede denne if statement ikke
       sessionStorage.removeItem("githubRepositories");
     }
     let githubUsername = await getGithubUsername(Tokens);
