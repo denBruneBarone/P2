@@ -1,3 +1,5 @@
+let Boards = [];
+
 // functions
 function checkAuthenticationStatus() {
   var Tokens = {
@@ -8,8 +10,20 @@ function checkAuthenticationStatus() {
   return Tokens;
 }
 
-function goToOverview() {
+async function goToOverview() {
+  await getSelectedTrelloBoards()
+  await submitSelectedRepos()
   window.location.replace("http://localhost:3000/overview.html");
+}
+
+function getSelectedTrelloBoards() {
+  for (i of document.getElementsByClassName("trello-boards")) {
+    if (i.checked) {
+      Boards.push({ id: i.id, name: i.value });
+    }
+  }
+  // store Boards in session storage and redirect user
+  window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
 }
 
 async function getGithubUsername(Tokens) {
@@ -66,6 +80,9 @@ async function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github) {
+    if (sessionStorage.githubRepositories) {
+      sessionStorage.removeItem("githubRepositories");
+    }
     let githubUsername = await getGithubUsername(Tokens);
 
     window.sessionStorage.setItem("github-username", githubUsername);
@@ -79,22 +96,22 @@ async function createLists() {
     getTrelloBoards();
   }
   if (Tokens.discord) {
-    getDiscordGuilds();
+    // getDiscordGuilds();
   }
 }
 
 function submitSelectedRepos() {
   let selectedRepositories = [];
-  button = document.getElementById("githubButton");
-  button.innerHTML = "Github saved";
-  button.disabled = true;
+  // button = document.getElementById("githubButton");
+  // button.innerHTML = "Github saved";
+  // button.disabled = true;
   for (const i of document.getElementsByClassName("githubRepositories")) {
     if (i.checked) {
       selectedRepositories.push(i.value);
     }
   }
   console.log("selected repositories: " + selectedRepositories);
-  window.sessionStorage.setItem("github-repositories", selectedRepositories);
+  window.sessionStorage.setItem("githubRepositories", selectedRepositories);
 }
 
 async function getTrelloBoards() {
@@ -117,21 +134,6 @@ async function getTrelloBoards() {
       `<input class="trello-boards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` +
       trelloBoardForm.innerHTML;
   }
-
-  let Boards = [];
-  const button = document.getElementById("trello-submit");
-  button.addEventListener("click", () => {
-    button.disabled = true;
-    button.innerHTML = "Trello saved.";
-    // iterates through the class, each id that is clicked is added to our list
-    for (i of document.getElementsByClassName("trello-boards")) {
-      if (i.checked) {
-        Boards.push({ id: i.id, name: i.value });
-      }
-    }
-    // store Boards in session storage and redirect user
-    window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
-  });
 }
 
 /* Retrieves an authorized discord users server/guild list 

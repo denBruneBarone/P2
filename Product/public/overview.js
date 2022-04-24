@@ -8,20 +8,20 @@ async function fetchData() {
     (document.getElementById("trello").value == "disabled" &&
       document.getElementById("github").value == "disabled" &&
       document.getElementById("discord").value == "disabled")) {
-    return 
-  } 
+    return
+  }
   Events = []
-  if (window.sessionStorage.getItem("trello-token") && document.getElementById("trello").value == "enabled" && window.sessionStorage.getItem("Boards")) { 
+  if (window.sessionStorage.getItem("trello-token") && document.getElementById("trello").value == "enabled" && window.sessionStorage.getItem("Boards")) {
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Trello Actions...</h1>"
     await trelloActionsUsersBoards()
   }
   if (window.sessionStorage.getItem("github-token") && document.getElementById("github").value == "enabled") {
 
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
-    let githubCommits = await fetchGithubLogs(
+    /* let githubCommits = */ await fetchGithubLogs(
       window.sessionStorage.getItem("github-username"),
       checkAuthenticationStatus().github,
-      window.sessionStorage.getItem("github-repositories")
+      window.sessionStorage.getItem("githubRepositories")
     )
     // console.log(githubCommits)
     // displayGitCommits(githubCommits)
@@ -117,7 +117,10 @@ async function fetchGithubLogs(username, token, Repositories) {
   })
   let responseData = await response.json()
   if (!response.ok) console.log("fejl i response på github")
-  responseData.forEach(GitCommit => { GitCommit.service = "github"; Events.push(GitCommit) })
+  responseData.forEach(GitCommit => {
+    GitCommit.service = "github";
+    Events.push(GitCommit)
+  })
   // return responseData
 }
 
@@ -150,7 +153,7 @@ function authApi() { // dry concept malthe
   let Tokens = checkAuthenticationStatus()
 
 
-  
+
   // for (service = 0; service < 3; service++) {
   //   checkToggle(service)
   // }
