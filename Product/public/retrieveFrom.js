@@ -79,7 +79,7 @@ async function createLists() {
     getTrelloBoards();
   }
   if (Tokens.discord) {
-
+    getDiscordGuilds();
   }
 }
 
@@ -134,24 +134,43 @@ async function getTrelloBoards() {
   });
 }
 
+/* Retrieves an authorized discord users server/guild list 
 async function getDiscordGuilds(){
-  const Discord = require("discord.js");
-  const client = new Discord.Client();
+  let discordGuilds = await fetch(`https://discord.com/api/users/@me/guilds`, {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
+    }
+  }
+  );
 
-  const guildRes = await fetch(
-    `https://discordapp.com/api/users/@me/guilds`,
-    {
-      headers:{
-        Authorization: 'Bearer' + DISCORD_SECRET
-      }
-    })
-    const guilds = await guildRes.json()
-    res.send(guilds)
-    console.log(guilds)
+  let discordGuildList = await discordGuilds.json();
 
-  client.on("ready", () => {
-    const Guilds = client.guilds.cache.map(guild => guild.id);
-    console.log(Guilds);
-  });
-  client.login(process.env.DISCORD_SECRET)
+  console.log(discordGuildList);
+  discordGuildForm = document.getElementById("discordForm");
+  for (i of discordGuildList) {
+    discordGuildForm.innerHTML +=
+      `<input class="discordGuilds" type="button" onclick = "getDiscordChannels(${i.id})" id="${i.id}" value="${i.name}"><label for="${i.id}"></label><br>`;
+      console.log(i.id + " + " + i.name);
+  }
 }
+
+async function getDiscordChannels(discordGuildID){
+  
+  let discordChannels = await fetch(`https://discord.com/api/guilds/${discordGuildID}/preview`, {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
+    }
+  }
+  );
+
+  let discordChannelList = await discordChannels.json();
+
+  for (i of discordChannelList){
+
+    console.log(i.channels)
+
+  }
+}*/
+
