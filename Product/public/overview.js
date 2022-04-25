@@ -370,7 +370,7 @@ function toggleApi(btn_id) {
   else if (document.getElementById(btn_id).value == "disabled") {
     if (btn_id == "trello") {
       if (!window.sessionStorage.getItem("Boards")) {
-        window.alert("If you want to load your Trello Actions, please select your available Trello Boards!")
+        window.alert("If you want to load your Trello Actions, please select your availible Trello Boards!")
         return
       }
     }
