@@ -1,6 +1,7 @@
 // takes an object which has the the attribute "object" which is a trello action object.
 // Writes a message for the user in the original objects attribute "message"
 async function sortTrello(i) {
+  i.location = i.object.data.board.name
     switch (i.object.type) {
       case "enablePlugin":
         i.message = 'Enabled plugin "' + i.object.data.plugin.name + '" on board "' + i.object.data.board.name + '"'
@@ -120,9 +121,11 @@ async function sortTrello(i) {
         }
         else if (i.object.data.card.dueComplete) {
           i.message = 'Deadline marked as accomplished on card: "' + i.object.data.card.name + '"'
+          console.log(i.object)
         }
         else if (i.object.data.old.dueComplete) {
           i.message = 'Deadline unmarked as accomplished on card: "' + i.object.data.card.name + '"'
+          console.log(i.object)
         }
         else if (i.object.data.card.due) {
           i.message = "Changed due date to " + i.object.data.card.due
