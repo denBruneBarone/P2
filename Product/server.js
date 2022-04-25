@@ -164,6 +164,25 @@ app.post("/getGitCommits", async (req, res) => {
     );
 });
 
+// Setup our environment variables via dotenv
+require("dotenv").config();
+// Import relevant classes from discord.js
+const { Client, Intents } = require("discord.js");
+// Instantiate a new client with some necessary parameters.
+const client = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+});
+
+// Notify progress
+client.on("ready", () => {
+  console.log(`Discordbot ${client.user.tag} active and ready!`);
+  let guilds = client.guilds.cache.map((guild) => guild.id);
+  return guilds;
+});
+
+// Authenticate
+client.login(process.env.BOT_TOKEN);
+
 // the server run's
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000")

@@ -96,7 +96,7 @@ async function createLists() {
     getTrelloBoards();
   }
   if (Tokens.discord) {
-    // getDiscordGuilds();
+    //getDiscordGuilds();
   }
 }
 
@@ -136,26 +136,27 @@ async function getTrelloBoards() {
   }
 }
 
-/* Retrieves an authorized discord users server/guild list 
-async function getDiscordGuilds(){
+/* Retrieves an authorized discord users server/guild list */
+async function getDiscordGuilds() {
   let discordGuilds = await fetch(`https://discord.com/api/users/@me/guilds`, {
     method: "GET",
     headers: {
-      "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
-    }
-  }
-  );
-
+      Authorization: "Bearer " + window.sessionStorage.getItem("discord-token"),
+    },
+  });
   let discordGuildList = await discordGuilds.json();
-
   console.log(discordGuildList);
-  discordGuildForm = document.getElementById("discordForm");
+
+
+  let discordGuildForm = document.getElementById("discordGuilds");
   for (i of discordGuildList) {
-    discordGuildForm.innerHTML +=
-      `<input class="discordGuilds" type="button" onclick = "getDiscordChannels(${i.id})" id="${i.id}" value="${i.name}"><label for="${i.id}"></label><br>`;
-      console.log(i.id + " + " + i.name);
+    discordGuildForm.innerHTML =
+      `<input class="discordGuilds" type="button" id="${i.id}" value="${i.name}" onlick="getDiscordChannels(${i.id})"><label for="${i.id}"></label><br>` +
+      discordGuildForm.innerHTML;
   }
 }
+
+/* 
 
 async function getDiscordChannels(discordGuildID){
   
