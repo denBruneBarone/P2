@@ -151,26 +151,14 @@ function onLoad() {
 // preset's the services toggles
 function authApi() { // dry concept malthe
   let Tokens = checkAuthenticationStatus()
-
-
-
-  // for (service = 0; service < 3; service++) {
-  //   checkToggle(service)
-  // }
-  if (Tokens.discord === null) {
-    document.getElementById("discord").disabled = true
-    document.getElementById("discord").value = "disabled"
-    document.getElementById("discord").style = "opacity: 0.5; border: none"
-  }
-  if (Tokens.github === null) {
-    document.getElementById("github").disabled = true
-    document.getElementById("github").value = "disabled"
-    document.getElementById("github").style = "opacity: 0.5; border: none"
-  }
-  if (Tokens.trello === null) {
-    document.getElementById("trello").disabled = true
-    document.getElementById("trello").value = "disabled"
-    document.getElementById("trello").style = "opacity: 0.5; border: none"
+  for (alias of Object.keys(Tokens)) {
+    console.log(alias)
+    if (Tokens[alias] === null) { 
+      console.log(alias, "disabled")
+      document.getElementById(alias).disabled = true
+      document.getElementById(alias).value = "disabled"
+      document.getElementById(alias).style = "opacity: 0.5; border: none"
+    }
   }
 }
 
