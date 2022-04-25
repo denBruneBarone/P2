@@ -7,14 +7,13 @@ const client = new Client(
     { intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] }
 );
 // Notify progress
-
-client.on("ready", () => {
+    client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    const Guilds = client.guilds.cache.map(guild => guild.id);
-    console.log(Guilds);
-    console.log(Channels)
-});
-
+    const guilds = client.guilds.cache.map(guild => guild.id);
+    console.log(guilds);
+    return guilds;
+  });
+  
 
 // Authenticate
 client.login(process.env.BOT_TOKEN)

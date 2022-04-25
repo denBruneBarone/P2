@@ -134,43 +134,34 @@ async function getTrelloBoards() {
   });
 }
 
-/* Retrieves an authorized discord users server/guild list 
-async function getDiscordGuilds(){
+/* Retrieves an authorized discord users server/guild list */
+async function getDiscordGuilds() {
   let discordGuilds = await fetch(`https://discord.com/api/users/@me/guilds`, {
     method: "GET",
     headers: {
-      "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
-    }
-  }
-  );
-
+      Authorization: "Bearer " + window.sessionStorage.getItem("discord-token"),
+    },
+  });
   let discordGuildList = await discordGuilds.json();
-
   console.log(discordGuildList);
-  discordGuildForm = document.getElementById("discordForm");
+
+  let discordGuildForm = document.getElementById("discordGuilds");
   for (i of discordGuildList) {
-    discordGuildForm.innerHTML +=
-      `<input class="discordGuilds" type="button" onclick = "getDiscordChannels(${i.id})" id="${i.id}" value="${i.name}"><label for="${i.id}"></label><br>`;
-      console.log(i.id + " + " + i.name);
+    discordGuildForm.innerHTML =
+      `<input class="discordGuilds" type="checkbox" id="${i.id}" value="${i.name}"><br>` +
+      discordGuildForm.innerHTML;
   }
+
+  let discordBot = require("./server.js");
+
+  client.on("ready", () => {
+    console.log(`Discordbot ${discordBot.client.user.tag} active and ready!`);
+    const guilds = discordBot.client.guilds.cache.map((guild) => guild.id);
+    console.log(guilds);
+  });
+
+  /*
+  const intersection = Guilds.filter(function (obj) {
+    return discordGuildList.indexOf(obj) === -1;
+  });*/
 }
-
-async function getDiscordChannels(discordGuildID){
-  
-  let discordChannels = await fetch(`https://discord.com/api/guilds/${discordGuildID}/preview`, {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
-    }
-  }
-  );
-
-  let discordChannelList = await discordChannels.json();
-
-  for (i of discordChannelList){
-
-    console.log(i.channels)
-
-  }
-}*/
-
