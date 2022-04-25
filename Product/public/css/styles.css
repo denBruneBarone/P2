@@ -1,5 +1,5 @@
 body {
-  background: #222a35;
+  background: #ffffff;
 }
 
 .loginWindow {
@@ -16,7 +16,7 @@ body {
   font-family: Monaco, monospace;
 }
 
-button{
+button {
   border: 4px white solid;
   border-radius: 10px 10px 10px 10px;
   position: absolute;
@@ -60,6 +60,6 @@ button{
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-.continueButton:hover{
+.continueButton:hover {
   background-color: green;
 }
