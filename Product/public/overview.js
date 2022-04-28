@@ -21,15 +21,22 @@ async function fetchData() {
 
     let repositoriesString = window.sessionStorage.getItem("githubRepositories"),
       repositoriesOwnerString = window.sessionStorage.getItem("githubRepositoriesOwner");
-    // if (repositoriesString.includes(",") === true) 
+
     let RepositoriesArray = repositoriesString.split(","),
       RepositoriesOwnerArray = repositoriesOwnerString.split(",");
+
+    console.log(
+      document.getElementById("startTime").value +
+      document.getElementById("endTime").value
+    );
 
     for (let i = 0; i < RepositoriesArray.length; i++) {
       await fetchGithubLogs(
         RepositoriesOwnerArray[i],
         checkAuthenticationStatus().github,
-        RepositoriesArray[i]
+        RepositoriesArray[i],
+        document.getElementById("startTime").value,
+        document.getElementById("endTime").value
       )
     }
 
@@ -111,7 +118,7 @@ function checkAuthenticationStatus() {
   return Tokens
 }
 
-async function fetchGithubLogs(owner, token, Repositories) {
+async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
   let response = await fetch("/getGitCommits", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -119,8 +126,8 @@ async function fetchGithubLogs(owner, token, Repositories) {
       gitRepositoriesOwner: owner,
       gitToken: token,
       gitRepositories: Repositories,
-      /* logsFrom: fromDate,
-      logsTo: toDate, */
+      from: startTime,
+      to: endTime,
     }),
   })
   let responseData = await response.json()
@@ -145,8 +152,8 @@ function timeInterval() {
 
   if (dateStringEnd < dateStringStart) {
     alert("End date cannot be less than the start date!")
-    document.getElementById("startTime").value = ""
-    document.getElementById("endTime").value = ""
+    document.getElementById("startTime").value = "";
+    document.getElementById("endTime").value = "";
     return
   }
 }

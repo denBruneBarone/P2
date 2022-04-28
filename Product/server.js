@@ -140,12 +140,12 @@ app.post("/getGitCommits", async (req, res) => {
 
   let GitCommitArray = [];
 
-  // hvis der ikke findes et array:
   let loadedAllCommits = false;
   let pageCount = 1;
   while (loadedAllCommits === false) {
     var r = await fetch(
-      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}/commits?per_page=100&page=${pageCount}`,
+      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}
+      /commits?per_page=100&page=${pageCount}&since=${req.body.from}&until=${req.body.to}`,
       {
         method: "GET",
         headers: {
