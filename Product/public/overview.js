@@ -19,16 +19,19 @@ async function fetchData() {
 
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
 
-    //if (req.body.gitRepositories.includes(",") === false)
 
+    /*   if (req.body.gitRepositories.includes(",") === true) {
+        let repositoriesString = req.body.gitRepositories
+        const RepositoryArray = repositoriesString.split(",");
+        console.log(RepositoryArray);
+      }
+   */
 
-    /* let githubCommits = */ await fetchGithubLogs(
+    await fetchGithubLogs(
       window.sessionStorage.getItem("githubRepositoriesOwner"),
       checkAuthenticationStatus().github,
       window.sessionStorage.getItem("githubRepositories")
     )
-    // console.log(githubCommits)
-    // displayGitCommits(githubCommits)
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
   Events.sort(compareDate)
