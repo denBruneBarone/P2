@@ -205,11 +205,7 @@ Client.commands = new Collection();
 
 // Authenticate
 Client.login(process.env.BOT_TOKEN);
-<<<<<<< HEAD
  */
-=======
-
->>>>>>> ed6c968b4171e9f45d2b4a712263532e9a79595b
 // the server run's
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000")
