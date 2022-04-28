@@ -180,6 +180,26 @@ client.on("ready", () => {
   return guilds;
 });
 
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
+
+	const { commandName } = interaction;
+
+	if (commandName === 'ping') {
+		await interaction.reply('Pong!');
+	} else if (commandName === 'beep') {
+		await interaction.reply('Boop!');
+	}
+});
+
+const fs = require('node:fs');
+const { Client, Collection, Intents } = require('discord.js');
+const { BOT_TOKEN } = require('./.env');
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+
+client.commands = new Collection();
+
 // Authenticate
 client.login(process.env.BOT_TOKEN);
 
