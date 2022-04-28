@@ -18,6 +18,10 @@ async function fetchData() {
   if (window.sessionStorage.getItem("github-token") && document.getElementById("github").value == "enabled") {
 
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
+
+    //if (req.body.gitRepositories.includes(",") === false)
+
+
     /* let githubCommits = */ await fetchGithubLogs(
       window.sessionStorage.getItem("githubRepositoriesOwner"),
       checkAuthenticationStatus().github,

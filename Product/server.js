@@ -137,10 +137,15 @@ app.post("/getGithubRepositories", async (req, res) => {
 });
 
 app.post("/getGitCommits", async (req, res) => {
+
+  let GitCommitArray = [];
+
   // hvis der ikke findes et array:
-  if (req.body.gitRepositories.includes(",") === false) {
+  let loadedAllCommits = false;
+  let pageCount = 1;
+  while (loadedAllCommits === false) {
     var r = await fetch(
-      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}/commits`,
+      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}/commits?per_page=100&page=${pageCount}`,
       {
         method: "GET",
         headers: {
@@ -150,9 +155,12 @@ app.post("/getGitCommits", async (req, res) => {
       }
     );
     var data = await r.json();
-    if (!r.ok) console.log("not okay");
+    if (!r.ok) console.log("not okay")
+    if (data.length === 0) {
+      loadedAllCommits = true;
+    }
 
-    let GitCommitArray = [];
+
     for (const i of data) {
       let Commit = new Object();
       Commit.author = i.commit.author.name;
@@ -160,11 +168,10 @@ app.post("/getGitCommits", async (req, res) => {
       Commit.date = i.commit.author.date;
       GitCommitArray.push(Commit);
     }
-    res.json(GitCommitArray);
-  } else
-    console.log(
-      "Du har valgt mere end et repository. Den funktion har vi ikke lavet endnu :(("
-    );
+
+    pageCount++;
+  }
+  res.json(GitCommitArray);
 });
 /* 
 // Setup our environment variables via dotenv
