@@ -1,6 +1,7 @@
 let Events = []
 let TrelloActions = []
 
+// Onlick button "send", fetch commits, board actions and Discord messages. Then displays them
 async function fetchData() {
   timeInterval()
 
@@ -25,11 +26,7 @@ async function fetchData() {
     let RepositoriesArray = repositoriesString.split(","),
       RepositoriesOwnerArray = repositoriesOwnerString.split(",");
 
-    console.log(
-      document.getElementById("startTime").value +
-      document.getElementById("endTime").value
-    );
-
+    // Calls the function fetchGithubLogs for each repository selected.
     for (let i = 0; i < RepositoriesArray.length; i++) {
       await fetchGithubLogs(
         RepositoriesOwnerArray[i],
@@ -109,6 +106,7 @@ async function trelloActionsUsersBoards() {
   }
 }
 
+// Returns the token of each application
 function checkAuthenticationStatus() {
   var Tokens = {
     trello: window.sessionStorage.getItem("trello-token"),
@@ -118,6 +116,7 @@ function checkAuthenticationStatus() {
   return Tokens
 }
 
+// Sends POST-request to server to fetch commits from Github. Pushes commits to Event-array.
 async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
   let response = await fetch("/getGitCommits", {
     method: "POST",
@@ -135,17 +134,9 @@ async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
   responseData.forEach(GitCommit => {
     Events.push(GitCommit)
   })
-  // return responseData
 }
 
-function displayGitCommits(CommitsArray) {
-  overviewWindow = document.getElementById("overviewWindow")
-  for (const Commit of CommitsArray) {
-    overviewWindow.innerHTML += `<p>Author: ${Commit.author} || Date: ${Commit.date}<br>
-    Message: ${Commit.message}</p><br><br>`
-  }
-}
-
+// Checks whether the selected time interval is valid.
 function timeInterval() {
   var dateStringStart = Date.parse(document.getElementById("startTime").value)
   var dateStringEnd = Date.parse(document.getElementById("endTime").value)

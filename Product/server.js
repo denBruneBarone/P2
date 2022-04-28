@@ -72,6 +72,7 @@ app.post("/discord-code", async (req, res) => {
   res.json({ token: _json.access_token, error: false });
 });
 
+// Redirects client to the temporary page githubAuthentication.html while authenticating
 app.get("/githubAuthentication", (req, res) => {
   res.sendFile(__dirname + "/public/githubAuthentication.html");
 });
@@ -97,23 +98,7 @@ app.post("/githubToken", async (req, res) => {
     });
 });
 
-app.post(`/getGithubUsername`, async (req, res) => {
-  var r = await fetch("https://api.github.com/user", {
-    method: "GET",
-    headers: {
-      Authorization: `token ${req.body.gitToken}`,
-    },
-  });
-
-  var data = await r.json();
-  if (!r.ok) {
-    console.log("not okay");
-    console.log(data);
-  }
-  console.log(data.login);
-  res.json({ gitUsername: data.login });
-});
-
+// Sends GET-request to Githubs API to retrieve the clients repositories. Sends the response back to the client as a JSON object.
 app.post("/getGithubRepositories", async (req, res) => {
   let githubToken = req.body.gitToken;
   let githubRepositories = [];
@@ -136,16 +121,13 @@ app.post("/getGithubRepositories", async (req, res) => {
     });
 });
 
+/* Sends GET-request to Githubs API to retrieve the commits from selected repository. Loops iteratively until there are no more commits to fetch. 
+Sends the response back to the client as a JSON object. */
 app.post("/getGitCommits", async (req, res) => {
-
-  let GitCommitArray = [];
-
-  let loadedAllCommits = false;
-  let pageCount = 1;
+  let GitCommitArray = [], loadedAllCommits = false, pageCount = 1;
   while (loadedAllCommits === false) {
     var r = await fetch(
-      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}
-      /commits?per_page=100&page=${pageCount}&since=${req.body.from}&until=${req.body.to}`,
+      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}/commits?per_page=100&page=${pageCount}&since=${req.body.from}&until=${req.body.to}`,
       {
         method: "GET",
         headers: {
@@ -155,10 +137,9 @@ app.post("/getGitCommits", async (req, res) => {
       }
     );
     var data = await r.json();
+
     if (!r.ok) console.log("not okay")
-    if (data.length === 0) {
-      loadedAllCommits = true;
-    }
+    if (data.length === 0) loadedAllCommits = true;
 
     for (const i of data) {
       let Commit = new Object();

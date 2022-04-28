@@ -1,6 +1,6 @@
 let Boards = [];
 
-// functions
+// Returns the token of each application
 function checkAuthenticationStatus() {
   var Tokens = {
     trello: window.sessionStorage.getItem("trello-token"),
@@ -10,6 +10,7 @@ function checkAuthenticationStatus() {
   return Tokens;
 }
 
+// When continue button is pressed, go to overview. 
 async function goToOverview() {
   await getSelectedTrelloBoards()
   await submitSelectedRepos()
@@ -26,25 +27,10 @@ function getSelectedTrelloBoards() {
   window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
 }
 
-async function getGithubUsername(Tokens) {
-  let response = await fetch(`/getGithubUsername`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      gitToken: Tokens.github,
-    }),
-  });
-  let responseData = await response.json();
-  if (!response.ok) console.log("fejl");
-  let gitUsername = responseData.gitUsername;
-  return gitUsername;
-}
-
-async function getGitRepositories(Tokens, githubUsername) {
+// Sends POST-request for repositories to server and creates check-list in retrieveFrom.html
+async function getGitRepositories(Tokens) {
   let Repositories = {};
-  console.log("vi er i getgitrepos");
+
   fetch(`/getGithubRepositories`, {
     method: "POST",
     headers: {
@@ -52,13 +38,9 @@ async function getGitRepositories(Tokens, githubUsername) {
     },
     body: JSON.stringify({
       gitToken: Tokens.github,
-      username: githubUsername,
     }),
   }).then((response) => {
     response.json().then((responseData) => {
-      console.log("repositiories:");
-      console.log(responseData.Repositories);
-
       const githubForm = document.getElementById("githubForm");
 
       for (const j of responseData.Repositories) {
@@ -77,19 +59,15 @@ async function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github) {
-    if (sessionStorage.githubRepositories) { // Rune Lucas: har ændret navn på sessionStorage item, ellers virkede denne if statement ikke
+    if (sessionStorage.githubRepositories)
       sessionStorage.removeItem("githubRepositories");
-    }
-    let githubUsername = await getGithubUsername(Tokens);
 
-    window.sessionStorage.setItem("github-username", githubUsername);
-
-    getGitRepositories(Tokens, githubUsername);
+    getGitRepositories(Tokens);
   }
   if (Tokens.trello) {
-    if (sessionStorage.Boards) {
+    if (sessionStorage.Boards)
       sessionStorage.removeItem("Boards");
-    }
+
     getTrelloBoards();
   }
   if (Tokens.discord) {
@@ -97,19 +75,17 @@ async function createLists() {
   }
 }
 
+// Checks each checklist-item for checkmark and saves checked repositories in session storage
 function submitSelectedRepos() {
   let selectedRepositories = [];
   let selectedRepositoriesOwner = [];
-  // button = document.getElementById("githubButton");
-  // button.innerHTML = "Github saved";
-  // button.disabled = true;
+
   for (const i of document.getElementsByClassName("githubRepositories")) {
     if (i.checked) {
       selectedRepositories.push(i.value);
       selectedRepositoriesOwner.push(i.id)
     }
   }
-  console.log("selected repositories: " + selectedRepositories);
   window.sessionStorage.setItem("githubRepositories", selectedRepositories);
   window.sessionStorage.setItem("githubRepositoriesOwner", selectedRepositoriesOwner);
 }

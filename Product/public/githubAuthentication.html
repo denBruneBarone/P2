@@ -15,7 +15,6 @@
    <script>
       // githubCode is read from the parameters of the url
       let githubCode = new URL(window.location.href).searchParams.get("code");
-      console.log(githubCode);
 
       /* this function sends a POST request to our server containing githubCode. 
       It then waits for response to be fully loaded before saving github-token to session storeage and redirecting to localhost:3000 */
@@ -28,7 +27,6 @@
             })
          }).then(response => {
             response.json().then(responseData => {
-               console.log(responseData.token);
                window.sessionStorage.setItem("github-token", responseData.token);
                window.location.replace("http://localhost:3000/");
             });
