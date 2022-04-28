@@ -126,11 +126,11 @@ app.post("/getGithubRepositories", async (req, res) => {
 
     })
     .then((response) => {
-      let i = 0;
-      for (const j of response.data) {
-        /* console.log(`repository ${i} hedder: ${j.name}`); */
-        githubRepositories[i] = j.name;
-        i++;
+      for (const i of response.data) {
+        let Repo = new Object();
+        Repo.owner = i.owner.login;
+        Repo.repositoryName = i.name
+        githubRepositories.push(Repo);
       }
       res.json({ Repositories: githubRepositories });
     });
@@ -140,7 +140,7 @@ app.post("/getGitCommits", async (req, res) => {
   // hvis der ikke findes et array:
   if (req.body.gitRepositories.includes(",") === false) {
     var r = await fetch(
-      `https://api.github.com/repos/${req.body.gitUsername}/${req.body.gitRepositories}/commits`,
+      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}/commits`,
       {
         method: "GET",
         headers: {

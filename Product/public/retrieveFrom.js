@@ -56,17 +56,14 @@ async function getGitRepositories(Tokens, githubUsername) {
     }),
   }).then((response) => {
     response.json().then((responseData) => {
-      Repositories = responseData.Repositories;
       console.log("repositiories:");
-      console.log(Repositories);
+      console.log(responseData.Repositories);
 
       const githubForm = document.getElementById("githubForm");
 
-      let i = 0;
-      for (const j of Repositories) {
-        githubForm.innerHTML += `<input type="checkbox" id="repo${i}" name="${j}" value="${j}" class="githubRepositories">
-        <label for="repo${i}"> ${j} </label> <br>`;
-        i++;
+      for (const j of responseData.Repositories) {
+        githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
+        <label for="repo${j.repositoryName}"> ${j.repositoryName} </label> <br>`;
       }
     });
   });
@@ -102,16 +99,19 @@ async function createLists() {
 
 function submitSelectedRepos() {
   let selectedRepositories = [];
+  let selectedRepositoriesOwner = [];
   // button = document.getElementById("githubButton");
   // button.innerHTML = "Github saved";
   // button.disabled = true;
   for (const i of document.getElementsByClassName("githubRepositories")) {
     if (i.checked) {
       selectedRepositories.push(i.value);
+      selectedRepositoriesOwner.push(i.id)
     }
   }
   console.log("selected repositories: " + selectedRepositories);
   window.sessionStorage.setItem("githubRepositories", selectedRepositories);
+  window.sessionStorage.setItem("githubRepositoriesOwner", selectedRepositoriesOwner);
 }
 
 async function getTrelloBoards() {

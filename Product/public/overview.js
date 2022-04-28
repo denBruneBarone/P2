@@ -19,7 +19,7 @@ async function fetchData() {
 
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
     /* let githubCommits = */ await fetchGithubLogs(
-      window.sessionStorage.getItem("github-username"),
+      window.sessionStorage.getItem("githubRepositoriesOwner"),
       checkAuthenticationStatus().github,
       window.sessionStorage.getItem("githubRepositories")
     )
@@ -103,12 +103,12 @@ function checkAuthenticationStatus() {
   return Tokens
 }
 
-async function fetchGithubLogs(username, token, Repositories) {
+async function fetchGithubLogs(owner, token, Repositories) {
   let response = await fetch("/getGitCommits", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      gitUsername: username,
+      gitRepositoriesOwner: owner,
       gitToken: token,
       gitRepositories: Repositories,
       /* logsFrom: fromDate,
@@ -153,7 +153,7 @@ function authApi() { // dry concept malthe
   let Tokens = checkAuthenticationStatus()
   for (alias of Object.keys(Tokens)) {
     console.log(alias)
-    if (Tokens[alias] === null) { 
+    if (Tokens[alias] === null) {
       console.log(alias, "disabled")
       document.getElementById(alias).disabled = true
       document.getElementById(alias).value = "disabled"
