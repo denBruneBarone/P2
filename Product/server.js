@@ -160,12 +160,13 @@ app.post("/getGitCommits", async (req, res) => {
       loadedAllCommits = true;
     }
 
-
     for (const i of data) {
       let Commit = new Object();
       Commit.author = i.commit.author.name;
       Commit.message = i.commit.message;
       Commit.date = i.commit.author.date;
+      Commit.location = req.body.gitRepositories;
+      Commit.service = "github";
       GitCommitArray.push(Commit);
     }
 

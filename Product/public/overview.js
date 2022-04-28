@@ -19,19 +19,20 @@ async function fetchData() {
 
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
 
+    let repositoriesString = window.sessionStorage.getItem("githubRepositories"),
+      repositoriesOwnerString = window.sessionStorage.getItem("githubRepositoriesOwner");
+    // if (repositoriesString.includes(",") === true) 
+    let RepositoriesArray = repositoriesString.split(","),
+      RepositoriesOwnerArray = repositoriesOwnerString.split(",");
 
-    /*   if (req.body.gitRepositories.includes(",") === true) {
-        let repositoriesString = req.body.gitRepositories
-        const RepositoryArray = repositoriesString.split(",");
-        console.log(RepositoryArray);
-      }
-   */
+    for (let i = 0; i < RepositoriesArray.length; i++) {
+      await fetchGithubLogs(
+        RepositoriesOwnerArray[i],
+        checkAuthenticationStatus().github,
+        RepositoriesArray[i]
+      )
+    }
 
-    await fetchGithubLogs(
-      window.sessionStorage.getItem("githubRepositoriesOwner"),
-      checkAuthenticationStatus().github,
-      window.sessionStorage.getItem("githubRepositories")
-    )
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
   Events.sort(compareDate)
@@ -125,7 +126,6 @@ async function fetchGithubLogs(owner, token, Repositories) {
   let responseData = await response.json()
   if (!response.ok) console.log("fejl i response på github")
   responseData.forEach(GitCommit => {
-    GitCommit.service = "github";
     Events.push(GitCommit)
   })
   // return responseData
