@@ -157,12 +157,17 @@ function onLoad() {
 function authApi() { // dry concept malthe
   let Tokens = checkAuthenticationStatus()
   for (alias of Object.keys(Tokens)) {
-    console.log(alias)
     if (Tokens[alias] === null) {
-      console.log(alias, "disabled")
-      document.getElementById(alias).disabled = true
       document.getElementById(alias).value = "disabled"
       document.getElementById(alias).style = "opacity: 0.5; border: none"
+    }
+    else if (alias == "trello") {
+      if (Tokens[alias] != null) {
+        if (sessionStorage.getItem("Boards") != []) {
+          document.getElementById(alias).value = "enabled"
+          toggleApi(alias)
+        }
+      }
     }
   }
 }
@@ -175,8 +180,14 @@ function toggleApi(btn_id) {
   }
   else if (document.getElementById(btn_id).value == "disabled") {
     if (btn_id == "trello") {
-      if (!window.sessionStorage.getItem("Boards")) {
-        window.alert("If you want to load your Trello Actions, please select your availible Trello Boards!")
+      if (window.sessionStorage.getItem("trello-token") == undefined) {
+        window.alert("Please authenticate our Appliction")
+        window.location.replace("https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/trello&scope=read")
+        return
+      }
+      if ([] != window.sessionStorage.getItem("Boards")) {
+        window.alert("Please select your availible Trello Boards")
+        window.location.replace("http://localhost:3000/retrieveFrom.html")
         return
       }
     }
