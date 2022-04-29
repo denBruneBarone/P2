@@ -26,17 +26,20 @@ async function fetchData() {
     let RepositoriesArray = repositoriesString.split(","),
       RepositoriesOwnerArray = repositoriesOwnerString.split(",");
 
-    // Calls the function fetchGithubLogs for each repository selected.
-    for (let i = 0; i < RepositoriesArray.length; i++) {
-      await fetchGithubLogs(
-        RepositoriesOwnerArray[i],
-        checkAuthenticationStatus().github,
-        RepositoriesArray[i],
-        document.getElementById("startTime").value,
-        document.getElementById("endTime").value
-      )
-    }
+    if (RepositoriesArray.length == 1 && RepositoriesArray[0] == "") { }
+    else {
+      // Calls the function fetchGithubLogs for each repository selected.
+      for (let i = 0; i < RepositoriesArray.length; i++) {
+        await fetchGithubLogs(
+          RepositoriesOwnerArray[i],
+          checkAuthenticationStatus().github,
+          RepositoriesArray[i],
+          document.getElementById("startTime").value,
+          document.getElementById("endTime").value
+        )
+      }
 
+    }
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
   Events.sort(compareDate)
