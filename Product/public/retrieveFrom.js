@@ -31,8 +31,9 @@ function getSelectedTrelloBoards() {
     }
   }
   // store Boards in session storage and redirect user
-  window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
-
+  if (Boards.length > 0) {
+    window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
+  }
 }
 
 // Sends POST-request for repositories to server and creates check-list in retrieveFrom.html

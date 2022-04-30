@@ -157,7 +157,7 @@ function onLoad() {
 }
 
 // preset's the services toggles
-function authApi() { // dry concept malthe
+function authApi() {
   let Tokens = checkAuthenticationStatus()
   for (alias of Object.keys(Tokens)) {
     if (Tokens[alias] === null) {
@@ -165,13 +165,26 @@ function authApi() { // dry concept malthe
       document.getElementById(alias).style = "opacity: 0.5; border: none"
     }
     else if (alias == "trello") {
-      if (Tokens[alias] != null) {
-        if (sessionStorage.getItem("Boards") != []) {
-          document.getElementById(alias).value = "enabled"
-          toggleApi(alias)
-        }
+      if (sessionStorage.getItem("Boards") == undefined) {
+        toggleApi(alias)
       }
     }
+    else if (alias == "github") {
+      if (sessionStorage.getItem("githubRepositories") == "") {
+        toggleApi(alias)
+      }
+    }
+  }
+}
+
+function getAuthUrl(alias) {
+  switch (alias) {
+    case "trello":
+      return "https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/trello&scope=read"
+    case "discord":
+      return "https://discord.com/api/oauth2/authorize?client_id=957208170365866044&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdiscord&response_type=code&scope=guilds+messages.read"
+    case "github":
+      return "https://github.com/login/oauth/authorize?client_id=de223b25bb78c82a9bd7&scope=repo user"
   }
 }
 
@@ -182,14 +195,21 @@ function toggleApi(btn_id) {
     //Add function til at stoppe afsending af data i box
   }
   else if (document.getElementById(btn_id).value == "disabled") {
-    if (btn_id == "trello") {
-      if (window.sessionStorage.getItem("trello-token") == undefined) {
-        window.alert("Please authenticate our Appliction")
-        window.location.replace("https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/trello&scope=read")
+    if (window.sessionStorage.getItem(btn_id + "-token") == undefined) {
+      window.alert("Please authenticate our Appliction")
+      window.location.replace(getAuthUrl(btn_id))
+      return 
+    }
+    else if (btn_id == "trello") {
+      if (window.sessionStorage.getItem("Boards") == undefined) {
+        window.alert("Please select your availible Trello Boards")
+        window.location.replace("http://localhost:3000/retrieveFrom.html")
         return
       }
-      if ([] != window.sessionStorage.getItem("Boards")) {
-        window.alert("Please select your availible Trello Boards")
+    }
+    else if(btn_id == "github") {
+      if (window.sessionStorage.getItem("githubRepositories") == "") {
+        window.alert("Please select your availible Github Repositories")
         window.location.replace("http://localhost:3000/retrieveFrom.html")
         return
       }
