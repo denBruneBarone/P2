@@ -1,4 +1,6 @@
 let Boards = [];
+let selectedRepositories = [];
+let selectedRepositoriesOwner = [];
 
 // Returns the token of each application
 function checkAuthenticationStatus() {
@@ -14,7 +16,12 @@ function checkAuthenticationStatus() {
 async function goToOverview() {
   await getSelectedTrelloBoards()
   await submitSelectedRepos()
-  window.location.replace("http://localhost:3000/overview.html");
+  if (Boards.length == 0 && selectedRepositories.length == 0) {
+    window.alert("Please select at least one location!")
+  }
+  else {
+    window.location.replace("http://localhost:3000/overview.html");
+  }
 }
 
 function getSelectedTrelloBoards() {
@@ -25,6 +32,7 @@ function getSelectedTrelloBoards() {
   }
   // store Boards in session storage and redirect user
   window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
+
 }
 
 // Sends POST-request for repositories to server and creates check-list in retrieveFrom.html
@@ -77,8 +85,6 @@ async function createLists() {
 
 // Checks each checklist-item for checkmark and saves checked repositories in session storage
 function submitSelectedRepos() {
-  let selectedRepositories = [];
-  let selectedRepositoriesOwner = [];
 
   for (const i of document.getElementsByClassName("githubRepositories")) {
     if (i.checked) {
