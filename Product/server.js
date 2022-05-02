@@ -7,6 +7,15 @@ const fetch = require("node-fetch");
 const { url } = require("inspector");
 const { URLSearchParams } = require("url");
 
+// Disc client
+require("dotenv").config();
+const Discord = require("discord.js");
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -164,46 +173,82 @@ app.post("/getGitCommits", async (req, res) => {
     );
 });
 
-// Setup our environment variables via dotenv
-require("dotenv").config();
-// Import relevant classes from discord.js
-const { Client, Intents } = require("discord.js");
-// Instantiate a new client with some necessary parameters.
-const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+app.post("/disc_get_intersected_guilds", async (req, res) => {
+  const userGuilds = req.body.guilds.map((guild) => guild.id); // Antager at de er ens
+  const botGuilds = await client.guilds.fetch(); // Antager at de er ens
+
+  const intersection = botGuilds
+    .filter((botGuilds) => userGuilds.includes(botGuilds.id))
+    .map((botGuilds) => {
+      return {
+        id: botGuilds.id,
+        name: botGuilds.name,
+      };
+    }); // [ {"id": 123, "name": "P2"}, ]
+
+  res.json(intersection);
 });
 
-// Notify progress
-client.on("ready", () => {
-  console.log(`Discordbot ${client.user.tag} active and ready!`);
-  let guilds = client.guilds.cache.map((guild) => guild.id);
-  return guilds;
+app.post("/disc_get_channels", async (req, res) => {
+  const guildId = req.body.intersectedGuild;
+  const discordChannel = client.channels.cache
+    .filter(
+      (chanObj) => chanObj.type === "GUILD_TEXT" && chanObj.guildId === guildId
+    )
+    .map((chanObj) => {
+      return {
+        id: chanObj.id,
+        name: chanObj.name,
+      };
+    });
+  res.json(discordChannel);
 });
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+app.post("/disc_get_messages", async (req, res) => {
+  const channelID = req.body.discord_channel_id;
+  const startDate = Date.parse(req.body.start_date);
+  const endDate = Date.parse(req.body.end_date);
+  const channel = await client.channels.fetch(channelID);
 
-	const { commandName } = interaction;
+  let messagesFromApi = [];
 
-	if (commandName === 'ping') {
-		await interaction.reply('Pong!');
-	} else if (commandName === 'beep') {
-		await interaction.reply('Boop!');
-	}
+  // Create message pointer
+  let messagePointer = await channel.messages
+    .fetch({ limit: 1 })
+    .then((messagePage) => (messagePage.size === 1 ? messagePage.at(0) : null));
+
+  while (messagePointer) {
+    await channel.messages
+      .fetch({ limit: 100, before: messagePointer.id })
+      .then((messagePage) => {
+        messagePage.forEach((msg) => messagesFromApi.push(msg));
+
+        // Update our message pointer to be last message in page of messages
+        messagePointer =
+          0 < messagePage.size ? messagePage.at(messagePage.size - 1) : null;
+      });
+  }
+
+  let filteredMessages = messagesFromApi
+    .filter((msg) => {
+      return msg.createdTimestamp > startDate && msg.createdTimestamp < endDate;
+    })
+    .map((msgObj) => {
+      let msgDate = new Date(msgObj.createdTimestamp);
+
+      return {
+        user: msgObj.author.username,
+        content: msgObj.content,
+        timestamp: msgDate.toLocaleString(),
+      };
+    });
+
+  res.json({ messages: filteredMessages });
 });
 
-const fs = require('node:fs');
-const { Client, Collection, Intents } = require('discord.js');
-const { BOT_TOKEN } = require('./.env');
-
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-
-client.commands = new Collection();
-
-// Authenticate
 client.login(process.env.BOT_TOKEN);
 
-// the server run's
+// the server runs
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000")
 );

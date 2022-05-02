@@ -11,6 +11,9 @@ async function fetchData() {
     return
   }
   Events = []
+  if (window.sessionStorage.getItem("discord-token") && document.getElementById("discord").value == "enabled"){
+    await displayDiscMessages();
+  }
   if (window.sessionStorage.getItem("trello-token") && document.getElementById("trello").value == "enabled" && window.sessionStorage.getItem("Boards")) {
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Trello Actions...</h1>"
     await trelloActionsUsersBoards()
@@ -132,6 +135,41 @@ function displayGitCommits(CommitsArray) {
   }
 }
 
+async function getDiscMessages(){
+  const channelID = window.sessionStorage.getItem("channelID");
+  const startDate = document.getElementById("startTime").value;
+  const endDate = document.getElementById("endTime").value;
+
+  let response = await fetch(`/disc_get_messages`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        discord_channel_id: channelID,
+        start_date: startDate,
+        end_date: endDate
+    }),
+  })
+  let discMessages = await response.json();
+  console.log(discMessages)
+  return discMessages.messages
+}
+
+async function displayDiscMessages(){
+  let messages = await getDiscMessages();
+
+  overviewWindow = document.getElementById("overviewWindow")
+  for (const i of messages) {
+    console.log(":DDDDD")
+    overviewWindow.innerHTML += `<p>User: ${i.user} || Date: ${i.timestamp}<br>
+    Message: ${i.content}</p><br><br>`
+  }
+
+}
+
+//Function for when selecting a start and end date in the selector
 function timeInterval() {
   var dateStringStart = Date.parse(document.getElementById("startTime").value)
   var dateStringEnd = Date.parse(document.getElementById("endTime").value)
@@ -148,7 +186,7 @@ function onLoad() {
   authApi()
 }
 
-// preset's the services toggles
+// presets the services toggles
 function authApi() { // dry concept malthe
   let Tokens = checkAuthenticationStatus()
   for (alias of Object.keys(Tokens)) {
@@ -162,6 +200,7 @@ function authApi() { // dry concept malthe
   }
 }
 
+//Function to toggle the different services' data off and on,
 function toggleApi(btn_id) {
   if (document.getElementById(btn_id).value == "enabled") {
     document.getElementById(btn_id).value = "disabled"
@@ -171,7 +210,7 @@ function toggleApi(btn_id) {
   else if (document.getElementById(btn_id).value == "disabled") {
     if (btn_id == "trello") {
       if (!window.sessionStorage.getItem("Boards")) {
-        window.alert("If you want to load your Trello Actions, please select your availible Trello Boards!")
+        window.alert("If you want to load your Trello Actions, please select your available Trello Boards!")
         return
       }
     }
