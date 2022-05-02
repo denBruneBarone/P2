@@ -81,9 +81,8 @@ async function trelloFetchBoard(since, before, boardID) {
   return _json.length
 }
 
+// iterate through boards, send request for each board and handle actions
 async function trelloActionsUsersBoards() {
-  // iterate through boards, send request for each board and handle actions
-
   let since = document.getElementById("startTime").value
   let before = document.getElementById("endTime").value
 
@@ -198,7 +197,7 @@ function toggleApi(btn_id) {
     if (window.sessionStorage.getItem(btn_id + "-token") == undefined) {
       window.alert("Please authenticate our Appliction")
       window.location.replace(getAuthUrl(btn_id))
-      return 
+      return
     }
     else if (btn_id == "trello") {
       if (window.sessionStorage.getItem("Boards") == undefined) {
@@ -207,7 +206,7 @@ function toggleApi(btn_id) {
         return
       }
     }
-    else if(btn_id == "github") {
+    else if (btn_id == "github") {
       if (window.sessionStorage.getItem("githubRepositories") == "") {
         window.alert("Please select your availible Github Repositories")
         window.location.replace("http://localhost:3000/retrieveFrom.html")
