@@ -1,6 +1,7 @@
 let Events = []
 let TrelloActions = []
 
+// Onlick button "send", fetch commits, board actions and Discord messages. Then displays them
 async function fetchData() {
   timeInterval()
 
@@ -21,13 +22,27 @@ async function fetchData() {
   if (window.sessionStorage.getItem("github-token") && document.getElementById("github").value == "enabled") {
 
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Github Commits...</h1>"
-    /* let githubCommits = */ await fetchGithubLogs(
-      window.sessionStorage.getItem("github-username"),
-      checkAuthenticationStatus().github,
-      window.sessionStorage.getItem("githubRepositories")
-    )
-    // console.log(githubCommits)
-    // displayGitCommits(githubCommits)
+
+    let repositoriesString = window.sessionStorage.getItem("githubRepositories"),
+      repositoriesOwnerString = window.sessionStorage.getItem("githubRepositoriesOwner");
+
+    let RepositoriesArray = repositoriesString.split(","),
+      RepositoriesOwnerArray = repositoriesOwnerString.split(",");
+
+    if (RepositoriesArray.length == 1 && RepositoriesArray[0] == "") { }
+    else {
+      // Calls the function fetchGithubLogs for each repository selected.
+      for (let i = 0; i < RepositoriesArray.length; i++) {
+        await fetchGithubLogs(
+          RepositoriesOwnerArray[i],
+          checkAuthenticationStatus().github,
+          RepositoriesArray[i],
+          document.getElementById("startTime").value,
+          document.getElementById("endTime").value
+        )
+      }
+
+    }
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
   Events.sort(compareDate)
@@ -97,6 +112,7 @@ async function trelloActionsUsersBoards() {
   }
 }
 
+// Returns the token of each application
 function checkAuthenticationStatus() {
   var Tokens = {
     trello: window.sessionStorage.getItem("trello-token"),
@@ -106,33 +122,24 @@ function checkAuthenticationStatus() {
   return Tokens
 }
 
-async function fetchGithubLogs(username, token, Repositories) {
+// Sends POST-request to server to fetch commits from Github. Pushes commits to Event-array.
+async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
   let response = await fetch("/getGitCommits", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      gitUsername: username,
+      gitRepositoriesOwner: owner,
       gitToken: token,
       gitRepositories: Repositories,
-      /* logsFrom: fromDate,
-      logsTo: toDate, */
+      from: startTime,
+      to: endTime,
     }),
   })
   let responseData = await response.json()
   if (!response.ok) console.log("fejl i response på github")
   responseData.forEach(GitCommit => {
-    GitCommit.service = "github";
     Events.push(GitCommit)
   })
-  // return responseData
-}
-
-function displayGitCommits(CommitsArray) {
-  overviewWindow = document.getElementById("overviewWindow")
-  for (const Commit of CommitsArray) {
-    overviewWindow.innerHTML += `<p>Author: ${Commit.author} || Date: ${Commit.date}<br>
-    Message: ${Commit.message}</p><br><br>`
-  }
 }
 
 async function getDiscMessages(){
@@ -176,8 +183,8 @@ function timeInterval() {
 
   if (dateStringEnd < dateStringStart) {
     alert("End date cannot be less than the start date!")
-    document.getElementById("startTime").value = ""
-    document.getElementById("endTime").value = ""
+    document.getElementById("startTime").value = "";
+    document.getElementById("endTime").value = "";
     return
   }
 }
@@ -186,17 +193,35 @@ function onLoad() {
   authApi()
 }
 
-// presets the services toggles
-function authApi() { // dry concept malthe
+// preset's the services toggles
+function authApi() {
   let Tokens = checkAuthenticationStatus()
   for (alias of Object.keys(Tokens)) {
-    console.log(alias)
-    if (Tokens[alias] === null) { 
-      console.log(alias, "disabled")
-      document.getElementById(alias).disabled = true
+    if (Tokens[alias] === null) {
       document.getElementById(alias).value = "disabled"
       document.getElementById(alias).style = "opacity: 0.5; border: none"
     }
+    else if (alias == "trello") {
+      if (sessionStorage.getItem("Boards") == undefined) {
+        toggleApi(alias)
+      }
+    }
+    else if (alias == "github") {
+      if (sessionStorage.getItem("githubRepositories") == "") {
+        toggleApi(alias)
+      }
+    }
+  }
+}
+
+function getAuthUrl(alias) {
+  switch (alias) {
+    case "trello":
+      return "https://trello.com/1/authorize?key=0b862279af0ae326479a419925f3ea7a&return_url=http://localhost:3000/trello&scope=read"
+    case "discord":
+      return "https://discord.com/api/oauth2/authorize?client_id=957208170365866044&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdiscord&response_type=code&scope=guilds+messages.read"
+    case "github":
+      return "https://github.com/login/oauth/authorize?client_id=de223b25bb78c82a9bd7&scope=repo user"
   }
 }
 
@@ -208,9 +233,22 @@ function toggleApi(btn_id) {
     //Add function til at stoppe afsending af data i box
   }
   else if (document.getElementById(btn_id).value == "disabled") {
-    if (btn_id == "trello") {
-      if (!window.sessionStorage.getItem("Boards")) {
-        window.alert("If you want to load your Trello Actions, please select your available Trello Boards!")
+    if (window.sessionStorage.getItem(btn_id + "-token") == undefined) {
+      window.alert("Please authenticate our Appliction")
+      window.location.replace(getAuthUrl(btn_id))
+      return 
+    }
+    else if (btn_id == "trello") {
+      if (window.sessionStorage.getItem("Boards") == undefined) {
+        window.alert("Please select your availible Trello Boards")
+        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        return
+      }
+    }
+    else if(btn_id == "github") {
+      if (window.sessionStorage.getItem("githubRepositories") == "") {
+        window.alert("Please select your availible Github Repositories")
+        window.location.replace("http://localhost:3000/retrieveFrom.html")
         return
       }
     }

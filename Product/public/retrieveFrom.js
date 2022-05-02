@@ -1,7 +1,8 @@
 let Boards = [];
-//require('dotenv').config();
+let selectedRepositories = [];
+let selectedRepositoriesOwner = [];
 
-// functions
+// Returns the token of each application
 function checkAuthenticationStatus() {
   var Tokens = {
     trello: window.sessionStorage.getItem("trello-token"),
@@ -11,10 +12,16 @@ function checkAuthenticationStatus() {
   return Tokens;
 }
 
+// When continue button is pressed, go to overview. 
 async function goToOverview() {
-  await getSelectedTrelloBoards();
-  await submitSelectedRepos();
-  window.location.replace("http://localhost:3000/overview.html");
+  await getSelectedTrelloBoards()
+  await submitSelectedRepos()
+  if (Boards.length == 0 && selectedRepositories.length == 0) {
+    window.alert("Please select at least one location!")
+  }
+  else {
+    window.location.replace("http://localhost:3000/overview.html");
+  }
 }
 
 function getSelectedTrelloBoards() {
@@ -24,28 +31,15 @@ function getSelectedTrelloBoards() {
     }
   }
   // store Boards in session storage and redirect user
-  window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
+  if (Boards.length > 0) {
+    window.sessionStorage.setItem("Boards", JSON.stringify(Boards));
+  }
 }
 
-async function getGithubUsername(Tokens) {
-  let response = await fetch(`/getGithubUsername`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      gitToken: Tokens.github,
-    }),
-  });
-  let responseData = await response.json();
-  if (!response.ok) console.log("fejl");
-  let gitUsername = responseData.gitUsername;
-  return gitUsername;
-}
-
-async function getGitRepositories(Tokens, githubUsername) {
+// Sends POST-request for repositories to server and creates check-list in retrieveFrom.html
+async function getGitRepositories(Tokens) {
   let Repositories = {};
-  console.log("vi er i getgitrepos");
+
   fetch(`/getGithubRepositories`, {
     method: "POST",
     headers: {
@@ -53,21 +47,14 @@ async function getGitRepositories(Tokens, githubUsername) {
     },
     body: JSON.stringify({
       gitToken: Tokens.github,
-      username: githubUsername,
     }),
   }).then((response) => {
     response.json().then((responseData) => {
-      Repositories = responseData.Repositories;
-      console.log("repositiories:");
-      console.log(Repositories);
-
       const githubForm = document.getElementById("githubForm");
 
-      let i = 0;
-      for (const j of Repositories) {
-        githubForm.innerHTML += `<input type="checkbox" id="repo${i}" name="${j}" value="${j}" class="githubRepositories">
-        <label for="repo${i}"> ${j} </label> <br>`;
-        i++;
+      for (const j of responseData.Repositories) {
+        githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
+        <label for="repo${j.repositoryName}"> ${j.repositoryName} </label> <br>`;
       }
     });
   });
@@ -81,36 +68,30 @@ async function createLists() {
   let Tokens = checkAuthenticationStatus();
 
   if (Tokens.github) {
-    if (sessionStorage.githubRepositories) {
-      // Rune Lucas: har ændret navn på sessionStorage item, ellers virkede denne if statement ikke
+    if (sessionStorage.githubRepositories)
       sessionStorage.removeItem("githubRepositories");
-    }
-    let githubUsername = await getGithubUsername(Tokens);
 
-    window.sessionStorage.setItem("github-username", githubUsername);
-
-    getGitRepositories(Tokens, githubUsername);
+    getGitRepositories(Tokens);
   }
   if (Tokens.trello) {
-    if (sessionStorage.Boards) {
+    if (sessionStorage.Boards)
       sessionStorage.removeItem("Boards");
-    }
+
     getTrelloBoards();
   }
 }
 
+// Checks each checklist-item for checkmark and saves checked repositories in session storage
 function submitSelectedRepos() {
-  let selectedRepositories = [];
-  // button = document.getElementById("githubButton");
-  // button.innerHTML = "Github saved";
-  // button.disabled = true;
+
   for (const i of document.getElementsByClassName("githubRepositories")) {
     if (i.checked) {
       selectedRepositories.push(i.value);
+      selectedRepositoriesOwner.push(i.id)
     }
   }
-  console.log("selected repositories: " + selectedRepositories);
   window.sessionStorage.setItem("githubRepositories", selectedRepositories);
+  window.sessionStorage.setItem("githubRepositoriesOwner", selectedRepositoriesOwner);
 }
 
 async function getTrelloBoards() {

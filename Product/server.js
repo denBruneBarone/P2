@@ -81,6 +81,7 @@ app.post("/discord-code", async (req, res) => {
   res.json({ token: _json.access_token, error: false });
 });
 
+// Redirects client to the temporary page githubAuthentication.html while authenticating
 app.get("/githubAuthentication", (req, res) => {
   res.sendFile(__dirname + "/public/githubAuthentication.html");
 });
@@ -106,47 +107,36 @@ app.post("/githubToken", async (req, res) => {
     });
 });
 
-app.post(`/getGithubUsername`, async (req, res) => {
-  var r = await fetch("https://api.github.com/user", {
-    method: "GET",
-    headers: {
-      Authorization: `token ${req.body.gitToken}`,
-    },
-  });
-
-  var data = await r.json();
-  if (!r.ok) {
-    console.log("not okay");
-    console.log(data);
-  }
-  console.log(data.login);
-  res.json({ gitUsername: data.login });
-});
-
+// Sends GET-request to Githubs API to retrieve the clients repositories. Sends the response back to the client as a JSON object.
 app.post("/getGithubRepositories", async (req, res) => {
   let githubToken = req.body.gitToken;
   let githubRepositories = [];
   axios
-    .get(`https://api.github.com/users/${req.body.username}/repos`, {
-      Authorization: "token " + githubToken,
-      accept: "application/vnd.github.v3+json",
+    .get(`https://api.github.com/user/repos`, {
+      headers: {
+        Authorization: "token " + githubToken,
+        accept: "application/vnd.github.v3+json",
+      }
+
     })
     .then((response) => {
-      let i = 0;
-      for (const j of response.data) {
-        /* console.log(`repository ${i} hedder: ${j.name}`); */
-        githubRepositories[i] = j.name;
-        i++;
+      for (const i of response.data) {
+        let Repo = new Object();
+        Repo.owner = i.owner.login;
+        Repo.repositoryName = i.name
+        githubRepositories.push(Repo);
       }
       res.json({ Repositories: githubRepositories });
     });
 });
 
+/* Sends GET-request to Githubs API to retrieve the commits from selected repository. Loops iteratively until there are no more commits to fetch. 
+Sends the response back to the client as a JSON object. */
 app.post("/getGitCommits", async (req, res) => {
-  // hvis der ikke findes et array:
-  if (req.body.gitRepositories.includes(",") === false) {
+  let GitCommitArray = [], loadedAllCommits = false, pageCount = 1;
+  while (loadedAllCommits === false) {
     var r = await fetch(
-      `https://api.github.com/repos/${req.body.gitUsername}/${req.body.gitRepositories}/commits`,
+      `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}/commits?per_page=100&page=${pageCount}&since=${req.body.from}&until=${req.body.to}`,
       {
         method: "GET",
         headers: {
@@ -156,21 +146,23 @@ app.post("/getGitCommits", async (req, res) => {
       }
     );
     var data = await r.json();
-    if (!r.ok) console.log("not okay");
 
-    let GitCommitArray = [];
+    if (!r.ok) console.log("not okay")
+    if (data.length === 0) loadedAllCommits = true;
+
     for (const i of data) {
       let Commit = new Object();
       Commit.author = i.commit.author.name;
       Commit.message = i.commit.message;
       Commit.date = i.commit.author.date;
+      Commit.location = req.body.gitRepositories;
+      Commit.service = "github";
       GitCommitArray.push(Commit);
     }
-    res.json(GitCommitArray);
-  } else
-    console.log(
-      "Du har valgt mere end et repository. Den funktion har vi ikke lavet endnu :(("
-    );
+
+    pageCount++;
+  }
+  res.json(GitCommitArray);
 });
 
 app.post("/disc_get_intersected_guilds", async (req, res) => {
