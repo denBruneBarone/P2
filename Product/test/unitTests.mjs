@@ -11,7 +11,6 @@ const gitToken = process.env.GITHUB_TOKEN
 describe('API Interactions', function () {
     let app;
 
-    // Called once before any of the tests in this block begin.
     before(function (done) {
 
         app = createApp();
@@ -19,7 +18,6 @@ describe('API Interactions', function () {
             if (err) { return done(err); }
             done();
         });
-
     });
 
     it('POST /getGitCommits should return an object', async function (done) {

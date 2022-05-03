@@ -157,7 +157,7 @@ export function createApp() {
       );
       var data = await r.json();
 
-      if (!r.ok) console.log("not okay")
+      if (!r.ok) console.log("got error message",r.status)
       if (data.length === 0) loadedAllCommits = true;
 
       for (const i of data) {
