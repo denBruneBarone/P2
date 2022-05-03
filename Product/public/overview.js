@@ -1,7 +1,7 @@
 let Events = []
 let TrelloActions = []
 
-// Onlick button "send", fetch commits, board actions and Discord messages. Then displays them
+// Onclick button "send", fetch commits, board actions and Discord messages. Then displays them
 async function fetchData() {
   timeInterval()
 
@@ -11,7 +11,12 @@ async function fetchData() {
       document.getElementById("discord").value == "disabled")) {
     return
   }
+
   Events = []
+  if (window.sessionStorage.getItem("discord-token") && document.getElementById("discord").value == "enabled"){
+    document.getElementById("overviewWindow").innerHTML = "<h1>Loading Discord Messages...</h1>"
+    await getDiscMessages();
+  }
   if (window.sessionStorage.getItem("trello-token") && document.getElementById("trello").value == "enabled" && window.sessionStorage.getItem("Boards")) {
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Trello Actions...</h1>"
     await trelloActionsUsersBoards()
@@ -42,6 +47,14 @@ async function fetchData() {
     }
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
+  console.log(Events.map(e => {
+    return {
+        s: e.service,
+        d: new Date(e.date).getTime()
+      }
+    
+  }))
+
   Events.sort(compareDate)
   document.getElementById("overviewWindow").innerHTML = ""
   if (Events.length == 0) {
@@ -132,13 +145,40 @@ async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
     }),
   })
   let responseData = await response.json()
-  if (!response.ok) console.log("fejl i response på github")
+  if (!response.ok) console.log("Error in respone on github")
   responseData.forEach(GitCommit => {
     Events.push(GitCommit)
   })
 }
 
-// Checks whether the selected time interval is valid.
+async function getDiscMessages(){
+  const guildName = window.sessionStorage.getItem("guildName");
+  const channelName = window.sessionStorage.getItem("channelName");
+  const channelID = window.sessionStorage.getItem("channelID");
+  const startDate = document.getElementById("startTime").value;
+  const endDate = document.getElementById("endTime").value;
+  let response = await fetch(`/disc_get_messages`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        intersectedGuildName: guildName,
+        discord_channel_name: channelName,
+        discord_channel_id: channelID,
+        start_date: startDate,
+        end_date: endDate
+    }),
+  })
+  let responseData = await response.json();
+  if (response.ok)
+  responseData.messages.forEach(messages => {
+    Events.push(messages)
+  })
+}
+
+//Function for when selecting a start and end date in the selector
 function timeInterval() {
   var dateStringStart = Date.parse(document.getElementById("startTime").value)
   var dateStringEnd = Date.parse(document.getElementById("endTime").value)
@@ -187,11 +227,11 @@ function getAuthUrl(alias) {
   }
 }
 
+//Function to toggle the different services' data off and on,
 function toggleApi(btn_id) {
   if (document.getElementById(btn_id).value == "enabled") {
     document.getElementById(btn_id).value = "disabled"
     document.getElementById(btn_id).style = "border-color: red"
-    //Add function til at stoppe afsending af data i box
   }
   else if (document.getElementById(btn_id).value == "disabled") {
     if (window.sessionStorage.getItem(btn_id + "-token") == undefined) {
@@ -201,20 +241,26 @@ function toggleApi(btn_id) {
     }
     else if (btn_id == "trello") {
       if (window.sessionStorage.getItem("Boards") == undefined) {
-        window.alert("Please select your availible Trello Boards")
+        window.alert("Please select your available Trello Boards")
         window.location.replace("http://localhost:3000/retrieveFrom.html")
         return
       }
     }
     else if (btn_id == "github") {
       if (window.sessionStorage.getItem("githubRepositories") == "") {
-        window.alert("Please select your availible Github Repositories")
+        window.alert("Please select your available Github Repositories")
+        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        return
+      }
+    }
+    else if(btn_id == "discord") {
+      if (window.sessionStorage.getItem("channelID") == "") {
+        window.alert("Please select your available server channels")
         window.location.replace("http://localhost:3000/retrieveFrom.html")
         return
       }
     }
     document.getElementById(btn_id).value = "enabled"
     document.getElementById(btn_id).style = "border-color: #27af49"
-    //Add function til at sende data i box
   }
 }
