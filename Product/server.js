@@ -231,7 +231,7 @@ app.post("/disc_get_messages", async (req, res) => {
     .map((msgObj) => {
 
       return {
-        auther: msgObj.author.username,
+        author: msgObj.author.username,
         message: msgObj.content,
         date: msgObj.createdTimestamp,
         location: location,

@@ -13,10 +13,8 @@ async function fetchData() {
   }
 
   Events = []
-  console.log(1)
   if (window.sessionStorage.getItem("discord-token") && document.getElementById("discord").value == "enabled"){
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Discord Messages...</h1>"
-    console.log(2)
     await getDiscMessages();
   }
   if (window.sessionStorage.getItem("trello-token") && document.getElementById("trello").value == "enabled" && window.sessionStorage.getItem("Boards")) {
@@ -48,9 +46,6 @@ async function fetchData() {
 
     }
   }
-  Events.forEach(Event => {
-    console.log(Event)
-  })
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
   Events.sort(compareDate)
   document.getElementById("overviewWindow").innerHTML = ""
@@ -155,7 +150,6 @@ async function getDiscMessages(){
   const channelID = window.sessionStorage.getItem("channelID");
   const startDate = document.getElementById("startTime").value;
   const endDate = document.getElementById("endTime").value;
-  console.log(3)
   let response = await fetch(`/disc_get_messages`, {
     method: "POST",
     headers: {
@@ -171,23 +165,11 @@ async function getDiscMessages(){
     }),
   })
   let responseData = await response.json();
-  console.log(4)
   if (response.ok)
-  console.log(5)
   responseData.messages.forEach(messages => {
     Events.push(messages)
   })
 }
-
-/*async function displayDiscMessages(){
-  let messages = await getDiscMessages();
-
-  overviewWindow = document.getElementById("overviewWindow")
-  for (const i of messages) {
-    overviewWindow.innerHTML += `<p>User: ${i.user} || Date: ${i.timestamp}<br>
-    Message: ${i.content}</p><br><br>`+ overviewWindow.innerHTML
-  }
-}*/
 
 //Function for when selecting a start and end date in the selector
 function timeInterval() {
