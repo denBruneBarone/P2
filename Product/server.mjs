@@ -18,6 +18,14 @@ client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+// 👇️ "/home/john/Desktop/javascript"
+const __dirname = path.dirname(__filename);
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -233,11 +241,10 @@ export function createApp() {
         return msg.createdTimestamp > startDate && msg.createdTimestamp < endDate;
       })
       .map((msgObj) => {
-
         return {
           author: msgObj.author.username,
           message: msgObj.content,
-          date: msgObj.createdTimestamp,
+          date: new Date(msgObj.createdTimestamp).toISOString(),
           location: location,
           service: "Discord"
         };
@@ -251,6 +258,8 @@ export function createApp() {
 }
 
 client.login(process.env.BOT_TOKEN);
+
+let app = createApp();
 
 // the server runs
 app.listen(3000, () =>

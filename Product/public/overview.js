@@ -47,6 +47,14 @@ async function fetchData() {
     }
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
+  console.log(Events.map(e => {
+    return {
+        s: e.service,
+        d: new Date(e.date).getTime()
+      }
+    
+  }))
+
   Events.sort(compareDate)
   document.getElementById("overviewWindow").innerHTML = ""
   if (Events.length == 0) {
