@@ -9,23 +9,20 @@ const fetch = require("node-fetch");
 const { url } = require("inspector");
 const { URLSearchParams } = require("url");
 
-import dotenv from 'dotenv'
+// Disc client
+require("dotenv").config();
+const Discord = require("discord.js");
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
+const dotenv = require("dotenv");
 dotenv.config();
 
-const req = require("express/lib/request");
-const { json } = require("express/lib/response");
-
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-
-// 👇️ "/home/john/Desktop/javascript"
-const __dirname = path.dirname(__filename);
-
-let app = createApp()
-
 export function createApp() {
+
   const app = express();
   // includes the files from public folder
   app.use(express.static(__dirname + "/public"));
@@ -35,6 +32,9 @@ export function createApp() {
     res.sendFile(__dirname + "/public/index.html");
   });
 
+  const req = require("express/lib/request");
+  const { json } = require("express/lib/response");
+
   app.get("/overview", (req, res) => {
     res.sendFile(__dirname + "/public/overview.html");
   });
@@ -43,8 +43,8 @@ export function createApp() {
     res.sendFile(__dirname + "/public/trelloAuthentication.html");
   });
 
-  app.get("/trello-boards", (req, res) => {
-    res.sendFile(__dirname + "/public/trello-boards.html");
+  app.get("/trelloBoards", (req, res) => {
+    res.sendFile(__dirname + "/public/trelloBoards.html");
   });
 
   app.get("/trello-overview", (req, res) => {
@@ -114,11 +114,6 @@ export function createApp() {
   // Sends GET-request to Githubs API to retrieve the clients repositories. Sends the response back to the client as a JSON object.
   app.post("/getGithubRepositories", async (req, res) => {
     let githubToken = req.body.gitToken;
-    if (githubToken == undefined) {
-      res.sendStatus(401)
-      return res.json({ error: true })
-    }
-
     let githubRepositories = [];
     axios
       .get(`https://api.github.com/user/repos`, {
@@ -135,7 +130,6 @@ export function createApp() {
           Repo.repositoryName = i.name
           githubRepositories.push(Repo);
         }
-
         res.json({ Repositories: githubRepositories });
       });
   });
@@ -172,53 +166,94 @@ export function createApp() {
 
       pageCount++;
     }
-
     res.json(GitCommitArray);
   });
 
+  app.post("/disc_get_intersected_guilds", async (req, res) => {
+    const userGuilds = req.body.guilds.map((guild) => guild.id); // Antager at de er ens
+    const botGuilds = await client.guilds.fetch(); // Antager at de er ens
+
+    const intersection = botGuilds
+      .filter((botGuilds) => userGuilds.includes(botGuilds.id))
+      .map((botGuilds) => {
+        return {
+          id: botGuilds.id,
+          name: botGuilds.name,
+        };
+      }); // [ {"id": 123, "name": "P2"}, ]
+
+    res.json(intersection);
+  });
+
+  app.post("/disc_get_channels", async (req, res) => {
+    const guildId = req.body.intersectedGuild;
+    const discordChannel = client.channels.cache
+      .filter(
+        (chanObj) => chanObj.type === "GUILD_TEXT" && chanObj.guildId === guildId
+      )
+      .map((chanObj) => {
+        return {
+          id: chanObj.id,
+          name: chanObj.name,
+        };
+      });
+    res.json(discordChannel);
+  });
+
+  app.post("/disc_get_messages", async (req, res) => {
+    const channelID = req.body.discord_channel_id;
+    const channelName = req.body.discord_channel_name;
+    const guildName = req.body.intersectedGuildName;
+    const startDate = Date.parse(req.body.start_date);
+    const endDate = Date.parse(req.body.end_date);
+    const channel = await client.channels.fetch(channelID);
+    const location = guildName + " => " + channelName;
+
+    let messagesFromApi = [];
+
+    // Create message pointer
+    let messagePointer = await channel.messages
+      .fetch({ limit: 1 })
+      .then((messagePage) => (messagePage.size === 1 ? messagePage.at(0) : null));
+
+    while (messagePointer) {
+      await channel.messages
+        .fetch({ limit: 100, before: messagePointer.id })
+        .then((messagePage) => {
+          messagePage.forEach((msg) => messagesFromApi.push(msg));
+
+          // Update our message pointer to be last message in page of messages
+          messagePointer =
+            0 < messagePage.size ? messagePage.at(messagePage.size - 1) : null;
+        });
+    }
+
+    let filteredMessages = messagesFromApi
+      .filter((msg) => {
+        return msg.createdTimestamp > startDate && msg.createdTimestamp < endDate;
+      })
+      .map((msgObj) => {
+
+        return {
+          author: msgObj.author.username,
+          message: msgObj.content,
+          date: msgObj.createdTimestamp,
+          location: location,
+          service: "Discord"
+        };
+      });
+
+    res.json({ messages: filteredMessages });
+  });
+
+  
   return app
 }
-/* 
-// Setup our environment variables via dotenv
-require("dotenv").config();
-// Import relevant classes from discord.js
-const { Client, Intents } = require("discord.js");
-// Instantiate a new client with some necessary parameters.
-const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-});
 
-// Notify progress
-client.on("ready", () => {
-  console.log(`Discordbot ${client.user.tag} active and ready!`);
-  let guilds = client.guilds.cache.map((guild) => guild.id);
-  return guilds;
-});
+client.login(process.env.BOT_TOKEN);
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) return;
-
-  const { commandName } = interaction;
-
-  if (commandName === 'ping') {
-    await interaction.reply('Pong!');
-  } else if (commandName === 'beep') {
-    await interaction.reply('Boop!');
-  }
-});
-
-const fsNode = require('node:fs');
-const { Client, Collection, Intents } = require('discord.js');
-const { BOT_TOKEN } = require('./.env');
-
-const Client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-
-Client.commands = new Collection();
-
-// Authenticate
-Client.login(process.env.BOT_TOKEN);
- */
-// the server run's
+// the server runs
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000")
 );
+

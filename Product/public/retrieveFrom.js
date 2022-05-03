@@ -16,16 +16,16 @@ function checkAuthenticationStatus() {
 async function goToOverview() {
   await getSelectedTrelloBoards()
   await submitSelectedRepos()
-  if (Boards.length == 0 && selectedRepositories.length == 0) {
-    window.alert("Please select at least one location!")
+  if (Boards.length != 0 || selectedRepositories.length != 0 || window.sessionStorage.getItem("channelID") != null) {
+    window.location.replace("http://localhost:3000/overview.html");
   }
   else {
-    window.location.replace("http://localhost:3000/overview.html");
+    window.alert("Please select at least one location!")
   }
 }
 
 function getSelectedTrelloBoards() {
-  for (i of document.getElementsByClassName("trello-boards")) {
+  for (i of document.getElementsByClassName("trelloBoards")) {
     if (i.checked) {
       Boards.push({ id: i.id, name: i.value });
     }
@@ -73,14 +73,20 @@ async function createLists() {
 
     getGitRepositories(Tokens);
   }
+  else{
+    githubForm.innerHTML=""
+  }
   if (Tokens.trello) {
     if (sessionStorage.Boards)
       sessionStorage.removeItem("Boards");
 
     getTrelloBoards();
   }
-  if (Tokens.discord) {
-    //getDiscordGuilds();
+  else{
+    trelloBoards.innerHTML= ""
+  }
+  if(Tokens.discord === null){
+    discordForm.innerHTML=""
   }
 }
 
@@ -111,15 +117,15 @@ async function getTrelloBoards() {
   let _json = await r.json();
 
   // lav html element, hvor brugeren kan vælge et af sine boards
-  let trelloBoardForm = document.getElementById("trello-boards");
+  let trelloBoardForm = document.getElementById("trelloBoards");
   for (i of _json) {
     trelloBoardForm.innerHTML =
-      `<input class="trello-boards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` +
+      `<input class="trelloBoards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` +
       trelloBoardForm.innerHTML;
   }
 }
 
-/* Retrieves an authorized discord users server/guild list */
+/* Retrieves an authorized discord users guild list and finds an intercection of the bot and user guilds */
 async function getDiscordGuilds() {
   let discordGuilds = await fetch(`https://discord.com/api/users/@me/guilds`, {
     method: "GET",
@@ -128,35 +134,66 @@ async function getDiscordGuilds() {
     },
   });
   let discordGuildList = await discordGuilds.json();
-  console.log(discordGuildList);
 
+  let response = await fetch(`/disc_get_intersected_guilds`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ // To minimize the amount of data sent)
+      guilds: discordGuildList.map((guild) => {
+        return {
+          id: guild.id,
+        };
+      }),
+    }),
+  });
+  let intersectedGuilds = await response.json();
 
-  let discordGuildForm = document.getElementById("discordGuilds");
-  for (i of discordGuildList) {
+  let discordGuildForm = document.getElementById("discordFormButtons");
+  discordFormButtons.innerHTML = ""
+  
+  for (i of intersectedGuilds) {
     discordGuildForm.innerHTML =
-      `<input class="discordGuilds" type="button" id="${i.id}" value="${i.name}" onlick="getDiscordChannels(${i.id})"><label for="${i.id}"></label><br>` +
-      discordGuildForm.innerHTML;
+       `<input class="discordGuilds" type="button" id="${i.id}" value="${i.name}" onclick="getDiscordChannels('${i.id}', '${i.name}')"><label for="${i.id}">${i.name}</label><br>` +
+       discordGuildForm.innerHTML;
+   }
+   document.getElementById("discordHeader").innerHTML = "Select Channels";
+} 
+
+/*Function that finds and posts the channels from a specific guild ID */
+async function getDiscordChannels(intersectedGuildID, intersectedGuildName) {
+
+  window.sessionStorage.setItem("guildID", intersectedGuildID);
+  window.sessionStorage.setItem("guildName", intersectedGuildName);
+
+  let response = await fetch(`/disc_get_channels`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        intersectedGuild: intersectedGuildID
+    }),
+  })
+  let discordChannels = await response.json();
+
+  let discordChannelForm = document.getElementById("discordFormButtons");
+  discordFormButtons.innerHTML = ""
+  discordChannelForm.innerHTML = '<input type="button" value="Back To Guilds" id="backToGuilds" onclick="getDiscordGuilds()"></label>'
+
+  for (i of discordChannels) {
+    discordChannelForm.innerHTML =
+      `<input class="discordChannel" type="button" id="${i.id}" value="${i.name}" onclick="saveChannel('${i.id}','${i.name}')"><label for="${i.id}">${i.name}</label><br>` +
+      discordChannelForm.innerHTML;
   }
 }
 
-/* 
+async function saveChannel(channelID, channelName){
 
-async function getDiscordChannels(discordGuildID){
-  
-  let discordChannels = await fetch(`https://discord.com/api/guilds/${discordGuildID}/preview`, {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + window.sessionStorage.getItem("discord-token"),
-    }
-  }
-  );
-
-  let discordChannelList = await discordChannels.json();
-
-  for (i of discordChannelList){
-
-    console.log(i.channels)
-
-  }
-}*/
-
+  discordForm.innerHTML = ""
+  window.sessionStorage.setItem("channelID", channelID);
+  window.sessionStorage.setItem("channelName", channelName);
+}
