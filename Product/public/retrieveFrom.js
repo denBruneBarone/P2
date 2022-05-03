@@ -16,16 +16,16 @@ function checkAuthenticationStatus() {
 async function goToOverview() {
   await getSelectedTrelloBoards()
   await submitSelectedRepos()
-  if (Boards.length == 0 && selectedRepositories.length == 0) {
-    window.alert("Please select at least one location!")
+  if (Boards.length != 0 || selectedRepositories.length != 0 || window.sessionStorage.getItem("channelID") != null) {
+    window.location.replace("http://localhost:3000/overview.html");
   }
   else {
-    window.location.replace("http://localhost:3000/overview.html");
+    window.alert("Please select at least one location!")
   }
 }
 
 function getSelectedTrelloBoards() {
-  for (i of document.getElementsByClassName("trello-boards")) {
+  for (i of document.getElementsByClassName("trelloBoards")) {
     if (i.checked) {
       Boards.push({ id: i.id, name: i.value });
     }
@@ -73,11 +73,20 @@ async function createLists() {
 
     getGitRepositories(Tokens);
   }
+  else{
+    githubForm.innerHTML=""
+  }
   if (Tokens.trello) {
     if (sessionStorage.Boards)
       sessionStorage.removeItem("Boards");
 
     getTrelloBoards();
+  }
+  else{
+    trelloBoards.innerHTML= ""
+  }
+  if(Tokens.discord === null){
+    discordForm.innerHTML=""
   }
 }
 
@@ -108,10 +117,10 @@ async function getTrelloBoards() {
   let _json = await r.json();
 
   // lav html element, hvor brugeren kan vælge et af sine boards
-  let trelloBoardForm = document.getElementById("trello-boards");
+  let trelloBoardForm = document.getElementById("trelloBoards");
   for (i of _json) {
     trelloBoardForm.innerHTML =
-      `<input class="trello-boards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` +
+      `<input class="trelloBoards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` +
       trelloBoardForm.innerHTML;
   }
 }
@@ -147,7 +156,7 @@ async function getDiscordGuilds() {
   
   for (i of intersectedGuilds) {
     discordGuildForm.innerHTML =
-       `<input class="discordGuilds" type="button" id="${i.id}" value="${i.name}" onclick="getDiscordChannels('${i.id}', '${i.name}')"><label for="${i.id}"></label><br>` +
+       `<input class="discordGuilds" type="button" id="${i.id}" value="${i.name}" onclick="getDiscordChannels('${i.id}', '${i.name}')"><label for="${i.id}">${i.name}</label><br>` +
        discordGuildForm.innerHTML;
    }
    document.getElementById("discordHeader").innerHTML = "Select Channels";
@@ -173,11 +182,11 @@ async function getDiscordChannels(intersectedGuildID, intersectedGuildName) {
 
   let discordChannelForm = document.getElementById("discordFormButtons");
   discordFormButtons.innerHTML = ""
-  discordChannelForm.innerHTML = '<input type="button" value="Back To Guilds" id="backToGuilds" onclick="getDiscordGuilds()"><label for="backToGuilds"></label>'
+  discordChannelForm.innerHTML = '<input type="button" value="Back To Guilds" id="backToGuilds" onclick="getDiscordGuilds()"></label>'
 
   for (i of discordChannels) {
     discordChannelForm.innerHTML =
-      `<input class="discordChannel" type="button" id="${i.id}" value="${i.name}" onclick="saveChannel('${i.id}','${i.name}')"><label for="${i.id}"></label><br>` +
+      `<input class="discordChannel" type="button" id="${i.id}" value="${i.name}" onclick="saveChannel('${i.id}','${i.name}')"><label for="${i.id}">${i.name}</label><br>` +
       discordChannelForm.innerHTML;
   }
 }

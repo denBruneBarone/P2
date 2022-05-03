@@ -39,8 +39,8 @@ app.get("/trello", (req, res) => {
   res.sendFile(__dirname + "/public/trelloAuthentication.html");
 });
 
-app.get("/trello-boards", (req, res) => {
-  res.sendFile(__dirname + "/public/trello-boards.html");
+app.get("/trelloBoards", (req, res) => {
+  res.sendFile(__dirname + "/public/trelloBoards.html");
 });
 
 app.get("/trello-overview", (req, res) => {
@@ -198,9 +198,12 @@ app.post("/disc_get_channels", async (req, res) => {
 
 app.post("/disc_get_messages", async (req, res) => {
   const channelID = req.body.discord_channel_id;
+  const channelName = req.body.discord_channel_name;
+  const guildName = req.body.intersectedGuildName;
   const startDate = Date.parse(req.body.start_date);
   const endDate = Date.parse(req.body.end_date);
   const channel = await client.channels.fetch(channelID);
+  const location = guildName + " => " + channelName;
 
   let messagesFromApi = [];
 
@@ -226,12 +229,13 @@ app.post("/disc_get_messages", async (req, res) => {
       return msg.createdTimestamp > startDate && msg.createdTimestamp < endDate;
     })
     .map((msgObj) => {
-      let msgDate = new Date(msgObj.createdTimestamp);
 
       return {
-        user: msgObj.author.username,
-        content: msgObj.content,
-        timestamp: msgDate.toLocaleString(),
+        auther: msgObj.author.username,
+        message: msgObj.content,
+        date: msgObj.createdTimestamp,
+        location: location,
+        service: "Discord"
       };
     });
 

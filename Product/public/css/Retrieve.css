@@ -6,6 +6,7 @@ body {
 
 button {
   border: 4px white solid;
+  background-color: white;
   border-radius: 10px 10px 10px 10px;
   position: absolute;
   margin: 0;
@@ -36,23 +37,43 @@ h1 {
   text-align: center;
   font-family: Monaco, monospace;
   display: block;
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   font-size: 2em;
   font-weight: bold;
   line-height: 95px;
 }
 
-.discordFormButtons{
+.discordGuilds{
   border: 4px white solid;
+  background-color: white solid;
   border-radius: 10px 10px 10px 10px;
-  position: absolute;
-  margin: 0;
+  position: relative;
+  padding: 10px, 10px;
+  margin: 10;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  padding: 10px 10px;
   display: inline-block;
   cursor: pointer;
   transition: 0.3s;
+  overflow: auto
+}
 
+.discordChannel{
+  border: 4px white solid;
+  background-color: white solid;
+  border-radius: 10px 10px 10px 10px;
+  position: relative;
+  margin: 10;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.3s;
+  overflow: auto
+}
+
+.discordForm{
+  overflow: auto;
 }
