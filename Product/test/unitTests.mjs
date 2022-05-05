@@ -6,7 +6,7 @@ const expect = require('chai').expect;
 const supertest = require('supertest');
 import { createApp } from "../server.mjs"
 
-const gitToken = process.env.GITHUB_TOKEN
+const gitHubToken = process.env.GITHUB_TOKEN
 
 describe('API Interactions', function () {
     let app;
@@ -20,24 +20,42 @@ describe('API Interactions', function () {
         });
     });
 
-    it('POST /getGitCommits should return an object', async function (done) {
+    it('POST /getGitCommits should return an object with correct syntax', async function (done) {
         supertest(app)
             .post('/getGitCommits')
-            .send({ gitToken: gitToken, gitRepositories: "P2", gitRepositoriesOwner: "denBruneBarone", from: '2022-04-01T00:00:00', to: '' })
+            .send({ gitToken: gitHubToken, gitRepositories: "P2", gitRepositoriesOwner: "denBruneBarone", from: '2022-04-01T00:00:00', to: '' })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                expect(typeof (res.body)).to.equal("object")
+                expect(typeof (res.body[0].author)).to.equal("string")
+                expect(typeof (res.body[0].message)).to.equal("string")
+                expect(typeof (res.body[0].date)).to.equal("string")
+                expect(typeof (res.body[0].location)).to.equal("string")
+                expect(typeof (res.body[0].service)).to.equal("string")
             })
         done()
     });
 
-    it('POST /getGithubRepositories should return an object', async function (done) {
+    it('POST /getGithubRepositories should return an object with correct syntax', async function (done) {
         supertest(app)
             .post('/getGithubRepositories')
-            .send({ gitToken: gitToken })
+            .send({ gitHubToken: gitHubToken })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                expect(typeof (res.body.Repositories)).to.equal("object")
+                expect(typeof (res.body.Repositories[0].repositoryName)).to.equal("string")
+                expect(typeof (res.body.Repositories[0].owner)).to.equal("string")
+            })
+        done()
+    });
+
+    
+    it('POST /getGithubRepositories should return an object with correct syntax', async function (done) {
+        supertest(app)
+            .post('/getGithubRepositories')
+            .send({ gitHubToken: gitHubToken })
+            .expect(200, (err, res) => {
+                if (err) { done(err) }
+                expect(typeof (res.body.Repositories[0].repositoryName)).to.equal("string")
+                expect(typeof (res.body.Repositories[0].owner)).to.equal("string")
             })
         done()
     });

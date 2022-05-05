@@ -252,7 +252,6 @@ export function createApp() {
 
     res.json({ messages: filteredMessages });
   });
-
   
   return app
 }
