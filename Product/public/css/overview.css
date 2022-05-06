@@ -61,16 +61,21 @@ input{
   opacity: 0.6;
 }
 
-.overviewWindow {
+.overviewWindowFrame{
   position: relative;
+  overflow: hidden;
   margin: 35px auto;
   left: -80px;
   padding: 20px 20px 20px;
   width: 900px;
-  height: 350px;
   background: #ffffff;
   border-radius: 15px;
-  overflow: auto;
+}
+
+.overviewWindow {
+  height: 350px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 button {
@@ -120,4 +125,26 @@ button:hover{
 
 h1{
   color: black;
+}
+
+/* width of scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track color for the scrollbar */
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+/* Handle color for the scrollbar */
+::-webkit-scrollbar-thumb {
+  background: #222a35;
+  background-clip: padding-box;
+  cursor: pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.6;
 }
