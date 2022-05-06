@@ -13,6 +13,7 @@ const { URLSearchParams } = require("url");
 require("dotenv").config();
 const Discord = require("discord.js");
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+client.login(process.env.BOT_TOKEN);
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -195,6 +196,7 @@ export function createApp() {
 
   app.post("/disc_get_channels", async (req, res) => {
     const guildId = req.body.intersectedGuild;
+    console.log(guildId)
     const discordChannel = client.channels.cache
       .filter(
         (chanObj) => chanObj.type === "GUILD_TEXT" && chanObj.guildId === guildId
@@ -205,6 +207,7 @@ export function createApp() {
           name: chanObj.name,
         };
       });
+      console.log(discordChannel)
     res.json(discordChannel);
   });
 
@@ -256,7 +259,6 @@ export function createApp() {
   return app
 }
 
-client.login(process.env.BOT_TOKEN);
 
 let app = createApp();
 
