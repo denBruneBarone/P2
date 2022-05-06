@@ -5,19 +5,18 @@ const require = createRequire(import.meta.url)
 const expect = require('chai').expect;
 const supertest = require('supertest');
 import { createApp } from "../server.mjs"
+// const Discord = require("discord.js");
 
 const gitHubToken = process.env.GITHUB_TOKEN
-
-// Disc client
-// require("dotenv").config();
-// const Discord = require("discord.js");
-// const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-// client.login(process.env.BOT_TOKEN);
 
 describe('API Interactions', function () {
     let app;
 
     before(function (done) {
+        // Disc client
+        // const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+        // client.login(process.env.BOT_TOKEN);
+
         app = createApp();
         app.listen(function (err) {
             if (err) { return done(err); }
@@ -37,7 +36,7 @@ describe('API Interactions', function () {
                 expect(typeof (res.body[0].location)).to.equal("string")
                 expect(typeof (res.body[0].service)).to.equal("string")
             })
-            done()
+        done()
     });
 
     it('POST /getGithubRepositories should return an object with correct syntax', async function (done) {
@@ -49,7 +48,7 @@ describe('API Interactions', function () {
                 expect(typeof (res.body.Repositories[0].repositoryName)).to.equal("string")
                 expect(typeof (res.body.Repositories[0].owner)).to.equal("string")
             })
-            done()
+        done()
     });
 
     // it('POST /disc_get_channels should return an object with correct syntax', async function (done) {
@@ -58,11 +57,11 @@ describe('API Interactions', function () {
     //         .send({ intersectedGuild: "937719195611824138" })
     //         .expect(200, (err, res) => {
     //             if (err) { done(err) }
-    //             console.log(res.body)
+    //             console.log("body",res.body)
     //             // expect(typeof (res.body.Repositories[0].repositoryName)).to.equal("string")
     //             // expect(typeof (res.body.Repositories[0].owner)).to.equal("string")
     //         })
-    //         done()
+    //     done()
     // });
 
     // it('POST /disc_get_messages should return an object with correct syntax', async function (done) {
