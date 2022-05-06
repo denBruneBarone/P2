@@ -13,21 +13,23 @@
 
 <body onload="createLists()">
   <div id="discordForm">
-    <h1 id="discordHeader">Choose a Server</h1>
+    <h1 id="discordHeader">Choose a Discord Server</h1>
     <div id="discordFormButtons" class="discordFormButtons">
-
-      <button id="discordGuilds" onclick="getDiscordGuilds()">Click me!</button>
+      <button id="discordGuilds" onclick="getDiscordGuilds()">Servers</button>
     </div>
   </div>
   <form id="githubForm">
-    <h1>Chose Repository</h1>
+    <h1>Choose GitHub Repositories</h1>
+    <div id="githubCheckbox" class="githubCheckbox"></div>
   </form>
-  <form id="trelloBoards">
-    <h1>Choose Trello Boards</h1>
+  <form id="trelloForm">
+    <h1>Choose your Trello Boards</h1>
+    <div id="trelloCheckbox" class="trelloCheckbox">
+    </div>
   </form>
   <br /><br /><br />
   <button id="continueOverview" onclick="goToOverview()">
-    Continue to Overview
+    Continue
   </button>
 </body>
 

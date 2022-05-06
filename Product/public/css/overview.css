@@ -113,3 +113,11 @@ button {
 button:hover{
   border: 3px #27af49 solid;
 }
+
+.event{
+  color: black;
+}
+
+h1{
+  color: black;
+}

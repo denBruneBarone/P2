@@ -64,7 +64,7 @@ async function fetchData() {
   else {
     Events.forEach(Event => {
       document.getElementById("overviewWindow").innerHTML +=
-        `<p>${Event.date} (${Event.service}) ${Event.author}: ${Event.message} (${Event.location})</p>`
+        `<p class="event">${Event.date} (${Event.service}) ${Event.author}: ${Event.message} (${Event.location})</p>`
     })
   }
 }
