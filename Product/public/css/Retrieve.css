@@ -1,79 +1,150 @@
 body {
   background: #222a35;
   color: whitesmoke;
-
-}
-
-button {
-  border: 4px white solid;
-  background-color: white;
-  border-radius: 10px 10px 10px 10px;
-  position: absolute;
-  margin: 0;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  padding: 10px 10px;
-  display: inline-block;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#continueOverview {
-  background-color: #27af49;
-  border: none;
-  top: 90%;
-  padding: 15px 15px;
-  color: white;
-  font-size: 20px;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-}
-
-#continueOverview:hover {
-  opacity: 0.6;
 }
 
 h1 {
   text-align: center;
+  position: relative;
+  top: 10%;
   font-family: Monaco, monospace;
   display: block;
-  color: rgb(255, 255, 255);
   font-size: 2em;
   font-weight: bold;
-  line-height: 95px;
+  line-height: 30px;
 }
 
-.discordGuilds{
-  border: 4px white solid;
-  background-color: white solid;
+button {
+  border: 2px white solid;
+  overflow: hidden;
+  background-color: transparent;
+  text-align: center;
+  color: white;
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 2px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   border-radius: 10px 10px 10px 10px;
   position: relative;
-  padding: 10px, 10px;
-  margin: 10;
   left: 50%;
+  margin: 5px;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  display: inline-block;
+  padding: 10px 10px;
   cursor: pointer;
-  transition: 0.3s;
-  overflow: auto
+  display: inline-block;
+  align-items: center;
+  transition: 0.3;
 }
 
-.discordChannel{
-  border: 4px white solid;
-  background-color: white solid;
-  border-radius: 10px 10px 10px 10px;
+.discordFormButtons{
   position: relative;
-  margin: 10;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  display: inline-block;
-  cursor: pointer;
-  transition: 0.3s;
-  overflow: auto
-}
-
-.discordForm{
+  top: 35%;
+  left: 39%;
+  padding: 25px 10px 20px;
+  width: 250px;
+  height: 100px;
+  background: #222a35;
   overflow: auto;
+}
+
+button:hover{
+  background-color: #27af49;
+}
+
+#connectBotServer{
+  background-color: #27af49;
+  border: none;
+  font-size: 10px;
+  margin-bottom: 25px;
+}
+
+#connectBotServer:hover {
+  opacity: 0.6;
+}
+
+#backToGuilds{
+  background-color: #27af49;
+  border: none;
+  padding: 5px 5px;
+  font-size: 10px;
+}
+
+#backToGuilds:hover{
+  opacity: 0.6;
+}
+
+#checkmarkLogo{
+  background-image: url(../images/checkmark.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 65px;
+  height: 65px;
+  position: relative;
+  left: 37%;
+}
+
+/* width of scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track color for the scrollbar */
+::-webkit-scrollbar-track {
+  background: #222a35;
+}
+
+/* Handle color for the scrollbar */
+::-webkit-scrollbar-thumb {
+  background: white;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.6;
+}
+
+.trelloCheckbox{
+  position: relative;
+  left: 46%;
+  width: 150px;
+
+}
+.container{
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Monaco, monospace;
+}
+
+.githubCheckbox{
+  position: relative;
+  left: 46%;
+  width: 150px;
+
+}
+.githubLabel{
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Monaco, monospace;
+}
+
+#continueOverview{
+  background-color: #27af49;
+  position: absolute;
+  top: 90%;
+  border: none;
+  font-size: 20px;
+}
+
+#continueOverview:hover {
+  opacity: 0.6;
 }

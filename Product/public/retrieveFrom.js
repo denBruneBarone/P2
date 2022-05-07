@@ -50,11 +50,11 @@ async function getGitRepositories(Tokens) {
     }),
   }).then((response) => {
     response.json().then((responseData) => {
-      const githubForm = document.getElementById("githubForm");
+      const githubForm = document.getElementById("githubCheckbox");
 
       for (const j of responseData.Repositories) {
         githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
-        <label for="repo${j.repositoryName}"> ${j.repositoryName} </label> <br>`;
+        <label for="${j.repositoryName}" class="githubLabel"> ${j.repositoryName}</label> <br>`;
       }
     });
   });
@@ -83,7 +83,7 @@ async function createLists() {
     getTrelloBoards();
   }
   else{
-    trelloBoards.innerHTML= ""
+    trelloForm.innerHTML= ""
   }
   if(Tokens.discord === null){
     discordForm.innerHTML=""
@@ -117,10 +117,10 @@ async function getTrelloBoards() {
   let _json = await r.json();
 
   // lav html element, hvor brugeren kan vælge et af sine boards
-  let trelloBoardForm = document.getElementById("trelloBoards");
+  let trelloBoardForm = document.getElementById("trelloCheckbox");
   for (i of _json) {
     trelloBoardForm.innerHTML =
-      `<input class="trelloBoards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}">${i.name}</label><br>` +
+      `<input class="trelloBoards" type="checkbox" id="${i.id}" value="${i.name}"><label for="${i.id}" class="container">${i.name}</label><br>` +
       trelloBoardForm.innerHTML;
   }
 }
@@ -156,10 +156,13 @@ async function getDiscordGuilds() {
   
   for (i of intersectedGuilds) {
     discordGuildForm.innerHTML =
-       `<input class="discordGuilds" type="button" id="${i.id}" value="${i.name}" onclick="getDiscordChannels('${i.id}', '${i.name}')"><label for="${i.id}">${i.name}</label><br>` +
+       `<button class="discordGuilds" id="${i.id}" onclick="getDiscordChannels('${i.id}', '${i.name}')">${i.name}</button><br>` +
        discordGuildForm.innerHTML;
    }
-   document.getElementById("discordHeader").innerHTML = "Select Channels";
+
+   discordGuildForm.innerHTML=
+   '<a href="https://discord.com/api/oauth2/authorize?client_id=965604229794398259&permissions=66560&scope=bot" target="_blank"> <button class="connectBotServer" id="connectBotServer">Add Server to selection</button></a>'+
+   discordGuildForm.innerHTML;
 } 
 
 /*Function that finds and posts the channels from a specific guild ID */
@@ -182,18 +185,25 @@ async function getDiscordChannels(intersectedGuildID, intersectedGuildName) {
 
   let discordChannelForm = document.getElementById("discordFormButtons");
   discordFormButtons.innerHTML = ""
-  discordChannelForm.innerHTML = '<input type="button" value="Back To Guilds" id="backToGuilds" onclick="getDiscordGuilds()"></label>'
+  discordChannelForm.innerHTML = '<button id="backToGuilds" onclick="getDiscordGuilds()">Back To Guilds</button>'
+  document.getElementById("discordHeader").innerHTML = "Select a Channel";
 
   for (i of discordChannels) {
     discordChannelForm.innerHTML =
-      `<input class="discordChannel" type="button" id="${i.id}" value="${i.name}" onclick="saveChannel('${i.id}','${i.name}')"><label for="${i.id}">${i.name}</label><br>` +
+      `<button class="discordChannel" id="${i.id}" onclick="saveChannel('${i.id}','${i.name}')">${i.name}</button><br>` +
       discordChannelForm.innerHTML;
   }
+
+  document.getElementById("connectBotServer").style.visibility = "hidden";
 }
 
 async function saveChannel(channelID, channelName){
-
-  discordForm.innerHTML = ""
+  
+  document.getElementById("discordHeader").innerHTML = "Server & Channel selection complete";
+  discordFormButtons.innerHTML = ''
+  discordFormButtons.innerHTML =
+    '<p id="checkmarkLogo" class="checkmarkLogo"</p>' +
+    discordFormButtons.innerHTML
   window.sessionStorage.setItem("channelID", channelID);
   window.sessionStorage.setItem("channelName", channelName);
 }
