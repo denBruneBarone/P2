@@ -8,16 +8,10 @@ const { request } = require("http");
 const fetch = require("node-fetch");
 const { url } = require("inspector");
 const { URLSearchParams } = require("url");
+const Discord = require("discord.js");
 
 // Disc client
 require("dotenv").config();
-const Discord = require("discord.js");
-const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-client.login(process.env.BOT_TOKEN);
-
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -30,7 +24,17 @@ const __dirname = path.dirname(__filename);
 const dotenv = require("dotenv");
 dotenv.config();
 
-export function createApp() {
+export async function createApp() {
+  var discLoggedIn = false
+
+
+  const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+
+  client.on("ready", () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+    discLoggedIn = true
+  });
+
 
   const app = express();
   // includes the files from public folder
@@ -196,7 +200,6 @@ export function createApp() {
 
   app.post("/disc_get_channels", async (req, res) => {
     const guildId = req.body.intersectedGuild;
-    console.log(guildId)
     const discordChannel = client.channels.cache
       .filter(
         (chanObj) => chanObj.type === "GUILD_TEXT" && chanObj.guildId === guildId
@@ -207,7 +210,6 @@ export function createApp() {
           name: chanObj.name,
         };
       });
-      console.log(discordChannel)
     res.json(discordChannel);
   });
 
@@ -255,15 +257,15 @@ export function createApp() {
 
     res.json({ messages: filteredMessages });
   });
-  
+
+  await client.login(process.env.BOT_TOKEN)
+
   return app
 }
 
-
-let app = createApp();
+let app = await createApp();
 
 // the server runs
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000")
 );
-

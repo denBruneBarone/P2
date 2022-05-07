@@ -10,17 +10,19 @@ import { createApp } from "../server.mjs"
 const gitHubToken = process.env.GITHUB_TOKEN
 
 describe('API Interactions', function () {
+    this.timeout(0)
+
     let app;
 
-    before(function (done) {
-        // Disc client
-        // const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-        // client.login(process.env.BOT_TOKEN);
+    before(() => {
+        return new Promise(async (resolve) => {
+            app = await createApp();
+            console.log("app created")
 
-        app = createApp();
-        app.listen(function (err) {
-            if (err) { return done(err); }
-            done();
+            app.listen(function (err) {
+                if (err) { return (err); }
+                resolve()
+            });
         });
     });
 
@@ -30,11 +32,15 @@ describe('API Interactions', function () {
             .send({ gitToken: gitHubToken, gitRepositories: "P2", gitRepositoriesOwner: "denBruneBarone", from: '2022-04-01T00:00:00', to: '' })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                expect(typeof (res.body[0].author)).to.equal("string")
-                expect(typeof (res.body[0].message)).to.equal("string")
-                expect(typeof (res.body[0].date)).to.equal("string")
-                expect(typeof (res.body[0].location)).to.equal("string")
-                expect(typeof (res.body[0].service)).to.equal("string")
+                for (let i = 0; i < res.body.length; i++) {
+                    expect(typeof (res.body[i].author)).to.equal("string")
+                    expect((res.body[i].author.length > 0)).to.be.true
+                    expect(typeof (res.body[i].message)).to.equal("string")
+                    expect(typeof (res.body[i].date)).to.equal("string")
+                    expect(typeof (res.body[i].location)).to.equal("string")
+                    expect((res.body[i].location.length > 0)).to.be.true
+                    expect(typeof (res.body[i].service)).to.equal("string")
+                }
             })
         done()
     });
@@ -45,42 +51,50 @@ describe('API Interactions', function () {
             .send({ gitHubToken: gitHubToken })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                expect(typeof (res.body.Repositories[0].repositoryName)).to.equal("string")
-                expect(typeof (res.body.Repositories[0].owner)).to.equal("string")
+                for (let i = 0; i < res.body.Repositories.length; i++) {
+                    expect(typeof (res.body.Repositories[i].repositoryName)).to.equal("string")
+                    expect((res.body.Repositories[i].repositoryName > 0)).to.be.true
+                    expect(typeof (res.body.Repositories[i].owner)).to.equal("string")
+                    expect((res.body.Repositories[i].owner > 0)).to.be.true
+                }
             })
         done()
     });
 
-    // it('POST /disc_get_channels should return an object with correct syntax', async function (done) {
-    //     supertest(app)
-    //         .post('/disc_get_channels')
-    //         .send({ intersectedGuild: "937719195611824138" })
-    //         .expect(200, (err, res) => {
-    //             if (err) { done(err) }
-    //             console.log("body",res.body)
-    //             // expect(typeof (res.body.Repositories[0].repositoryName)).to.equal("string")
-    //             // expect(typeof (res.body.Repositories[0].owner)).to.equal("string")
-    //         })
-    //     done()
-    // });
+    it('POST /disc_get_channels should return an object with correct syntax', async function (done) {
+        supertest(app)
+            .post('/disc_get_channels')
+            .send({ intersectedGuild: "937719195611824138" })
+            .expect(200, (err, res) => {
+                if (err) { done(err) }
 
-    // it('POST /disc_get_messages should return an object with correct syntax', async function (done) {
-    //     supertest(app)
-    //         .post('/disc_get_messages')
-    //         .send({
-    //             discord_channel_id: "937719195611824141",
-    //             discord_channel_name: "general",
-    //             intersectedGuildName: "P2 Vikings",
-    //             start_date: "2022-02-01T00:00:00",
-    //             end_date: "2022-05-01T00:00:00"
-    //         })
-    //         .expect(200, (err, res) => {
-    //             if (err) { done(err) }
-    //             console.log("res")
-    //             console.log(res)
-    //             // expect(typeof (res.body.Repositories[0].repositoryName)).to.equal("string")
-    //             // expect(typeof (res.body.Repositories[0].owner)).to.equal("string")
-    //         })
-    //         done()
-    // });
+                for (let i = 0; i < res.body.length; i++) {
+                    expect(typeof (res.body[i].id)).to.equal("string")
+                    expect(typeof (res.body[i].name)).to.equal("string")
+                }
+            })
+        done()
+    });
+
+    it('POST /disc_get_messages should return an object with correct syntax', async function (done) {
+        supertest(app)
+            .post('/disc_get_messages')
+            .send({
+                discord_channel_id: "937719195611824141",
+                discord_channel_name: "general",
+                intersectedGuildName: "P2 Vikings",
+                start_date: "2022-02-01T00:00:00",
+                end_date: "2022-05-01T00:00:00"
+            })
+            .expect(200, (err, res) => {
+                if (err) { done(err) }
+                for (let i = 0; i < res.body.messages.length; i++) {
+                    expect(typeof (res.body.messages[i].author)).to.equal("string")
+                    expect(res.body.messages[i].author.length > 0).to.be.true;
+                    expect(typeof (res.body.messages[i].location)).to.equal("string")
+                    expect(res.body.messages[i].location.length > 0).to.be.true;
+                }
+            })
+        done()
+    });
 });
