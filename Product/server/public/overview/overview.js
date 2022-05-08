@@ -12,7 +12,8 @@ async function fetchData() {
     return
   }
 
-  Events = []
+  Events = [] // reset value
+
   if (window.sessionStorage.getItem("discord-token") && document.getElementById("discord").value == "enabled"){
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Discord Messages...</h1>"
     await getDiscMessages();
@@ -47,16 +48,18 @@ async function fetchData() {
     }
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
-  console.log(Events.map(e => {
-    return {
-        s: e.service,
-        d: new Date(e.date).getTime()
-      }
+  // console.log(Events.map(e => {
+  //   return {
+  //       s: e.service,
+  //       d: new Date(e.date).getTime()
+  //     }
     
-  }))
+  // }))
 
-  Events.sort(compareDate)
+  Events.sort(compareDate) // based on date attribute
+
   document.getElementById("overviewWindow").innerHTML = ""
+
   if (Events.length == 0) {
     document.getElementById("overviewWindow").innerHTML =
       `<h1>Wow, such empty...</h1>`
@@ -99,10 +102,12 @@ async function trelloActionsUsersBoards() {
   let since = document.getElementById("startTime").value
   let before = document.getElementById("endTime").value
 
-  Boards = await JSON.parse(window.sessionStorage.getItem("Boards"))
+  Boards = await JSON.parse(window.sessionStorage.getItem("Boards")) // HVORFOR ER DENNE AWAIT?
 
   for (Board of Boards) {
     let actionCount = 0
+
+    // NOGET ER HELT GALT HER
     actionCount = await trelloFetchBoard(since, before, Board.id)
 
     while (actionCount == 1000) {
@@ -152,11 +157,6 @@ async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
 }
 
 async function getDiscMessages(){
-  const guildName = window.sessionStorage.getItem("guildName");
-  const channelName = window.sessionStorage.getItem("channelName");
-  const channelID = window.sessionStorage.getItem("channelID");
-  const startDate = document.getElementById("startTime").value;
-  const endDate = document.getElementById("endTime").value;
   let response = await fetch(`/disc_get_messages`, {
     method: "POST",
     headers: {
@@ -164,11 +164,11 @@ async function getDiscMessages(){
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        intersectedGuildName: guildName,
-        discord_channel_name: channelName,
-        discord_channel_id: channelID,
-        start_date: startDate,
-        end_date: endDate
+        intersectedGuildName: window.sessionStorage.getItem("guildName"),
+        discord_channel_name: window.sessionStorage.getItem("channelName"),
+        discord_channel_id: window.sessionStorage.getItem("channelID"),
+        start_date: document.getElementById("startTime").value,
+        end_date: document.getElementById("endTime").value
     }),
   })
   let responseData = await response.json();
@@ -196,6 +196,7 @@ function onLoad() {
 }
 
 // preset's the services toggles
+//DISC??
 function authApi() {
   let Tokens = checkAuthenticationStatus()
   for (alias of Object.keys(Tokens)) {

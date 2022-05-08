@@ -14,10 +14,10 @@ function checkAuthenticationStatus() {
 
 // When continue button is pressed, go to overview. 
 async function goToOverview() {
-  await getSelectedTrelloBoards()
-  await submitSelectedRepos()
+   getSelectedTrelloBoards()
+   submitSelectedRepos()
   if (Boards.length != 0 || selectedRepositories.length != 0 || window.sessionStorage.getItem("channelID") != null) {
-    window.location.replace("http://localhost:3000/overview.html");
+    window.location.replace("http://localhost:3000/overview/overview.html");
   }
   else {
     window.alert("Please select at least one location!")
@@ -38,8 +38,6 @@ function getSelectedTrelloBoards() {
 
 // Sends POST-request for repositories to server and creates check-list in retrieveFrom.html
 async function getGitRepositories(Tokens) {
-  let Repositories = {};
-
   fetch(`/getGithubRepositories`, {
     method: "POST",
     headers: {
@@ -88,6 +86,8 @@ async function createLists() {
   if(Tokens.discord === null){
     discordForm.innerHTML=""
   }
+
+  // GET DISCORD GUILDS??
 }
 
 // Checks each checklist-item for checkmark and saves checked repositories in session storage
