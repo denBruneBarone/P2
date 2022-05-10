@@ -68,7 +68,7 @@ describe('API Interactions', function () {
             .send({ intersectedGuild: "937719195611824138" })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                console.log("res.body[i].id",res)
+                console.log("res.body[i].id",res.body)
                 for (let i = 0; i < res.body.length; i++) {
                     expect(typeof (res.body[i].id)).to.equal("string")
                     expect(typeof (res.body[i].name)).to.equal("string")
