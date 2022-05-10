@@ -10,3 +10,5 @@ sortTrello -- AAAAAAARGH
 
 
 gennerel codesplit (primært frontend)
+
+Unit test
