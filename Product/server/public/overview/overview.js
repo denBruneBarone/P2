@@ -1,4 +1,3 @@
-const { checkAuthenticationStatus } = require("../utils/getTokens")
 
 let Events = []
 let TrelloActions = []

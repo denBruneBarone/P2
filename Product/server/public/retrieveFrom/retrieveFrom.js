@@ -1,5 +1,3 @@
-const { checkAuthenticationStatus } = require("../utils/getTokens")
-
 let Boards = [];
 let selectedRepositories = [];
 let selectedRepositoriesOwner = [];

@@ -1,4 +1,3 @@
-const { checkAuthenticationStatus } = require("./utils/getTokens")
 
 function checkForContinue(Tokens) {
   const setButtonStatus = pre_string => {
