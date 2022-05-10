@@ -157,6 +157,13 @@ async function getDiscMessages(){
   const channelID = window.sessionStorage.getItem("channelID");
   const startDate = document.getElementById("startTime").value;
   const endDate = document.getElementById("endTime").value;
+  console.log({
+    intersectedGuildName: guildName,
+    discord_channel_name: channelName,
+    discord_channel_id: channelID,
+    start_date: startDate,
+    end_date: endDate
+})
   let response = await fetch(`/disc_get_messages`, {
     method: "POST",
     headers: {
@@ -172,6 +179,9 @@ async function getDiscMessages(){
     }),
   })
   let responseData = await response.json();
+
+  console.log(responseData)
+
   if (response.ok)
   responseData.messages.forEach(messages => {
     Events.push(messages)
@@ -210,6 +220,11 @@ function authApi() {
     }
     else if (alias == "github") {
       if (sessionStorage.getItem("githubRepositories") == "") {
+        toggleApi(alias)
+      }
+    }
+    else if (alias == "discord") {
+      if (! window.sessionStorage.getItem("channelID")) {
         toggleApi(alias)
       }
     }
@@ -254,7 +269,7 @@ function toggleApi(btn_id) {
       }
     }
     else if(btn_id == "discord") {
-      if (window.sessionStorage.getItem("channelID") == "") {
+      if (! window.sessionStorage.getItem("channelID")) {
         window.alert("Please select your available server channels")
         window.location.replace("http://localhost:3000/retrieveFrom.html")
         return

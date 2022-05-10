@@ -108,43 +108,80 @@ export async function createApp() {
   app.post("/githubToken", async (req, res) => {
     let githubCode = req.body.gitCode;
 
-    axios
-      .post("https://github.com/login/oauth/access_token", {
-        client_id: "de223b25bb78c82a9bd7",
-        client_secret: process.env.GITHUB_SECRET,
-        code: githubCode,
-        redirect_uri: "http://localhost:3000/githubAuthentication",
-      })
-      .then((response) => {
-        let githubToken = response.data.substring(
-          response.data.indexOf("=") + 1,
-          response.data.indexOf("&")
-        );
-        res.json({ token: githubToken });
-      });
+    // axios
+    //   .post("https://github.com/login/oauth/access_token", {
+    //     client_id: "de223b25bb78c82a9bd7",
+    //     client_secret: process.env.GITHUB_SECRET,
+    //     code: githubCode,
+    //     redirect_uri: "http://localhost:3000/githubAuthentication",
+    //   })
+    //   .then((response) => {
+    //     let githubToken = response.data.substring(
+    //       response.data.indexOf("=") + 1,
+    //       response.data.indexOf("&")
+    //     );
+    //     res.json({ token: githubToken });
+    //   });
+
+      var r = await fetch("https://github.com/login/oauth/access_token", {
+        method: "POST",
+        body: JSON.stringify({
+          client_id: "de223b25bb78c82a9bd7",
+          client_secret: process.env.GITHUB_SECRET,
+          code: githubCode,
+          redirect_uri: "http://localhost:3000/githubAuthentication",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });  
+      const _json = await r.json();
+      res.json({ token: _json.access_token });
   });
 
   // Sends GET-request to Githubs API to retrieve the clients repositories. Sends the response back to the client as a JSON object.
   app.post("/getGithubRepositories", async (req, res) => {
     let githubToken = req.body.gitToken;
     let githubRepositories = [];
-    axios
-      .get(`https://api.github.com/user/repos`, {
-        headers: {
-          Authorization: "token " + githubToken,
-          accept: "application/vnd.github.v3+json",
-        }
+    // axios
+    //   .get(`https://api.github.com/user/repos`, {
+    //     headers: {
+    //       Authorization: "token " + githubToken,
+    //       accept: "application/vnd.github.v3+json",
+    //     }
 
-      })
-      .then((response) => {
-        for (const i of response.data) {
-          let Repo = new Object();
-          Repo.owner = i.owner.login;
-          Repo.repositoryName = i.name
-          githubRepositories.push(Repo);
+    //   })
+    //   .then((response) => {
+    //     for (const i of response.data) {
+    //       let Repo = new Object();
+    //       Repo.owner = i.owner.login;
+    //       Repo.repositoryName = i.name
+    //       githubRepositories.push(Repo);
+    //     }
+    //     res.json({ Repositories: githubRepositories });
+    //   });
+
+      var r = await fetch("https://api.github.com/user/repos",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `token ${githubToken}`,
+            accept: "application/vnd.github.v3+json",
+          },
         }
-        res.json({ Repositories: githubRepositories });
-      });
+      );
+      var data = await r.json();
+      if (!r.ok) console.log("got error message",r.status)
+      
+      for (const i of data) {
+        let Repo = new Object();
+        Repo.owner = i.owner.login;
+        Repo.repositoryName = i.name
+        githubRepositories.push(Repo);
+      }
+      res.json({ Repositories: githubRepositories });
+
   });
 
   /* Sends GET-request to Githubs API to retrieve the commits from selected repository. Loops iteratively until there are no more commits to fetch. 
@@ -217,9 +254,9 @@ export async function createApp() {
     const channelID = req.body.discord_channel_id;
     const channelName = req.body.discord_channel_name;
     const guildName = req.body.intersectedGuildName;
-    const startDate = Date.parse(req.body.start_date);
-    const endDate = Date.parse(req.body.end_date);
     const channel = await client.channels.fetch(channelID);
+    const endDate = Date.parse(req.body.end_date);
+    const startDate = Date.parse(req.body.start_date);
     const location = guildName + " => " + channelName;
 
     let messagesFromApi = [];

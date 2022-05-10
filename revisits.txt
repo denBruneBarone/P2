@@ -1,0 +1,11 @@
+authApi done
+
+Brug samme net metode done
+
+use await instead of promises done despite of 2 .then's
+
+sortTrello -- AAAAAAARGH
+
+gennerel codesplit (primært frontend)
+
+Unit test

@@ -40,7 +40,7 @@ function getSelectedTrelloBoards() {
 async function getGitRepositories(Tokens) {
   let Repositories = {};
 
-  fetch(`/getGithubRepositories`, {
+  let res = await fetch(`/getGithubRepositories`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -48,16 +48,15 @@ async function getGitRepositories(Tokens) {
     body: JSON.stringify({
       gitToken: Tokens.github,
     }),
-  }).then((response) => {
-    response.json().then((responseData) => {
-      const githubForm = document.getElementById("githubCheckbox");
+  })
+  let responseData = await res.json()
+  const githubForm = document.getElementById("githubCheckbox");
 
-      for (const j of responseData.Repositories) {
-        githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
-        <label for="${j.repositoryName}" class="githubLabel"> ${j.repositoryName}</label> <br>`;
-      }
-    });
-  });
+  for (const j of responseData.Repositories) {
+    githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
+    <label for="${j.repositoryName}" class="githubLabel"> ${j.repositoryName}</label> <br>`;
+  }
+
 }
 
 function onLoad() {
@@ -70,24 +69,22 @@ async function createLists() {
   if (Tokens.github) {
     if (sessionStorage.githubRepositories)
       sessionStorage.removeItem("githubRepositories");
-
     getGitRepositories(Tokens);
   }
-  else{
-    githubForm.innerHTML=""
-  }
+  else { githubForm.innerHTML = "" }
+
   if (Tokens.trello) {
     if (sessionStorage.Boards)
       sessionStorage.removeItem("Boards");
-
     getTrelloBoards();
   }
-  else{
-    trelloForm.innerHTML= ""
+  else { trelloForm.innerHTML = "" }
+
+  if (Tokens.discord) {
+    if (sessionStorage.channelID)
+      sessionStorage.removeItem("channelID");
   }
-  if(Tokens.discord === null){
-    discordForm.innerHTML=""
-  }
+  else { discordForm.innerHTML = "" }
 }
 
 // Checks each checklist-item for checkmark and saves checked repositories in session storage
@@ -153,17 +150,17 @@ async function getDiscordGuilds() {
 
   let discordGuildForm = document.getElementById("discordFormButtons");
   discordFormButtons.innerHTML = ""
-  
+
   for (i of intersectedGuilds) {
     discordGuildForm.innerHTML =
-       `<button class="discordGuilds" id="${i.id}" onclick="getDiscordChannels('${i.id}', '${i.name}')">${i.name}</button><br>` +
-       discordGuildForm.innerHTML;
-   }
+      `<button class="discordGuilds" id="${i.id}" onclick="getDiscordChannels('${i.id}', '${i.name}')">${i.name}</button><br>` +
+      discordGuildForm.innerHTML;
+  }
 
-   discordGuildForm.innerHTML=
-   '<a href="https://discord.com/api/oauth2/authorize?client_id=965604229794398259&permissions=66560&scope=bot" target="_blank"> <button class="connectBotServer" id="connectBotServer">Add Server to selection</button></a>'+
-   discordGuildForm.innerHTML;
-} 
+  discordGuildForm.innerHTML =
+    '<a href="https://discord.com/api/oauth2/authorize?client_id=965604229794398259&permissions=66560&scope=bot" target="_blank"> <button class="connectBotServer" id="connectBotServer">Add Server to selection</button></a>' +
+    discordGuildForm.innerHTML;
+}
 
 /*Function that finds and posts the channels from a specific guild ID */
 async function getDiscordChannels(intersectedGuildID, intersectedGuildName) {
@@ -178,7 +175,7 @@ async function getDiscordChannels(intersectedGuildID, intersectedGuildName) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        intersectedGuild: intersectedGuildID
+      intersectedGuild: intersectedGuildID
     }),
   })
   let discordChannels = await response.json();
@@ -197,8 +194,8 @@ async function getDiscordChannels(intersectedGuildID, intersectedGuildName) {
   document.getElementById("connectBotServer").style.visibility = "hidden";
 }
 
-async function saveChannel(channelID, channelName){
-  
+async function saveChannel(channelID, channelName) {
+
   document.getElementById("discordHeader").innerHTML = "Server & Channel selection complete";
   discordFormButtons.innerHTML = ''
   discordFormButtons.innerHTML =
