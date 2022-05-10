@@ -1,12 +1,8 @@
-trelloFetchBoard
 
 Brug samme net metode
 
 authApi
 
-toggleApi
-
-make utils for checkAuthenticationStatus and simmilar stuff
 
 use await instead of promises
 

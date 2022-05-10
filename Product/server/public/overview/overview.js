@@ -1,3 +1,5 @@
+const { checkAuthenticationStatus } = require("../utils/getTokens")
+
 let Events = []
 let TrelloActions = []
 
@@ -107,9 +109,9 @@ async function trelloActionsUsersBoards() {
   for (Board of Boards) {
     let actionCount = 0
 
-    // NOGET ER HELT GALT HER
     actionCount = await trelloFetchBoard(since, before, Board.id)
 
+    // To match the fetch limit
     while (actionCount == 1000) {
       actionCount = await trelloFetchBoard(
         since,
@@ -126,15 +128,7 @@ async function trelloActionsUsersBoards() {
   }
 }
 
-// Returns the token of each application
-function checkAuthenticationStatus() {
-  var Tokens = {
-    trello: window.sessionStorage.getItem("trello-token"),
-    github: window.sessionStorage.getItem("github-token"),
-    discord: window.sessionStorage.getItem("discord-token"),
-  }
-  return Tokens
-}
+
 
 // Sends POST-request to server to fetch commits from Github. Pushes commits to Event-array.
 async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
@@ -235,11 +229,12 @@ function toggleApi(btn_id) {
     document.getElementById(btn_id).style = "border-color: red"
   }
   else if (document.getElementById(btn_id).value == "disabled") {
+
     if (window.sessionStorage.getItem(btn_id + "-token") == undefined) {
       window.alert("Please authenticate our Appliction")
       window.location.replace(getAuthUrl(btn_id))
       return
-    }
+    } 
     else if (btn_id == "trello") {
       if (window.sessionStorage.getItem("Boards") == undefined) {
         window.alert("Please select your available Trello Boards")
