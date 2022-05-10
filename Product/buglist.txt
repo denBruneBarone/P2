@@ -1,0 +1,2 @@
+.env not loaded in server/discord/controllers.js, hence no BOT_TOKEN, app fails to load client in ./bot  
+server/public/index.js line 1 Uncaught ReferenceError: require is not defined

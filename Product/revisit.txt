@@ -1,0 +1,14 @@
+
+Brug samme net metode
+
+authApi
+
+
+use await instead of promises
+
+sortTrello -- AAAAAAARGH
+
+
+gennerel codesplit (primært frontend)
+
+Unit test

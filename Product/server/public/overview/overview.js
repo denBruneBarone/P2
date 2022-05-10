@@ -1,3 +1,4 @@
+
 let Events = []
 let TrelloActions = []
 
@@ -12,7 +13,8 @@ async function fetchData() {
     return
   }
 
-  Events = []
+  Events = [] // reset value
+
   if (window.sessionStorage.getItem("discord-token") && document.getElementById("discord").value == "enabled"){
     document.getElementById("overviewWindow").innerHTML = "<h1>Loading Discord Messages...</h1>"
     await getDiscMessages();
@@ -47,16 +49,18 @@ async function fetchData() {
     }
   }
   document.getElementById("overviewWindow").innerHTML = "<h1>Sorting Events...</h1>"
-  console.log(Events.map(e => {
-    return {
-        s: e.service,
-        d: new Date(e.date).getTime()
-      }
+  // console.log(Events.map(e => {
+  //   return {
+  //       s: e.service,
+  //       d: new Date(e.date).getTime()
+  //     }
     
-  }))
+  // }))
 
-  Events.sort(compareDate)
+  Events.sort(compareDate) // based on date attribute
+
   document.getElementById("overviewWindow").innerHTML = ""
+
   if (Events.length == 0) {
     document.getElementById("overviewWindow").innerHTML =
       `<h1>Wow, such empty...</h1>`
@@ -99,12 +103,14 @@ async function trelloActionsUsersBoards() {
   let since = document.getElementById("startTime").value
   let before = document.getElementById("endTime").value
 
-  Boards = await JSON.parse(window.sessionStorage.getItem("Boards"))
+  Boards = await JSON.parse(window.sessionStorage.getItem("Boards")) // HVORFOR ER DENNE AWAIT?
 
   for (Board of Boards) {
     let actionCount = 0
+
     actionCount = await trelloFetchBoard(since, before, Board.id)
 
+    // To match the fetch limit
     while (actionCount == 1000) {
       actionCount = await trelloFetchBoard(
         since,
@@ -121,15 +127,7 @@ async function trelloActionsUsersBoards() {
   }
 }
 
-// Returns the token of each application
-function checkAuthenticationStatus() {
-  var Tokens = {
-    trello: window.sessionStorage.getItem("trello-token"),
-    github: window.sessionStorage.getItem("github-token"),
-    discord: window.sessionStorage.getItem("discord-token"),
-  }
-  return Tokens
-}
+
 
 // Sends POST-request to server to fetch commits from Github. Pushes commits to Event-array.
 async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
@@ -152,18 +150,7 @@ async function fetchGithubLogs(owner, token, Repositories, startTime, endTime) {
 }
 
 async function getDiscMessages(){
-  const guildName = window.sessionStorage.getItem("guildName");
-  const channelName = window.sessionStorage.getItem("channelName");
-  const channelID = window.sessionStorage.getItem("channelID");
-  const startDate = document.getElementById("startTime").value;
-  const endDate = document.getElementById("endTime").value;
-  console.log({
-    intersectedGuildName: guildName,
-    discord_channel_name: channelName,
-    discord_channel_id: channelID,
-    start_date: startDate,
-    end_date: endDate
-})
+
   let response = await fetch(`/disc_get_messages`, {
     method: "POST",
     headers: {
@@ -171,11 +158,11 @@ async function getDiscMessages(){
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        intersectedGuildName: guildName,
-        discord_channel_name: channelName,
-        discord_channel_id: channelID,
-        start_date: startDate,
-        end_date: endDate
+        intersectedGuildName: window.sessionStorage.getItem("guildName"),
+        discord_channel_name: window.sessionStorage.getItem("channelName"),
+        discord_channel_id: window.sessionStorage.getItem("channelID"),
+        start_date: document.getElementById("startTime").value,
+        end_date: document.getElementById("endTime").value
     }),
   })
   let responseData = await response.json();
@@ -206,6 +193,7 @@ function onLoad() {
 }
 
 // preset's the services toggles
+//DISC??
 function authApi() {
   let Tokens = checkAuthenticationStatus()
   for (alias of Object.keys(Tokens)) {
@@ -249,29 +237,30 @@ function toggleApi(btn_id) {
     document.getElementById(btn_id).style = "border-color: red"
   }
   else if (document.getElementById(btn_id).value == "disabled") {
+
     if (window.sessionStorage.getItem(btn_id + "-token") == undefined) {
       window.alert("Please authenticate our Appliction")
       window.location.replace(getAuthUrl(btn_id))
       return
-    }
+    } 
     else if (btn_id == "trello") {
       if (window.sessionStorage.getItem("Boards") == undefined) {
         window.alert("Please select your available Trello Boards")
-        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        window.location.replace("http://localhost:3000/retrieveFrom/retrieveFrom.html")
         return
       }
     }
     else if (btn_id == "github") {
       if (window.sessionStorage.getItem("githubRepositories") == "") {
         window.alert("Please select your available Github Repositories")
-        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        window.location.replace("http://localhost:3000/retrieveFrom/retrieveFrom.html")
         return
       }
     }
     else if(btn_id == "discord") {
       if (! window.sessionStorage.getItem("channelID")) {
         window.alert("Please select your available server channels")
-        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        window.location.replace("http://localhost:3000/retrieveFrom/retrieveFrom.html")
         return
       }
     }

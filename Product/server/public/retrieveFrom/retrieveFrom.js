@@ -2,22 +2,12 @@ let Boards = [];
 let selectedRepositories = [];
 let selectedRepositoriesOwner = [];
 
-// Returns the token of each application
-function checkAuthenticationStatus() {
-  var Tokens = {
-    trello: window.sessionStorage.getItem("trello-token"),
-    github: window.sessionStorage.getItem("github-token"),
-    discord: window.sessionStorage.getItem("discord-token"),
-  };
-  return Tokens;
-}
-
 // When continue button is pressed, go to overview. 
 async function goToOverview() {
-  await getSelectedTrelloBoards()
-  await submitSelectedRepos()
+   getSelectedTrelloBoards()
+   submitSelectedRepos()
   if (Boards.length != 0 || selectedRepositories.length != 0 || window.sessionStorage.getItem("channelID") != null) {
-    window.location.replace("http://localhost:3000/overview.html");
+    window.location.replace("http://localhost:3000/overview/overview.html");
   }
   else {
     window.alert("Please select at least one location!")
@@ -38,8 +28,6 @@ function getSelectedTrelloBoards() {
 
 // Sends POST-request for repositories to server and creates check-list in retrieveFrom.html
 async function getGitRepositories(Tokens) {
-  let Repositories = {};
-
   let res = await fetch(`/getGithubRepositories`, {
     method: "POST",
     headers: {
@@ -56,7 +44,6 @@ async function getGitRepositories(Tokens) {
     githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
     <label for="${j.repositoryName}" class="githubLabel"> ${j.repositoryName}</label> <br>`;
   }
-
 }
 
 function onLoad() {
@@ -78,13 +65,18 @@ async function createLists() {
       sessionStorage.removeItem("Boards");
     getTrelloBoards();
   }
-  else { trelloForm.innerHTML = "" }
-
-  if (Tokens.discord) {
-    if (sessionStorage.channelID)
-      sessionStorage.removeItem("channelID");
+  else{
+    trelloForm.innerHTML= ""
   }
-  else { discordForm.innerHTML = "" }
+  if(Tokens.discord){
+    if (sessionStorage.channelID)
+    sessionStorage.removeItem("channelID");
+  }
+  else {
+    discordForm.innerHTML=""
+  }
+
+  // GET DISCORD GUILDS??
 }
 
 // Checks each checklist-item for checkmark and saves checked repositories in session storage
