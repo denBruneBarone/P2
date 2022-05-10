@@ -23,6 +23,10 @@
       document.getElementById("startTime").defaultValue = "2022-01-01T00:00:00";
     </script>
     <input class="timeInputEnd" type="datetime-local" id="endTime" required value="" />
+    <script>// set default time value
+      let now = new Date(Date.now()).toISOString().slice(0, 19)
+      document.getElementById("endTime").defaultValue = now;
+    </script>
     <button class="submitTimeInterval" type="submit" onclick="fetchData()">
       Send
     </button>
@@ -30,7 +34,7 @@
 
   <div class="overviewWindowFrame">
     <div id="overviewWindow" class="overviewWindow">
-    <h1></h1>
+      <h1></h1>
     </div>
   </div>
   <button class="discordToggle" value="enabled" id="discord" onclick="toggleApi(id);"></button>

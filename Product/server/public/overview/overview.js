@@ -207,6 +207,11 @@ function authApi() {
         toggleApi(alias)
       }
     }
+    else if (alias == "discord") {
+      if (! window.sessionStorage.getItem("channelID")) {
+        toggleApi(alias)
+      }
+    }
   }
 }
 
@@ -237,21 +242,21 @@ function toggleApi(btn_id) {
     else if (btn_id == "trello") {
       if (window.sessionStorage.getItem("Boards") == undefined) {
         window.alert("Please select your available Trello Boards")
-        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        window.location.replace("http://localhost:3000/retrieveFrom/retrieveFrom.html")
         return
       }
     }
     else if (btn_id == "github") {
       if (window.sessionStorage.getItem("githubRepositories") == "") {
         window.alert("Please select your available Github Repositories")
-        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        window.location.replace("http://localhost:3000/retrieveFrom/retrieveFrom.html")
         return
       }
     }
     else if(btn_id == "discord") {
-      if (window.sessionStorage.getItem("channelID") == "") {
+      if (! window.sessionStorage.getItem("channelID")) {
         window.alert("Please select your available server channels")
-        window.location.replace("http://localhost:3000/retrieveFrom.html")
+        window.location.replace("http://localhost:3000/retrieveFrom/retrieveFrom.html")
         return
       }
     }

@@ -28,7 +28,7 @@ function getSelectedTrelloBoards() {
 
 // Sends POST-request for repositories to server and creates check-list in retrieveFrom.html
 async function getGitRepositories(Tokens) {
-  fetch(`/getGithubRepositories`, {
+  let res = await fetch(`/getGithubRepositories`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,16 +36,14 @@ async function getGitRepositories(Tokens) {
     body: JSON.stringify({
       gitToken: Tokens.github,
     }),
-  }).then((response) => {
-    response.json().then((responseData) => {
-      const githubForm = document.getElementById("githubCheckbox");
+  })
+  let responseData = await res.json()
+  const githubForm = document.getElementById("githubCheckbox");
 
-      for (const j of responseData.Repositories) {
-        githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
-        <label for="${j.repositoryName}" class="githubLabel"> ${j.repositoryName}</label> <br>`;
-      }
-    });
-  });
+  for (const j of responseData.Repositories) {
+    githubForm.innerHTML += `<input type="checkbox" id="${j.owner}" name="${j.repositoryName}" value="${j.repositoryName}" class="githubRepositories">
+    <label for="${j.repositoryName}" class="githubLabel"> ${j.repositoryName}</label> <br>`;
+  }
 }
 
 function onLoad() {
@@ -73,7 +71,11 @@ async function createLists() {
   else{
     trelloForm.innerHTML= ""
   }
-  if(Tokens.discord === null){
+  if(Tokens.discord){
+    if (sessionStorage.channelID)
+    sessionStorage.removeItem("channelID");
+  }
+  else {
     discordForm.innerHTML=""
   }
 
