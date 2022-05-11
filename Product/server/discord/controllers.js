@@ -65,7 +65,7 @@ async function discGetMessages(req, res) {
 
     let messagesFromApi = [];
 
-    // reffferer her
+    // https://stackoverflow.com/questions/63322284/discord-js-get-an-array-of-all-messages-in-a-channel
     // Create message pointer
     let messagePointer = await channel.messages
       .fetch({ limit: 1 })
