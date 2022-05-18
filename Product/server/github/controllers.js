@@ -39,7 +39,6 @@ async function getGithubRepos(req, res) {
   );
   var data = await r.json();
   if (!r.ok) console.log("got error message", r.status)
-
   for (const i of data) {
     let Repo = new Object();
     Repo.owner = i.owner.login;

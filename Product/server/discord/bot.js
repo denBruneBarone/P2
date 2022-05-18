@@ -1,6 +1,6 @@
 
 
-const spinUpBot = (token) => {
+const spinUpBot = async (token) => {
   // Disc client
   const Discord = require("discord.js");
   const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });

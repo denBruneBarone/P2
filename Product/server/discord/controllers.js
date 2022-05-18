@@ -3,7 +3,12 @@ const { URLSearchParams } = require("url");
 const { SendOkJson, SendErrorJson } = require("../utils/utils")
 const spinUpBot = require("./bot")
 
-const client = spinUpBot(process.env.BOT_TOKEN)
+let client = {}
+
+async function startClient() {
+  client = await spinUpBot(process.env.BOT_TOKEN)
+}
+startClient()
 
 async function getDiscordCode(req, res) {
     // Add the parameters

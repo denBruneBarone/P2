@@ -7,7 +7,7 @@ const supertest = require('supertest');
 import { createApp } from "../server.mjs"
 // const Discord = require("discord.js");
 
-const gitHubToken = process.env.GITHUB_TOKEN
+const gitToken = process.env.GITHUB_TOKEN
 
 describe('API Interactions', function () {
     this.timeout(0)
@@ -28,10 +28,9 @@ describe('API Interactions', function () {
     it('POST /getGitCommits should return an object with correct syntax', async function (done) {
         supertest(app)
             .post('/getGitCommits')
-            .send({ gitToken: gitHubToken, gitRepositories: "P2", gitRepositoriesOwner: "denBruneBarone", from: '2022-04-01T00:00:00', to: '' })
+            .send({ gitToken: gitToken, gitRepositories: "P2", gitRepositoriesOwner: "denBruneBarone", from: '2022-04-01T00:00:00', to: '' })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                console.log("res.body[i].author",res.body[0].author)
                 for (let i = 0; i < res.body.length; i++) {
                     expect(typeof (res.body[i].author)).to.equal("string")
                     expect((res.body[i].author.length > 0)).to.be.true
@@ -48,15 +47,14 @@ describe('API Interactions', function () {
     it('POST /getGithubRepositories should return an object with correct syntax', async function (done) {
         supertest(app)
             .post('/getGithubRepositories')
-            .send({ gitHubToken: gitHubToken })
+            .send({ gitToken: gitToken })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                console.log("res.body.Repositories[i].repositoryName",res.body.Repositories[0].repositoryName)
                 for (let i = 0; i < res.body.Repositories.length; i++) {
                     expect(typeof (res.body.Repositories[i].repositoryName)).to.equal("string")
-                    expect((res.body.Repositories[i].repositoryName > 0)).to.be.true
+                    expect((res.body.Repositories[i].repositoryName.length > 0)).to.be.true
                     expect(typeof (res.body.Repositories[i].owner)).to.equal("string")
-                    expect((res.body.Repositories[i].owner > 0)).to.be.true
+                    expect((res.body.Repositories[i].owner.length > 0)).to.be.true
                 }
             })
         done()
@@ -68,7 +66,6 @@ describe('API Interactions', function () {
             .send({ intersectedGuild: "937719195611824138" })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                console.log("res.body[i].id",res.body)
                 for (let i = 0; i < res.body.length; i++) {
                     expect(typeof (res.body[i].id)).to.equal("string")
                     expect(typeof (res.body[i].name)).to.equal("string")
@@ -89,7 +86,6 @@ describe('API Interactions', function () {
             })
             .expect(200, (err, res) => {
                 if (err) { done(err) }
-                console.log("res.body.messages[0].author",res.body.messages[0].author)
                 for (let i = 0; i < res.body.messages.length; i++) {
                     expect(typeof (res.body.messages[i].author)).to.equal("string")
                     expect(res.body.messages[i].author.length > 0).to.be.true;

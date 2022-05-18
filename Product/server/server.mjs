@@ -26,7 +26,7 @@ export async function createApp() {
   app.use(express.json());
 
 
-  setDiscordRoutes(app, __dirname)
+  await setDiscordRoutes(app, __dirname)
   setGithubRoutes(app, __dirname)
   setTrelloRoutes(app, __dirname)
   
