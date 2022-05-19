@@ -1,7 +1,6 @@
 const axios = require("axios");
 const fetch = require("node-fetch");
-const { SendOkJson, SendErrorJson } = require("../utils/utils")
-
+const { SendOkJson, SendErrorJson } = require("../utils/utils");
 
 async function getGithubToken(req, res) {
   let githubCode = req.body.gitCode;
@@ -28,30 +27,29 @@ async function getGithubRepos(req, res) {
   let githubToken = req.body.gitToken;
   let githubRepositories = [];
 
-  var r = await fetch("https://api.github.com/user/repos",
-    {
-      method: "GET",
-      headers: {
-        Authorization: `token ${githubToken}`,
-        accept: "application/vnd.github.v3+json",
-      },
-    }
-  );
+  var r = await fetch("https://api.github.com/user/repos", {
+    method: "GET",
+    headers: {
+      Authorization: `token ${githubToken}`,
+      accept: "application/vnd.github.v3+json",
+    },
+  });
   var data = await r.json();
-  if (!r.ok) console.log("got error message", r.status)
+  if (!r.ok) console.log("got error message", r.status);
 
   for (const i of data) {
     let Repo = new Object();
     Repo.owner = i.owner.login;
-    Repo.repositoryName = i.name
+    Repo.repositoryName = i.name;
     githubRepositories.push(Repo);
   }
   res.json({ Repositories: githubRepositories });
 }
 
-
 async function getGitCommits(req, res) {
-  let GitCommitArray = [], loadedAllCommits = false, pageCount = 1;
+  let GitCommitArray = [],
+    loadedAllCommits = false,
+    pageCount = 1;
   while (loadedAllCommits === false) {
     var r = await fetch(
       `https://api.github.com/repos/${req.body.gitRepositoriesOwner}/${req.body.gitRepositories}/commits?per_page=100&page=${pageCount}&since=${req.body.from}&until=${req.body.to}`,
@@ -66,9 +64,9 @@ async function getGitCommits(req, res) {
     var data = await r.json();
 
     if (!r.ok) {
-      console.log("got error message", r.status)
-      SendErrorJson(res, "error")
-      return
+      console.log("got error message", r.status);
+      SendErrorJson(res, "error");
+      return;
     }
     if (data.length === 0) loadedAllCommits = true;
 
@@ -78,18 +76,17 @@ async function getGitCommits(req, res) {
         message: i.commit.message,
         date: i.commit.author.date,
         location: req.body.gitRepositories,
-        service: "github"
+        service: "github",
       });
     }
 
     pageCount++;
   }
-  SendOkJson(res, GitCommitArray)
+  SendOkJson(res, GitCommitArray);
 }
-
 
 module.exports = {
   getGitCommits,
   getGithubRepos,
-  getGithubToken
-}
+  getGithubToken,
+};
