@@ -1,14 +1,2 @@
-
-Brug samme net metode
-
-authApi
-
-
-use await instead of promises
-
-sortTrello -- AAAAAAARGH
-
-
-gennerel codesplit (primært frontend)
-
-Unit test
+Backend og CSS 
+    - kommentarer og læsbarhed
