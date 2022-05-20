@@ -194,7 +194,7 @@ async function goToOverview() {
     SelectedRepositories.length != 0 ||
     window.sessionStorage.getItem("channelID") != null
   ) {
-    window.location.replace("http://localhost:3000/overview/overview.html");
+    window.location.replace("/overview");
   } else {
     window.alert("Please select at least one location!");
   }

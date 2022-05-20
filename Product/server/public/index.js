@@ -24,9 +24,3 @@ function checkForContinue(Tokens) {
 function onPageLoad() {
   checkForContinue(checkAuthenticationStatus());
 }
-
-function goToSelectLocations() {
-  window.location.replace(
-    "http://localhost:3000/selectLocations/selectLocations.html"
-  );
-}

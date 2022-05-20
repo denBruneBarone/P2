@@ -37,9 +37,7 @@ function toggleApi(buttonID, location) {
     }
     if (window.sessionStorage.getItem(location) == undefined) {
       window.alert("Please select your available locations");
-      window.location.replace(
-        "http://localhost:3000/selectLocations/selectLocations.html"
-      );
+      window.location.replace("/selectLocations");
       return;
     }
     document.getElementById(buttonID).value = "enabled";
