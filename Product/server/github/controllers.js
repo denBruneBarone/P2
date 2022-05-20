@@ -1,11 +1,10 @@
-const axios = require("axios");
 const fetch = require("node-fetch");
 const { SendOkJson, SendErrorJson } = require("../utils/utils");
 
+// sends a POST request to Githubs API for token.
 async function getGithubToken(req, res) {
   let githubCode = req.body.gitCode;
 
-  //error handling
   var r = await fetch("https://github.com/login/oauth/access_token", {
     method: "POST",
     body: JSON.stringify({
@@ -23,6 +22,7 @@ async function getGithubToken(req, res) {
   res.json({ token: _json.access_token });
 }
 
+// sends a GET request to Github for the list of repositories the user has access to. Returns an array of the repositories' name adn their owner.
 async function getGithubRepos(req, res) {
   let githubToken = req.body.gitToken;
   let githubRepositories = [];
@@ -46,6 +46,9 @@ async function getGithubRepos(req, res) {
   res.json({ Repositories: githubRepositories });
 }
 
+/* Fetches all git commits within the specified time frame. 
+Since only 100 commits can be fetched at a time, the while-loop keeps iterating untill all commits are fetched.
+The required data from each commit (eg. date, message etc.) is stored in the GitCommitArray array which is eventually returned. */
 async function getGitCommits(req, res) {
   let GitCommitArray = [],
     loadedAllCommits = false,
@@ -79,7 +82,6 @@ async function getGitCommits(req, res) {
         service: "github",
       });
     }
-
     pageCount++;
   }
   SendOkJson(res, GitCommitArray);
