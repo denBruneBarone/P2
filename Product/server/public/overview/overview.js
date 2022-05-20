@@ -108,9 +108,25 @@ async function displayData() {
     ).innerHTML = `<h1>Sorry, there are no events to display</h1>`;
   } else {
     Events.forEach((Event) => {
-      document.getElementById(
-        "overviewWindow"
-      ).innerHTML += `<p class="event">${Event.date} (${Event.service}) ${Event.author}: ${Event.message} (${Event.location})</p>`;
+      let eventString = "";
+      eventString +=
+        Event.date.replace("T", " ").replace("Z", " ").slice("0", "19") +
+        " | " +
+        Event.author +
+        ": " +
+        Event.message +
+        ".";
+
+      document.getElementById("overviewWindow").innerHTML += `
+      <div class="eventDisplayDiv"
+        <p>
+            <img class="miniPic" src="../images/${Event.service}_mini.png" />
+        </p>
+        <p class="${Event.service}">
+          ${eventString}
+        </p>
+      </div>
+      `;
     });
   }
 }
