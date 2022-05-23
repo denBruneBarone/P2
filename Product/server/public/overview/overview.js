@@ -115,8 +115,7 @@ async function displayData() {
         " | " +
         Event.author +
         ": " +
-        Event.message +
-        ".";
+        Event.message;
 
       eventElement += `
       <div class="eventDisplayDiv"
