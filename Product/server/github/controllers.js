@@ -76,7 +76,7 @@ async function getGitCommits(req, res) {
     for (const i of data) {
       GitCommitArray.push({
         author: i.commit.author.name,
-        message: i.commit.message,
+        message: i.commit.message + ". Repository: " + req.body.gitRepositories,
         date: i.commit.author.date,
         location: req.body.gitRepositories,
         service: "github",

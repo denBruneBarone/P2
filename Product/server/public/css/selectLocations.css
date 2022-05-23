@@ -137,7 +137,7 @@ button:hover {
 
 #continueOverview {
   background-color: #27af49;
-  position: absolute;
+  position: relative;
   top: 90%;
   border: none;
   font-size: 20px;
