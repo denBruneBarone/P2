@@ -107,7 +107,7 @@ async function displayData() {
       "overviewWindow"
     ).innerHTML = `<h1>Sorry, there are no events to display</h1>`;
   } else {
-    let htmlElement = "";
+    let eventElement = "";
     Events.forEach((Event) => {
       let eventString = "";
       eventString +=
@@ -118,7 +118,7 @@ async function displayData() {
         Event.message +
         ".";
 
-      htmlElement += `
+      eventElement += `
       <div class="eventDisplayDiv"
         <p>
             <img class="miniPic" src="../images/${Event.service}_mini.png" />
@@ -131,7 +131,7 @@ async function displayData() {
     });
     document.getElementById(
       "overviewWindow"
-    ).innerHTML = htmlElement;
+    ).innerHTML = eventElement;
   }
 }
 
