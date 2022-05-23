@@ -107,6 +107,7 @@ async function displayData() {
       "overviewWindow"
     ).innerHTML = `<h1>Sorry, there are no events to display</h1>`;
   } else {
+    let htmlElement = "";
     Events.forEach((Event) => {
       let eventString = "";
       eventString +=
@@ -117,7 +118,7 @@ async function displayData() {
         Event.message +
         ".";
 
-      document.getElementById("overviewWindow").innerHTML += `
+      htmlElement += `
       <div class="eventDisplayDiv"
         <p>
             <img class="miniPic" src="../images/${Event.service}_mini.png" />
@@ -128,6 +129,9 @@ async function displayData() {
       </div>
       `;
     });
+    document.getElementById(
+      "overviewWindow"
+    ).innerHTML = htmlElement;
   }
 }
 
@@ -158,8 +162,8 @@ async function getAllDiscMessages() {
 // Calls the function fetchGithubCommits for each repository selected.
 async function getAllGithubCommits() {
   let RepositoriesArray = window.sessionStorage
-      .getItem("githubRepositories")
-      .split(","),
+    .getItem("githubRepositories")
+    .split(","),
     RepositoriesOwnerArray = window.sessionStorage
       .getItem("githubRepositoriesOwner")
       .split(",");
