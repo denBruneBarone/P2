@@ -11,6 +11,12 @@
     <script src="../utils/getTokens.js" type="text/javascript"></script>
     <script src="../utils/sortTrello.js" type="text/javascript"></script>
     <script src="overview.js" type="text/javascript"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body onload="checkLocations()">
@@ -54,19 +60,19 @@
       class="discordToggle"
       value="enabled"
       id="discord"
-      onclick="toggleApi(id);"
+      onclick='toggleApi(id,"channelID");'
     ></button>
     <button
       class="githubToggle"
       value="enabled"
       id="github"
-      onclick="toggleApi(id);"
+      onclick='toggleApi(id,"githubRepositories");'
     ></button>
     <button
       class="trelloToggle"
       value="enabled"
       id="trello"
-      onclick="toggleApi(id);"
+      onclick='toggleApi(id, "TrelloBoards");'
     ></button>
   </body>
 </html>

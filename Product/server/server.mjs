@@ -13,7 +13,6 @@ const setTrelloRoutes = require("./trello/routes");
 const sethtmlRoutes = require("./htmlRoutes/routes");
 
 const __filename = fileURLToPath(import.meta.url);
-// 👇️ "/home/john/Desktop/javascript"
 const __dirname = path.dirname(__filename);
 
 export async function createApp() {

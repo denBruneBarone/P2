@@ -107,11 +107,31 @@ async function displayData() {
       "overviewWindow"
     ).innerHTML = `<h1>Sorry, there are no events to display</h1>`;
   } else {
+    let eventElement = "";
     Events.forEach((Event) => {
-      document.getElementById(
-        "overviewWindow"
-      ).innerHTML += `<p class="event">${Event.date} (${Event.service}) ${Event.author}: ${Event.message} (${Event.location})</p>`;
+      let eventString = "";
+      eventString +=
+        Event.date.replace("T", " ").replace("Z", " ").slice("0", "19") +
+        " | " +
+        Event.author +
+        ": " +
+        Event.message +
+        ".";
+
+      eventElement += `
+      <div class="eventDisplayDiv"
+        <p>
+            <img class="miniPic" src="../images/${Event.service}_mini.png" />
+        </p>
+        <p class="${Event.service}">
+          ${eventString}
+        </p>
+      </div>
+      `;
     });
+    document.getElementById(
+      "overviewWindow"
+    ).innerHTML = eventElement;
   }
 }
 
@@ -142,8 +162,8 @@ async function getAllDiscMessages() {
 // Calls the function fetchGithubCommits for each repository selected.
 async function getAllGithubCommits() {
   let RepositoriesArray = window.sessionStorage
-      .getItem("githubRepositories")
-      .split(","),
+    .getItem("githubRepositories")
+    .split(","),
     RepositoriesOwnerArray = window.sessionStorage
       .getItem("githubRepositoriesOwner")
       .split(",");

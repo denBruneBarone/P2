@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Past Workflows</title>
+    <!--Links-->
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
 
-<head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Past Workflows</title>
-   <!--Links-->
-   <link rel="stylesheet" href="/css/styles.css">
-</head>
-
-<body>
-   <h1>Redirecting...</h1>
-   <script>  
-        window.sessionStorage.setItem("trello-token", window.location.hash.substring(window.location.hash.indexOf("=")+1)  )
-        window.location.replace("http://localhost:3000/")
-   </script>
-   
-</body>
-
+  <body>
+    <h1>Redirecting...</h1>
+    <script>
+      /* Retrieves the token in the fragment sent from Trello and stores it in sessionStorage. Then returns to index.html  */
+      window.sessionStorage.setItem(
+        "trello-token",
+        window.location.hash.substring(window.location.hash.indexOf("=") + 1)
+      );
+      window.location.replace("http://localhost:3000/");
+    </script>
+  </body>
 </html>
