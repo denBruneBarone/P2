@@ -1,29 +1,31 @@
 import { createRequire } from "module";
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 dotenv.config({ path: "../" });
-const require = createRequire(import.meta.url)
-const expect = require('chai').expect;
-const supertest = require('supertest');
-import { createApp } from "../server.mjs"
+const require = createRequire(import.meta.url);
+const expect = require("chai").expect;
+const supertest = require("supertest");
+import { createApp } from "../server.mjs";
 // const Discord = require("discord.js");
 
 const gitToken = process.env.GITHUB_TOKEN
 
-describe('API Interactions', function () {
-    this.timeout(0)
+describe("API Interactions", function () {
+  this.timeout(0);
 
-    let app;
+  let app;
 
-    before(() => {
-        return new Promise(async (resolve) => {
-            app = await createApp();
+  before(() => {
+    return new Promise(async (resolve) => {
+      app = await createApp();
 
-            app.listen(function (err) {
-                if (err) { return (err); }
-                resolve()
-            });
-        });
+      app.listen(function (err) {
+        if (err) {
+          return err;
+        }
+        resolve();
+      });
     });
+  });
 
     it('POST /getGitCommits should return an object with correct syntax', async function (done) {
         supertest(app)

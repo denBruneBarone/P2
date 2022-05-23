@@ -23,7 +23,7 @@ body {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-input{
+input {
   border-radius: 10px 10px 10px 10px;
   border: none;
   position: absolute;
@@ -57,11 +57,11 @@ input{
   left: 69%;
 }
 
-.submitTimeInterval:hover{
+.submitTimeInterval:hover {
   opacity: 0.6;
 }
 
-.overviewWindowFrame{
+.overviewWindowFrame {
   position: relative;
   overflow: hidden;
   margin: 35px auto;
@@ -76,6 +76,10 @@ input{
   height: 350px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+#overviewWindow {
+  font-family: "Roboto Mono", monospace;
 }
 
 button {
@@ -99,6 +103,8 @@ button {
   top: 39%;
   background-image: url(../images/discord_mini.png);
   background-size: 63px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .githubToggle {
@@ -106,6 +112,8 @@ button {
   top: 56%;
   background-image: url(../images/github_mini.png);
   background-size: 48px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .trelloToggle {
@@ -113,17 +121,19 @@ button {
   top: 73%;
   background-image: url(../images/trello_mini.png);
   background-size: 48px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
-button:hover{
+button:hover {
   border: 3px #27af49 solid;
 }
 
-.event{
+.event {
   color: black;
 }
 
-h1{
+h1 {
   color: black;
 }
 
@@ -147,4 +157,28 @@ h1{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   opacity: 0.6;
+}
+
+.eventDisplayDiv {
+  display: flex;
+  padding-bottom: 10px;
+  align-items: center;
+}
+
+.miniPic {
+  height: auto;
+  width: 46px;
+  padding-right: 5px;
+}
+
+.discord {
+  color: #566499;
+}
+
+.trello {
+  color: #107ebe;
+}
+
+.github {
+  color: #171515;
 }

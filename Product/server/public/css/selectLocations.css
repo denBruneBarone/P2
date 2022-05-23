@@ -38,7 +38,7 @@ button {
   transition: 0.3;
 }
 
-.discordFormButtons{
+.discordFormButtons {
   position: relative;
   top: 35%;
   left: 39%;
@@ -49,11 +49,11 @@ button {
   overflow: auto;
 }
 
-button:hover{
+button:hover {
   background-color: #27af49;
 }
 
-#connectBotServer{
+#connectBotServer {
   background-color: #27af49;
   border: none;
   font-size: 10px;
@@ -64,18 +64,18 @@ button:hover{
   opacity: 0.6;
 }
 
-#backToGuilds{
+#backToGuilds {
   background-color: #27af49;
   border: none;
   padding: 5px 5px;
   font-size: 10px;
 }
 
-#backToGuilds:hover{
+#backToGuilds:hover {
   opacity: 0.6;
 }
 
-#checkmarkLogo{
+#checkmarkLogo {
   background-image: url(../images/checkmark.png);
   background-repeat: no-repeat;
   background-size: contain;
@@ -105,13 +105,12 @@ button:hover{
   opacity: 0.6;
 }
 
-.trelloCheckbox{
+.trelloCheckbox {
   position: relative;
   left: 46%;
   width: 150px;
-
 }
-.container{
+.container {
   position: relative;
   cursor: pointer;
   -webkit-user-select: none;
@@ -121,13 +120,12 @@ button:hover{
   font-family: Monaco, monospace;
 }
 
-.githubCheckbox{
+.githubCheckbox {
   position: relative;
   left: 46%;
   width: 150px;
-
 }
-.githubLabel{
+.githubLabel {
   position: relative;
   cursor: pointer;
   -webkit-user-select: none;
@@ -137,9 +135,9 @@ button:hover{
   font-family: Monaco, monospace;
 }
 
-#continueOverview{
+#continueOverview {
   background-color: #27af49;
-  position: absolute;
+  position: relative;
   top: 90%;
   border: none;
   font-size: 20px;
