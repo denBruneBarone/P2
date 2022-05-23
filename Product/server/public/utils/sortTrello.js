@@ -34,6 +34,8 @@ async function sortTrello(i) {
       } else if (i.object.data.list.closed) {
         i.message = 'Deleted the list "' + i.object.data.list.name + '"';
       }
+      i.message += ". Board: " + i.object.data.board.name
+
       break;
     case "updateChecklist":
       if (i.object.data.old.name) {
@@ -124,11 +126,12 @@ async function sortTrello(i) {
       i.message =
         'Added comment to card: "' +
         i.object.data.card.name +
-        '" on board: "' +
-        i.object.data.board.name +
+        '"' +
         '". Comment: "' +
         i.object.data.text +
         '"';
+      i.message += ". Board: " + i.object.data.board.name
+
       break;
     case "createList":
       i.message =
@@ -174,52 +177,40 @@ async function sortTrello(i) {
       i.message =
         'created card "' +
         i.object.data.card.name +
-        '" on board "' +
-        i.object.data.board.name +
-        '"';
+        '"'
+      i.message += ". Board: " + i.object.data.board.name
+
       break;
     case "deleteCard":
       i.message =
-        'Deleted a card on Board: "' +
-        i.object.data.board.name +
-        '", List: "' +
+        'Deleted a card from List: "' +
         i.object.data.list.name +
         '"';
+      i.message += ". Board: " + i.object.data.board.name
+
       break;
     case "updateCard":
       if (i.object.data.card.cover != undefined) {
         // the cover was changed
         i.message =
           "the cover was changed to " +
-          i.object.data.card.cover.color +
-          ' on "' +
-          i.object.data.card.name +
-          '"';
+          i.object.data.card.cover.color
         break;
       } else if (i.object.data.card.closed) {
         i.message =
           'Archived card "' +
-          i.object.data.card.name +
-          '", board "' +
-          i.object.data.board.name +
-          '"';
+          i.object.data.card.name
       } else if (i.object.data.card.desc || i.object.data.old.desc) {
         if (i.object.data.card.desc == "") {
           i.message =
             'Deleted the description on card "' +
-            i.object.data.card.name +
-            '", board "' +
-            i.object.data.board.name +
-            '"';
+            i.object.data.card.name
         } else {
           i.message =
             'Updated the description from the card "' +
             i.object.data.card.name +
             '" to "' +
-            i.object.data.card.desc +
-            '", board "' +
-            i.object.data.board.name +
-            '"';
+            i.object.data.card.desc
         }
       } else if (i.object.data.card.dueComplete) {
         i.message =
@@ -245,9 +236,7 @@ async function sortTrello(i) {
           '" has been moved from the list "' +
           i.object.data.listBefore.name +
           '" to "' +
-          i.object.data.listAfter.name +
-          '", board "' +
-          i.object.data.board.name;
+          i.object.data.listAfter.name
       } else if (i.object.data.old.name) {
         i.message =
           'renamed "' +
@@ -260,6 +249,7 @@ async function sortTrello(i) {
       } else if (i.object.data.card.start) {
         i.message = "Start date set to " + i.object.data.card.start;
       }
+      i.message += ". Board: " + i.object.data.board.name
       break;
     case "addMemberToBoard":
       i.message =
@@ -268,6 +258,7 @@ async function sortTrello(i) {
     case "addMemberToCard":
       i.message =
         "added " + i.object.member.fullName + " to " + i.object.data.card.name;
+      i.message += ". Board: " + i.object.data.board.name
 
       break;
     case "removeMemberFromCard":
@@ -276,9 +267,11 @@ async function sortTrello(i) {
         i.object.member.fullName +
         " from " +
         i.object.data.card.name;
+      i.message += ". Board: " + i.object.data.board.name
       break;
     case "addChecklistToCard":
       i.message = "added a checklist to " + i.object.data.card.name;
+      i.message += ". Board: " + i.object.data.board.name
       break;
     case "copyBoard":
       i.message =
@@ -300,6 +293,7 @@ async function sortTrello(i) {
           i.object.data.card.name +
           '")';
       }
+      i.message += ". Board: " + i.object.data.board.name
       break;
   }
   if (i.message == undefined) {
